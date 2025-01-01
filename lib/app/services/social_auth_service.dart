@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../app/app.logger.dart';
 import '../../domain/model/session_manager.dart';
 import '../app.locator.dart';
@@ -43,7 +44,7 @@ class SocialAuthService {
 
   Future<User?> signInWithApple() async {
     try {
-      final appleProvider = AppleAuthProvider();
+      final appleProvider = AppleAuthProvider().addScope('email').addScope('fullName');
       if (kIsWeb) {
         return (await FirebaseAuth.instance.signInWithPopup(appleProvider))
             .user;
