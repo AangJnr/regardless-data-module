@@ -8,15 +8,24 @@ class Utils {
   }
 
   static void setStatusBarColor(BuildContext context, {bool isLight = true}) {
-    SystemChrome.setSystemUIOverlayStyle(
-      isLight
-          ? SystemUiOverlayStyle.light.copyWith(
-              statusBarColor: Colors.transparent,
-              systemNavigationBarColor: Colors.black54)
-          : SystemUiOverlayStyle.dark.copyWith(
-              statusBarColor: Colors.transparent,
-              systemNavigationBarColor: Colors.black54),
-    );
+    final brightness = Theme.of(context).brightness;
+    final isDarkMode = brightness == Brightness.dark;
+
+    if (isDarkMode) {
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+          statusBarColor: Colors.white38,
+          systemNavigationBarColor: Colors.white38));
+    } else {
+      SystemChrome.setSystemUIOverlayStyle(
+        isLight
+            ? SystemUiOverlayStyle.light.copyWith(
+                statusBarColor: Colors.transparent,
+                systemNavigationBarColor: Colors.black54)
+            : SystemUiOverlayStyle.dark.copyWith(
+                statusBarColor: Colors.transparent,
+                systemNavigationBarColor: Colors.black54),
+      );
+    }
   }
 
   static String parseDate(String? date) {
