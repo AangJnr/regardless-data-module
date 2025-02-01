@@ -40,8 +40,8 @@ class LocationService {
 
   Future<Position> getCurrentLocation() async {
     await _checkLocationPermissions();
-    return Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
+    return Geolocator.getCurrentPosition(locationSettings: _getSettings(),
+         );
   }
 
   void dispose() async {

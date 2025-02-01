@@ -39,8 +39,9 @@ class AUser implements DataMapper<UserResponse> {
   }
 
   String getUserName() {
-    if (userName.trim().isEmpty || userName.trim() == 'null')
+    if (userName.trim().isEmpty || userName.trim() == 'null') {
       return 'Regardless User';
+    }
     return userName;
   }
 

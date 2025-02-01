@@ -111,7 +111,7 @@ class Notification {
       message: body ?? message,
       type: messageType ?? type,
       receiver: receiver ?? this.receiver,
-      metaData: metaData ?? this.metaData,
+      metaData: metaData,
       customLinkText: customLinkText ?? this.customLinkText,
       image: image ?? this.image,
     );

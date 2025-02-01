@@ -362,6 +362,7 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
             last: paginationResponse.last));
+      // ignore: empty_catches
       } catch (e) {}
     }
     return Error(response.tryGetError()!);
@@ -423,6 +424,7 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
             last: paginationResponse.last));
+      // ignore: empty_catches
       } catch (e) {}
     }
     return Error(response.tryGetError()!);

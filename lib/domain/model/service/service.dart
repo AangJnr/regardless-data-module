@@ -50,7 +50,7 @@ class Service {
   Service request(TimeSlot timeSlot, Price? price) {
     return Service(
         timeSlots: [timeSlot],
-        prices: price == null ? [] : [price!],
+        prices: price == null ? [] : [price],
         createdAt: createdAt,
         uid: uid,
         keywords: keywords,
@@ -125,7 +125,7 @@ class Service {
         '',
         (previousValue, element) =>
             '$previousValue${element.slots.fold('', (previousValue, element) => '$previousValue${element.toString()} | ')}');
-    return '${getShortDay(timeSlots.first.day)} - Slots(${value})';
+    return '${getShortDay(timeSlots.first.day)} - Slots($value)';
   }
 
   String getShortDay(String day) {

@@ -10,7 +10,6 @@ import '../../../app/app.logger.dart';
 import '../../../app/utils/internet_util.dart';
 import '../../../domain/model/session_manager.dart';
 import '../../../domain/api/api_service.dart';
-import '../../local/session_manager_service.dart';
 
 const TokenExpired = "Token expired";
 mixin BaseRepository {

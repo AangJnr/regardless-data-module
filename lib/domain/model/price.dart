@@ -23,10 +23,11 @@ class Price implements DataMapper<PriceApi> {
   String total() => "${amount * quantity}";
 
   String getAmount() {
-    if (amount == 0)
+    if (amount == 0) {
       return "Free";
-    else
+    } else {
       return '$currency $amount';
+    }
   }
 
   String getPrice() {
@@ -34,10 +35,11 @@ class Price implements DataMapper<PriceApi> {
   }
 
   String getDescriptiveAmount() {
-    if (amount == 0)
+    if (amount == 0) {
       return "Free";
-    else
+    } else {
       return 'Starting from:$currency $amount';
+    }
   }
 
   Price copyWith({

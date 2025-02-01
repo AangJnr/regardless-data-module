@@ -12,10 +12,10 @@ class SearchEventResultsApi implements DomainMapper<SearchEventResults> {
   @override
   String toString() => 'SearchEventsResults(results: $results)';
 
-  factory SearchEventResultsApi.fromMap(Map<String, dynamic> data) {
+  factory SearchEventResultsApi.fromMap(Map<String, dynamic>? data) {
     return SearchEventResultsApi(
       results:
-          data == null ? null : Results.fromMap(data as Map<String, dynamic>),
+          data == null ? null : Results.fromMap(data),
     );
   }
 

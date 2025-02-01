@@ -34,8 +34,8 @@ extension HoverExtensions on Widget {
   Widget scaleOnSelected({double scale = 1.1, bool selected = false}) {
     return ScaleOnSelected(
       scale: scale,
-      child: this,
       isSelected: selected,
+      child: this,
     );
   }
 
