@@ -38,6 +38,7 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
   @override
   Future<Result<Pagination<Feed>, Exception>> searchEvent(
       SearchFilter filter) async {
+    // ignore: deprecated_member_use_from_same_package
     var data = await processRequest(() => apiService.searchEvents(filter));
     if (data.isSuccess()) {
       final paginationResponse =
