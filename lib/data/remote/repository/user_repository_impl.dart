@@ -1,6 +1,6 @@
 import 'dart:io' show Platform;
 
-import 'package:custom_platform_device_id/platform_device_id.dart';
+//import 'package:custom_platform_device_id/platform_device_id.dart';
 import 'package:flutter/foundation.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:regardless_data_module/data/model/dashboard_metrics_api.dart';
@@ -59,7 +59,8 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
 
   @override
   Future<Result<bool, Exception>> updateDeviceToken(String token) async {
-    final deviceId = (await PlatformDeviceId.getDeviceId)?.trim();
+    const deviceId =
+        "regardlessWebApp"; //(await PlatformDeviceId.getDeviceId)?.trim();
 
     final notificationRequest = (kIsWeb)
         ? NotificationRequest(
