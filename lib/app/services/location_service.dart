@@ -86,36 +86,38 @@ class LocationService {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       ToastService().showToast('Location services are disabled.');
+      return;
     }
 
-    permission = await Geolocator.checkPermission();
+    permission = await Geolocator.requestPermission();
+      debugPrint("LocationPermission => ${permission.toString()}");
 
     if (permission == LocationPermission.deniedForever) {
       ToastService().showToast(
           'Location permissions are permantly denied, we cannot request permissions. Please provide location permission in settings.');
       onDenied?.call();
+      return;
     }
 
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse &&
-          permission != LocationPermission.always) {
-        await DialogService()
-            .showConfirmationDialog(
-                title: 'Location services required',
-                description:
-                    '$permission is required to be able to provide access to events and commmunities around you. Please provide location permissions.',
-                barrierDismissible: false,
-                cancelTitle: 'Cancel',
-                confirmationTitle: 'OK')
-            .then((value) {
-          if (value?.confirmed == true) {
-            requestLocationPermission();
-          }
-        });
-      }
-    } else {
-      onGranted?.call();
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.unableToDetermine) {
+      await DialogService()
+          .showConfirmationDialog(
+              title: 'Location services required',
+              description:
+                  'LocationPermission is required to be able to provide access to events and commmunities around you. Please provide location permissions.',
+              barrierDismissible: false,
+              cancelTitle: 'Cancel',
+              confirmationTitle: 'OK')
+          .then((value) {
+        if (value?.confirmed == true) {
+          requestLocationPermission();
+        }
+      });
+      return;
     }
+
+    onGranted?.call();
   }
+
 }
