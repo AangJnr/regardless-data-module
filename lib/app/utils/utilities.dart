@@ -12,19 +12,13 @@ class Utils {
     final isDarkMode = brightness == Brightness.dark;
 
     if (isDarkMode) {
-      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-          statusBarColor: Colors.white38,
-          systemNavigationBarColor: Colors.white38));
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+          statusBarColor: Colors.transparent,
+          systemNavigationBarColor: Colors.white12, systemNavigationBarDividerColor: Colors.white12));
     } else {
-      SystemChrome.setSystemUIOverlayStyle(
-        isLight
-            ? SystemUiOverlayStyle.light.copyWith(
-                statusBarColor: Colors.transparent,
-                systemNavigationBarColor: Colors.black54)
-            : SystemUiOverlayStyle.dark.copyWith(
-                statusBarColor: Colors.transparent,
-                systemNavigationBarColor: Colors.black54),
-      );
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+          statusBarColor: Colors.transparent,
+          systemNavigationBarColor: Colors.white24));
     }
   }
 
