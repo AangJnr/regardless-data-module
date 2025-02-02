@@ -18,7 +18,7 @@ class LocationService {
       String? uid,
       int updateIntervalInSeconds = 20}) async {
     dispose();
-    await _checkLocationPermissions();
+    await requestLocationPermission();
 
     _intervalInSeconds = updateIntervalInSeconds;
 
@@ -34,14 +34,15 @@ class LocationService {
   }
 
   Future<Position?> getLastKnownLocation() async {
-    _checkLocationPermissions();
+    requestLocationPermission();
     return Geolocator.getLastKnownPosition();
   }
 
   Future<Position> getCurrentLocation() async {
-    await _checkLocationPermissions();
-    return Geolocator.getCurrentPosition(locationSettings: _getSettings(),
-         );
+    await requestLocationPermission();
+    return Geolocator.getCurrentPosition(
+      locationSettings: _getSettings(),
+    );
   }
 
   void dispose() async {
@@ -80,7 +81,8 @@ class LocationService {
     );
   }
 
-  _checkLocationPermissions() async {
+  Future<void> requestLocationPermission(
+      {VoidCallback? onGranted, VoidCallback? onDenied}) async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       ToastService().showToast('Location services are disabled.');
@@ -90,7 +92,8 @@ class LocationService {
 
     if (permission == LocationPermission.deniedForever) {
       ToastService().showToast(
-          'Location permissions are permantly denied, we cannot request permissions. Please provide location permission in the settings app.');
+          'Location permissions are permantly denied, we cannot request permissions. Please provide location permission in settings.');
+      onDenied?.call();
     }
 
     if (permission == LocationPermission.denied) {
@@ -101,18 +104,18 @@ class LocationService {
             .showConfirmationDialog(
                 title: 'Location services required',
                 description:
-                    '$permission is required to be able to provide timely deliveries around you. Please provide location permissions.',
+                    '$permission is required to be able to provide access to events and commmunities around you. Please provide location permissions.',
                 barrierDismissible: false,
                 cancelTitle: 'Cancel',
                 confirmationTitle: 'OK')
             .then((value) {
           if (value?.confirmed == true) {
-            _checkLocationPermissions();
+            requestLocationPermission();
           }
         });
       }
+    } else {
+      onGranted?.call();
     }
-
-    return permission;
   }
 }

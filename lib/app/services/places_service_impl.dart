@@ -15,7 +15,10 @@ class PlacesServiceImpl implements PlacesService {
     final predictions = await _googlePlace?.findAutocompletePredictions(query);
     final locations = predictions?.predictions
             .map((e) => PredictedLocation(
-                address: e.fullText, length: e.distanceMeters??0, offset: 0, placeId: e.placeId))
+                address: e.fullText,
+                length: e.distanceMeters ?? 0,
+                offset: 0,
+                placeId: e.placeId))
             .toList() ??
         [];
     debugPrint(
@@ -26,7 +29,12 @@ class PlacesServiceImpl implements PlacesService {
   @override
   Future<Venue> getAddressDetails(PredictedLocation predictedLocation) async {
     FetchPlaceResponse? detailsResponse =
-        await _googlePlace?.fetchPlace(predictedLocation.placeId, fields: []);
+        await _googlePlace?.fetchPlace(predictedLocation.placeId, fields: [
+      PlaceField.Address,
+      PlaceField.AddressComponents,
+      PlaceField.Location,
+      PlaceField.Name,
+    ]);
     if (detailsResponse != null) {
       final place = detailsResponse.place;
 
