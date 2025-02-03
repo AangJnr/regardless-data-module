@@ -33,6 +33,12 @@ class LocationService {
     });
   }
 
+  Future<bool> hasPermission() async {
+    permission = await Geolocator.checkPermission();
+    return permission == LocationPermission.always ||
+        permission == LocationPermission.whileInUse;
+  }
+
   Future<Position?> getLastKnownLocation() async {
     requestLocationPermission();
     return Geolocator.getLastKnownPosition();
@@ -90,11 +96,23 @@ class LocationService {
     }
 
     permission = await Geolocator.requestPermission();
-      debugPrint("LocationPermission => ${permission.toString()}");
+    debugPrint("LocationPermission => ${permission.toString()}");
 
     if (permission == LocationPermission.deniedForever) {
-      ToastService().showToast(
-          'Location permissions are permantly denied, we cannot request permissions. Please provide location permission in settings.');
+      await DialogService()
+          .showConfirmationDialog(
+              title: '',
+              description:
+                'Location permissions are permantly denied, we cannot request permissions. Please provide location permission in settings.',
+              barrierDismissible: false,
+              cancelTitle: 'Cancel',
+              confirmationTitle: 'OK')
+          .then((value) async {
+        if (value?.confirmed == true) {
+           await Geolocator.openLocationSettings();
+        }
+      });
+
       onDenied?.call();
       return;
     }
@@ -119,5 +137,4 @@ class LocationService {
 
     onGranted?.call();
   }
-
 }
