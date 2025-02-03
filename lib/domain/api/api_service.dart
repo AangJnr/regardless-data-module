@@ -35,6 +35,7 @@ abstract class ApiService {
   Future<Response> searchEvents(SearchFilter filter);
   Future<Response> searchEventsV2(SearchEventParams params);
   Future<Response> getPopularEvents(SearchEventParams params);
+  Future<Response> searchNearbyCommunities(SearchEventParams params);
 
   Future<Response> getProviderEvents(String providerUid,
       {PaginationRequest? request});

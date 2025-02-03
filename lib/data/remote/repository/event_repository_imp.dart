@@ -36,6 +36,17 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
   }
 
   @override
+  Future<Result<SearchEventResults, Exception>> searchNearByCommunities(
+      SearchEventParams params) async {
+    var data = await processRequest(() => apiService.searchNearbyCommunities(params));
+    if (data.isSuccess()) {
+      final results = SearchEventResultsApi.fromMap(data.tryGetSuccess()!);
+      return Success(results.mapToDomain());
+    }
+    return Error(data.tryGetError()!);
+  }
+
+  @override
   Future<Result<Pagination<Feed>, Exception>> searchEvent(
       SearchFilter filter) async {
     // ignore: deprecated_member_use_from_same_package
@@ -363,7 +374,7 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
             last: paginationResponse.last));
-      // ignore: empty_catches
+        // ignore: empty_catches
       } catch (e) {}
     }
     return Error(response.tryGetError()!);
@@ -425,7 +436,7 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
             last: paginationResponse.last));
-      // ignore: empty_catches
+        // ignore: empty_catches
       } catch (e) {}
     }
     return Error(response.tryGetError()!);

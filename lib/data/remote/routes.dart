@@ -55,6 +55,7 @@ class Admin extends ApiRoutes {
 class Event extends ApiRoutes {
   String get Discovery => '$url/event/discovery/';
   String Search(String params) => '$url/search$params';
+  String SearchNearbyCommunities(String params) => '$url/nearby-community$params';
   String GetPopular(String params) => '$url/event/popular$params';
   String Get(String uid) => '$url/event/$uid';
   get All => '$url/event';

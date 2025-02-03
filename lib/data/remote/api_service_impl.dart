@@ -10,14 +10,9 @@ import 'package:regardless_data_module/data/model/community_api/comment_api.dart
 import 'package:regardless_data_module/data/model/community_api/community_api.dart';
 import 'package:regardless_data_module/domain/model/community/community.dart';
 import 'package:regardless_data_module/domain/model/community/member.dart';
-import '../../../app/app.locator.dart';
-import '../../../app/app.logger.dart';
-import '../../app/services/social_auth_service.dart';
-import '../../app/utils/url.dart';
 import '../../domain/api/api_service.dart';
 import '../../domain/model/appointment/appointment.dart';
 import '../../domain/model/follower.dart';
-import '../../domain/model/session_manager.dart';
 import '../../domain/model/user.dart';
 import '../../domain/repositories/event_repository.dart';
 import '../model/appointment_api/appointment_api.dart';
@@ -26,131 +21,15 @@ import '../model/notification_request.dart';
 import '../model/paginated_response.dart';
 import '../model/search_filter.dart';
 import '../model/service_api/service_api.dart';
+import 'repository/api_helpers.dart';
 import 'routes.dart';
 
-class ApiServiceImpl implements ApiService {
-  final log = getLogger('ApiServiceImpl');
-
-  final _sessionManager = module<SessionManager>();
-
-  Future<Map<String, String>> getHeaders({bool isSecure = true}) async {
-    final headersMap = {
-      'Content-type': 'application/json',
-      'Accept': 'application/json',
-    };
-
-    if (isSecure) {
-      if (Url.isDebug)
-        headersMap.putIfAbsent('Authorization', () => 'Iamnotahumanbeing@2');
-      else {
-        final token = await module<SocialAuthService>().getToken();
-        headersMap.putIfAbsent('Authorization', () => 'Token $token');
-      }
-    }
-    return headersMap;
-  }
-
-  Map<String, String> getMultiPartHeaders() {
-    return {
-      'Authorization': 'Token ${_sessionManager.getAccessToken()}',
-      'Content-type': 'multipart/form-data',
-      'Accept': '*/*'
-    };
-  }
-
-  String toQueryParams(Map<String, dynamic> data) {
-    String params = '';
-
-    params += '?';
-
-    data.forEach((k, v) {
-      // if (v is List) {
-      //   for (var item in v) {
-      //     if (item != null && item.toString().isNotEmpty) {
-      //       params += "$k[]=$item";
-      //     }
-      //   }
-      // } else {
-      if (v != null && v.toString().isNotEmpty) {
-        params += "$k=$v";
-      }
-      //}
-      params += "&";
-    });
-
-    return params.replaceRange(params.length - 1, params.length, '');
-  }
-
-  get(url, {required Map<String, String> headers}) {
-    log.i("url: $url");
-    log.i("headers: $headers");
-    return http.get(Uri.parse(url), headers: headers);
-  }
-
-  post(url, {required Map<String, String> headers, body}) {
-    log.i("url: $url");
-    log.i("headers: $headers");
-    log.i("body: $body");
-    return http.post(Uri.parse(url), headers: headers, body: body);
-  }
-
-  delete(url, {required Map<String, String> headers, body}) {
-    log.i("url: $url");
-    log.i("headers: $headers");
-    log.i("body: $body");
-    return http.delete(Uri.parse(url), headers: headers, body: body);
-  }
-
-  patch(url, {required Map<String, String> headers, body}) {
-    log.i("url: $url");
-    log.i("headers: $headers");
-    log.i("body: $body");
-    return http.patch(Uri.parse(url), headers: headers, body: body);
-  }
-
-  put(url, {required Map<String, String> headers, body}) {
-    log.i("url: $url");
-    log.i("headers: $headers");
-    log.i("body: $body");
-    return http.put(Uri.parse(url), headers: headers, body: body);
-  }
-
-  patchMultipart(
-    url, {
-    required Map<String, String> headers,
-    required List<ImageProperties> dataList,
-  }) async {
-    final request = http.MultipartRequest("PATCH", Uri.parse(url));
-    log.i("url: $url");
-
-    request.headers.addAll(headers);
-    log.i("headers: ${request.headers}");
-
-    request.files.add(await http.MultipartFile.fromPath(
-        dataList.first.key, dataList.first.file.path));
-
-    return request.send();
-  }
-
-  postMultipart(
-    url, {
-    required Map<String, String> headers,
-    required List<ImageProperties> dataList,
-  }) async {
-    final request = http.MultipartRequest("POST", Uri.parse(url));
-    log.i("url: $url");
-    request.headers.addAll(headers);
-    log.i("headers: ${request.headers}");
-    request.files.add(await http.MultipartFile.fromPath(
-        dataList.last.key, dataList.last.file.path));
-    return request.send();
-  }
-
+class ApiServiceImpl with ApiHelpers implements ApiService {
   @override
   Future<http.Response> attemptLogout() async {
     var response = post(Auth().LogoutPath,
         headers: await getHeaders(),
-        body: jsonEncode({'refresh': _sessionManager.getRefreshToken()}));
+        body: jsonEncode({'refresh': sessionManager.getRefreshToken()}));
     return response;
   }
 
@@ -198,7 +77,7 @@ class ApiServiceImpl implements ApiService {
   @override
   Future<http.Response> deleteUser(String id) async {
     var response = delete(
-      Auth().DeleteAccount(_sessionManager.getUserProfile().uid),
+      Auth().DeleteAccount(sessionManager.getUserProfile().uid),
       headers: await getHeaders(),
     );
     return response;
@@ -214,7 +93,7 @@ class ApiServiceImpl implements ApiService {
 
   @override
   Future<http.Response> deleteAccount(String title, String message) async {
-    var response = delete(User().Delete(_sessionManager.getUserProfile().uid),
+    var response = delete(User().Delete(sessionManager.getUserProfile().uid),
         headers: await getHeaders(),
         body: jsonEncode({
           'deletion_reason_title': title,
@@ -295,6 +174,15 @@ class ApiServiceImpl implements ApiService {
   Future<http.Response> searchEventsV2(SearchEventParams params) async {
     var response = get(
       Event().Search(toQueryParams(params.toMap())),
+      headers: await getHeaders(isSecure: false),
+    );
+    return response;
+  }
+
+  @override
+  Future<http.Response> searchNearbyCommunities(SearchEventParams params) async {
+    var response = get(
+      Event().SearchNearbyCommunities(toQueryParams(params.toMap())),
       headers: await getHeaders(isSecure: false),
     );
     return response;
@@ -601,7 +489,8 @@ class ApiServiceImpl implements ApiService {
 
   @override
   Future<http.Response> deleteCommunity(String uid) async {
-    var response = delete(ACommunity().Delete(uid), headers: await getHeaders());
+    var response =
+        delete(ACommunity().Delete(uid), headers: await getHeaders());
     return response;
   }
 
