@@ -15,12 +15,16 @@ class Url {
     return Url._().webAddress;
   }
 
-  static const Flavor _flavor = Flavor.prod;
+  static Flavor _flavor = Flavor.prod;
 
   static String _url() {
     return (_flavor == Flavor.prod)
         ? "https://api-duzwdhkz6a-uc.a.run.app/api"
         : "http://127.0.0.1:5050/regardless-social-api/us-central1/api/api";
+  }
+
+  static setDebugMode(bool isDebugMode) {
+    _flavor = isDebugMode ? Flavor.dev : Flavor.prod;
   }
 
   get base => _url();
