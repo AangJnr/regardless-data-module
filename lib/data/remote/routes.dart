@@ -55,7 +55,7 @@ class Admin extends ApiRoutes {
 class Event extends ApiRoutes {
   String get Discovery => '$url/event/discovery/';
   String Search(String params) => '$url/search$params';
-  String SearchNearbyCommunities(String params) => '$url/nearby-community$params';
+  String SearchNearbyCommunities(String params) => '$url/search/nearby-community$params';
   String GetPopular(String params) => '$url/event/popular$params';
   String Get(String uid) => '$url/event/$uid';
   get All => '$url/event';
@@ -120,6 +120,8 @@ class ACommunity extends ApiRoutes {
   String RequestToJoin(String uid) => '$url/community/request-to-join/$uid';
   String ApproveRequestToJoin(String uid) =>
       '$url/community/request-to-join/$uid/approve';
+     String   get JoinCommunities  =>
+      '$url/community/join-communities';
   String get CommunitiesJoined => '$url/community/joined/all';
   String UsersCommunities(String ownerUid) => '$url/community/all/$ownerUid';
   String Members(String uid) => '$url/community/members/$uid';

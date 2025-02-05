@@ -7,6 +7,7 @@ import '../../../app/app.locator.dart';
 import '../../../app/app.logger.dart';
 import '../../../app/services/cache_service.dart';
 import '../../../domain/model/category.dart';
+import '../../../domain/model/community_and_event.dart';
 import '../../../domain/model/event.dart';
 import '../../../domain/model/feed.dart';
 import '../../../domain/model/pagination.dart';
@@ -14,6 +15,7 @@ import '../../../domain/model/results.dart';
 import '../../../domain/model/venue.dart';
 import '../../../domain/repositories/event_repository.dart';
 import '../../model/category_api.dart';
+import '../../model/community_and_event.dart/community_and_event.dart';
 import '../../model/event_api.dart';
 import '../../model/feed_api.dart';
 import '../../model/new_event_api.dart';
@@ -36,14 +38,17 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
   }
 
   @override
-  Future<Result<SearchEventResults, Exception>> searchNearByCommunities(
+  Future<Result<List<CommunityAndEvent>, Exception>> searchNearByCommunities(
       SearchEventParams params) async {
-    var data = await processRequest(() => apiService.searchNearbyCommunities(params));
+    var data =
+        await processRequest(() => apiService.searchNearbyCommunities(params));
     if (data.isSuccess()) {
-      final results = SearchEventResultsApi.fromMap(data.tryGetSuccess()!);
-      return Success(results.mapToDomain());
+      final results = (data.tryGetSuccess()! as List<dynamic>)
+          .map((data) => CommunityAndEventApi.fromMap(data).mapToDomain())
+          .toList();
+      return Success(results);
     }
-    return Error(data.tryGetError()!);
+    return Success([]);
   }
 
   @override
@@ -210,6 +215,14 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
       }
     }
     return const Success(Pagination<Feed>());
+  }
+
+  @override
+  Future<Result<bool, Exception>> joinCommunitites(
+      {List<String> private = const [], List<String> public = const []}) async {
+    var response =
+        await processRequest(() => apiService.joinCommunities(private, public));
+    return Success(response.isSuccess());
   }
 
   @override

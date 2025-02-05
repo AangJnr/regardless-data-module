@@ -13,6 +13,7 @@ class Community {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final bool isArchived;
+  final double distance;
 
   final List<String> tags;
   final String uid;
@@ -32,7 +33,7 @@ class Community {
       this.isArchived = false,
       this.commentsCount = 0,
       this.eventsCount = 0,
-      this.uid = '',
+      this.uid = '',this.distance = 0.0,
        this.members = const [],
       this.organizer = const AUser(),
       this.venue});
@@ -45,7 +46,7 @@ class Community {
   String getMembersCountText() {
     return membersCount == 0
         ? 'No members'
-        : membersCount > 9
+        : membersCount > 1
             ? "$membersCount members"
             : "$membersCount member";
   }
@@ -72,7 +73,7 @@ class Community {
       bool? isArchived,
       List<String>? tags,
       String? uid,
-      int? eventsCount,
+      int? eventsCount,double? distance,
       List<Member>? members}) {
     return Community(
         name: name ?? this.name,
@@ -81,7 +82,7 @@ class Community {
         communitySettings: communitySettings ?? this.communitySettings,
         membersCount: membersCount ?? this.membersCount,
         commentsCount: commentsCount ?? this.commentsCount,
-        tags: tags ?? this.tags,
+        tags: tags ?? this.tags,distance:distance??this.distance,
         isArchived: isArchived ?? this.isArchived,
         uid: uid ?? this.uid,
         eventsCount: eventsCount ?? this.eventsCount,

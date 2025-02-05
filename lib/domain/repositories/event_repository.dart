@@ -6,6 +6,7 @@ import '../../data/model/search_filter.dart';
 import '../model/category.dart';
 import '../model/community/community.dart';
 import '../model/community/member.dart';
+import '../model/community_and_event.dart';
 import '../model/event.dart';
 import '../model/feed.dart';
 import '../model/pagination.dart';
@@ -20,7 +21,7 @@ abstract class EventRepository {
       SearchEventParams params);
   Future<Result<List<Feed>, Exception>> getPopularEvents(
       SearchEventParams params);
-  Future<Result<SearchEventResults, Exception>> searchNearByCommunities(
+  Future<Result<List<CommunityAndEvent>, Exception>> searchNearByCommunities(
       SearchEventParams params);
 
 //recurring
@@ -74,4 +75,6 @@ abstract class EventRepository {
       String eventUid, Community community);
   Future<Result<bool, Exception>> unlinkFromCommunity(
       String eventUid, Community community);
+  Future<Result<bool, Exception>> joinCommunitites(
+      {List<String> private, List<String> public});
 }

@@ -21,12 +21,14 @@ mixin ApiHelpers {
     };
 
     if (isSecure) {
-      if (Url.isDebug) {
-        headersMap.putIfAbsent('Authorization', () => 'Iamnotahumanbeing@2');
-      } else {
-        final token = await module<SocialAuthService>().getToken();
+      final token = await module<SocialAuthService>().getToken();
         headersMap.putIfAbsent('Authorization', () => 'Token $token');
-      }
+      // if (Url.isDebug) {
+      //   headersMap.putIfAbsent('Authorization', () => 'Iamnotahumanbeing@2');
+      // } else {
+      //   final token = await module<SocialAuthService>().getToken();
+      //   headersMap.putIfAbsent('Authorization', () => 'Token $token');
+      // }
     }
     return headersMap;
   }

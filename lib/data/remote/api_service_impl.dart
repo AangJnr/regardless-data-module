@@ -180,7 +180,8 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
-  Future<http.Response> searchNearbyCommunities(SearchEventParams params) async {
+  Future<http.Response> searchNearbyCommunities(
+      SearchEventParams params) async {
     var response = get(
       Event().SearchNearbyCommunities(toQueryParams(params.toMap())),
       headers: await getHeaders(isSecure: false),
@@ -551,6 +552,14 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   Future<http.Response> joinCommunity(String uid) async {
     var response = get(ACommunity().Join(uid), headers: await getHeaders());
     return response;
+  }
+
+  @override
+  Future<http.Response> joinCommunities(
+      List<String> private, List<String> public) async {
+    return post(ACommunity().JoinCommunities,
+        headers: await getHeaders(),
+        body: jsonEncode({'private': private, 'public': public}));
   }
 
   @override

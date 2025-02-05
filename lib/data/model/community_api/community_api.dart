@@ -26,6 +26,7 @@ class CommunityApi implements DomainMapper<Community> {
   final List<MemberApi>? members;
   final VenueApi? venue;
   final UserResponse? organizer;
+  final double? distance;
   const CommunityApi(
       {this.name,
       this.description,
@@ -37,7 +38,7 @@ class CommunityApi implements DomainMapper<Community> {
       this.isArchived,
       this.tags,
       this.members,
-      this.commentsCount,
+      this.commentsCount,this.distance,
       this.eventsCount,
       this.venue,
       this.organizer,
@@ -56,6 +57,7 @@ class CommunityApi implements DomainMapper<Community> {
       commentsCount: data['commentsCount'] as int?,
       eventsCount: data['eventsCount'] as int?,
       uid: data['uid'] as String?,
+      distance:double.tryParse(data['distance'] ?? '0.0') ,
       communitySettings: data['communitySettings'] == null
           ? null
           : CommunitySettingsApi.fromMap(
@@ -92,7 +94,7 @@ class CommunityApi implements DomainMapper<Community> {
         'tags': tags,
         'venue': venue?.toMap(),
         'organizer': organizer?.toMap(),
-       };
+      };
 
   /// `dart:convert`
   ///
@@ -112,7 +114,7 @@ class CommunityApi implements DomainMapper<Community> {
       String? ownerUid,
       CommunitySettingsApi? communitySettings,
       int? membersCount,
-      int? commentsCount,
+      int? commentsCount,double? distance,
       List<String>? tags}) {
     return CommunityApi(
         name: name ?? this.name,
@@ -121,6 +123,7 @@ class CommunityApi implements DomainMapper<Community> {
         communitySettings: communitySettings ?? this.communitySettings,
         membersCount: membersCount ?? this.membersCount,
         commentsCount: commentsCount ?? this.commentsCount,
+        distance: distance ?? this.distance ,
         tags: tags ?? this.tags);
   }
 
@@ -137,10 +140,10 @@ class CommunityApi implements DomainMapper<Community> {
         membersCount: membersCount ?? 0,
         commentsCount: commentsCount ?? 0,
         createdAt: createdAt,
-        updatedAt: updatedAt,
+        updatedAt: updatedAt,distance: distance ?? 0.0,
         tags: tags ?? const [],
         isArchived: isArchived ?? false,
-         venue: venue?.mapToDomain(),
+        venue: venue?.mapToDomain(),
         organizer: organizer?.mapToDomain() ?? const AUser(),
         members: members?.map((e) => e.mapToDomain()).toList() ?? const []);
   }

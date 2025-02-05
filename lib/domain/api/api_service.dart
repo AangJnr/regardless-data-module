@@ -102,6 +102,8 @@ abstract class ApiService {
   Future<Response> approveRequestToJoinCommunity(String uid, Member member);
   Future<Response> leaveCommunity(String uid);
   Future<Response> getUserJoinedCommunities();
+    Future<Response> joinCommunities(List<String> private, List<String> public);
+
   Future<Response> getUserCommunities(String ownerUid,
       {PaginationRequest? request});
   Future<Response> getCommunityComments(String uid,
