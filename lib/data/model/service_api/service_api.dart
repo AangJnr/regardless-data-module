@@ -1,10 +1,11 @@
 import 'dart:convert';
 
+import 'package:regardless_data_module/domain/model/user.dart';
+
 import '../../../domain/domain_mapper.dart';
 import '../../../domain/model/service/service.dart';
 import '../../../domain/model/venue.dart';
 import '../price_api.dart';
-import '../user_response/user_response.dart';
 import '../venue_api.dart';
 import 'time_slot_api.dart';
 
@@ -21,7 +22,7 @@ class ServiceApi implements DomainMapper<Service> {
   final DateTime? updatedAt;
   final String? categoryUid;
   final bool? isActive;
-  final UserResponse? provider;
+  final AUser? provider;
 
   const ServiceApi(
       {this.createdAt,
@@ -72,7 +73,7 @@ class ServiceApi implements DomainMapper<Service> {
           : DateTime.parse(data['updatedAt'] as String),
       provider: data['provider'] == null
           ? null
-          : UserResponse.fromMap(data['provider']));
+          : AUserMapper.fromMap(data['provider']));
 
   Map<String, dynamic> toMap() => {
         'createdAt': createdAt?.toIso8601String(),
@@ -141,5 +142,5 @@ class ServiceApi implements DomainMapper<Service> {
       updatedAt: updatedAt,
       categoryUid: categoryUid ?? '',
       isActive: isActive ?? false,
-      provider: provider?.mapToDomain());
+      provider: provider);
 }

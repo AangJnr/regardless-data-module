@@ -1,9 +1,11 @@
 import 'dart:ui' show Color;
 
-import '../../data/model/category_api.dart';
-import '../domain_mapper.dart';
+import 'package:dart_mappable/dart_mappable.dart';
 
-class Category implements DataMapper<CategoryApi> {
+part "category.mapper.dart";
+
+@MappableClass()
+class Category with CategoryMappable {
   final String name;
   final String imageUrl;
   final String uid;
@@ -12,6 +14,8 @@ class Category implements DataMapper<CategoryApi> {
   final String descriptionForProvider;
   final String iconUrl;
   final bool serviceSupported;
+  final String nameForProvider;
+  final bool isActive;
 
   const Category(
       {this.name = '',
@@ -19,40 +23,15 @@ class Category implements DataMapper<CategoryApi> {
       this.imageUrl = '',
       this.uid = '',
       this.descriptionForProvider = '',
+      this.nameForProvider = '',
       this.iconUrl = '',
       this.hexColor,
+      this.isActive = true,
       this.serviceSupported = false});
 
   @override
   String toString() {
     return name;
-  }
-
-  Category copyWith(
-      {String? name,
-      String? imageUrl,
-      String? uid,
-      String? hexColor,
-      bool? serviceSupported}) {
-    return Category(
-        name: name ?? this.name,
-        imageUrl: imageUrl ?? this.imageUrl,
-        uid: uid ?? this.uid,
-        hexColor: hexColor,
-        serviceSupported: serviceSupported ?? this.serviceSupported);
-  }
-
-  @override
-  CategoryApi mapToApi() {
-    return CategoryApi(
-        name: name,
-        description: description,
-        imageUrl: imageUrl,
-        uid: uid,
-        descriptionForProvider: descriptionForProvider,
-        iconUrl: iconUrl,
-        hexColor: hexColor,
-        serviceSupported: serviceSupported);
   }
 
   Color getColor() =>

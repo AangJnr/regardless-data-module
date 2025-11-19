@@ -1,15 +1,15 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:intl/intl.dart';
-import '../../data/model/feed_api.dart';
-import '../../domain/domain_mapper.dart';
-
 import 'category.dart';
 import 'event.dart';
 import 'hash_image.dart';
-import 'price.dart';
 import 'venue.dart';
 
-class Feed implements DataMapper<FeedApi> {
-  final String address;
+part 'feed.mapper.dart';
+
+@MappableClass()
+class Feed with FeedMappable {
+  final Venue venue;
   final bool isArchived;
   final String description;
   final DateTime? createdAt;
@@ -32,7 +32,7 @@ class Feed implements DataMapper<FeedApi> {
   final String recurrenceUid;
   final bool isRepeating;
   const Feed(
-      {this.address = '',
+      {this.venue = const Venue(),
       this.description = '',
       this.createdAt,
       this.uid = '',
@@ -56,65 +56,6 @@ class Feed implements DataMapper<FeedApi> {
       this.isFromFeed = true});
 
   HashImage getImage() => imageUrls.firstOrNull ?? const HashImage();
-
-  Feed copyWith(
-      {Venue? venue,
-      String? archiveReason,
-      int? durationHour,
-      bool? isVerified,
-      int? ticketsCancelled,
-      bool? isArchived,
-      String? timezone,
-      String? updateReason,
-      String? verifiedAt,
-      String? description,
-      String? recurrenceUuid,
-      DateTime? createdAt,
-      String? uid,
-      String? localTimestamp,
-      String? categoryUid,
-      String? onlineEventUrl,
-      List<Price>? prices,
-      int? durationMin,
-      int? timestamp,
-      DateTime? updatedAt,
-      int? ticketsPurchased,
-      String? contactEmail,
-      int? availableTickets,
-      int? viewsCount,
-      bool? isRepeating,
-      List<HashImage>? imageUrls,
-      String? contactPhone,
-      String? ownerUid,
-      String? ownerName,
-      String? address,
-      String? title,
-      String? ownerProfilePhotoUrl,
-      bool? isSponsored,
-      Price? selectedPrice,
-      List<String>? tags,
-      String? communityUid,
-      bool? isFromFeed}) {
-    return Feed(
-        isArchived: isArchived ?? this.isArchived,
-        description: description ?? this.description,
-        createdAt: createdAt ?? this.createdAt,
-        uid: uid ?? this.uid,
-        localTimestamp: localTimestamp ?? this.localTimestamp,
-        timestamp: timestamp ?? this.timestamp,
-        categoryUid: categoryUid ?? this.categoryUid,
-        updatedAt: updatedAt ?? this.updatedAt,
-        imageUrls: imageUrls ?? this.imageUrls,
-        address: title ?? this.address,
-        title: title ?? this.title,
-        ownerUid: ownerUid ?? this.ownerUid,
-        isSponsored: isSponsored ?? this.isSponsored,
-        tags: tags ?? this.tags,
-        isRepeating: isRepeating ?? this.isRepeating,
-        recurrenceUid: recurrenceUuid ?? recurrenceUid,
-        communityUid: communityUid ?? this.communityUid,
-        isFromFeed: isFromFeed ?? this.isFromFeed);
-  }
 
   String formatDistance() {
     if (distance >= 1000) {
@@ -162,29 +103,6 @@ class Feed implements DataMapper<FeedApi> {
     }
   }
 
-  @override
-  FeedApi mapToApi() => FeedApi(
-      isArchived: isArchived,
-      description: description,
-      createdAt: createdAt,
-      uid: uid,
-      timestamp: timestamp,
-      localTimestamp: localTimestamp,
-      categoryUid: categoryUid,
-      category: category.mapToApi(),
-      updatedAt: updatedAt,
-      imageUrls: imageUrls.map((e) => e.mapToApi()).toList(),
-      title: title,
-      ownerUid: ownerUid,
-      isSponsored: isSponsored,
-      tags: tags,
-      ownerUserName: ownerUserName,
-      ownerProfileImageUrl: ownerProfileImageUrl,
-      distance: distance,
-      communityUid: communityUid,
-      isRepeating: isRepeating,
-      recurrenceUid: recurrenceUid);
-
   factory Feed.fromEventItem(Event feed) {
     return Feed(
         isArchived: feed.isArchived,
@@ -205,6 +123,6 @@ class Feed implements DataMapper<FeedApi> {
         communityUid: feed.communityUid,
         isFromFeed: feed.isFromFeed,
         isRepeating: feed.isRepeating,
-        recurrenceUid: feed.recurrenceUuid);
+        recurrenceUid: feed.recurrenceUid);
   }
 }

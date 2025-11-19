@@ -4,11 +4,13 @@ import 'dart:convert';
 
 import 'package:hive/hive.dart';
 import 'package:regardless_data_module/data/model/venue_api.dart';
+import 'package:regardless_data_module/domain/model/reminder.dart';
 import 'package:regardless_data_module/domain/model/venue.dart';
 
+import '../../domain/model/new_user.dart';
+import '../../domain/model/preference.dart';
 import '../../domain/model/session_manager.dart';
 import '../../domain/model/user.dart';
-import '../model/user_response/user_response.dart';
 
 const appStateKey = "appStateKey";
 const refreshTokenKey = "refreshTokenKey";
@@ -18,6 +20,7 @@ const userStateKey = "userStateKey";
 const emailKey = "emailKey";
 const userProfileKey = "userProfileKey";
 const userPreferenceKey = "userPreferenceKey";
+const newUserKey = "newUserKey";
 
 const statusKey = "pStatusKey";
 const vendorIdKey = "vendorKey";
@@ -38,6 +41,7 @@ const couponsKey = "couponsKey";
 const locationsKey = "locationsKey";
 const notificationCountKey = 'notificationCountKey';
 const distanceKey = 'distanceKey';
+const remindersKey = 'reminderKey';
 
 const NotificationKey = 'notification';
 const NotificationReceivedKey = 'notification_received_key';
@@ -45,6 +49,8 @@ const NotificationReceivedKey = 'notification_received_key';
 enum AppState {
   loggedIn,
   login,
+  username,
+  addAdditionalAccount,
   firstRun,
   verification,
   signUp,
@@ -124,19 +130,6 @@ class SessionManagerImpl extends SessionManager {
   }
 
   @override
-  UserType getUserType() {
-    final v = UserType.values.firstWhere(
-        (element) => element.name == (_hiveBox.get(userStateKey)),
-        orElse: () => UserType.client);
-    return v;
-  }
-
-  @override
-  void setUserType(UserType state) {
-    _hiveBox.put(userStateKey, state.name);
-  }
-
-  @override
   String getEmail() {
     return _hiveBox.get(emailKey) ?? "";
   }
@@ -147,25 +140,42 @@ class SessionManagerImpl extends SessionManager {
   }
 
   @override
-  void setUserProfile(AUser user) {
-    _hiveBox.put(userProfileKey, user.mapToApi().toJson());
+  void setUser(AUser user) {
+    _hiveBox.put(userProfileKey, user.toJson());
   }
 
   @override
   AUser getUserProfile() {
     final data = _hiveBox.get(userProfileKey);
     if (data == null) return const AUser();
-    return UserResponse.fromJson(data).mapToDomain();
+    return AUserMapper.fromJson(data);
   }
 
   @override
-  void set(String key, String value) {
+  void saveNewUserData(NewUser newUser) {
+    _hiveBox.put(newUserKey, newUser.toJson());
+  }
+
+  @override
+  NewUser getNewUserData() {
+    final data = _hiveBox.get(newUserKey);
+    if (data == null) return const NewUser();
+    return NewUserMapper.fromJson(data);
+  }
+
+  @override
+  void clearNewUserData() {
+    _hiveBox.delete(newUserKey);
+  }
+
+  @override
+  void set(String key, dynamic value) {
     _hiveBox.put(key, value);
   }
 
   @override
-  String get(String key) {
-    return _hiveBox.get(key, defaultValue: '');
+  dynamic get(String key) {
+    return _hiveBox.get(key);
   }
 
   @override
@@ -207,11 +217,47 @@ class SessionManagerImpl extends SessionManager {
 
   @override
   double getDistance() {
-    return _hiveBox.get(distanceKey, defaultValue: 20.0) as double;
+    return _hiveBox.get(distanceKey, defaultValue: 30.0) as double;
   }
 
   @override
   void setDistance(double newValue) {
     _hiveBox.put(distanceKey, newValue);
+  }
+
+  @override
+  void setPreferences(Preference preference) {
+    _hiveBox.put(userPreferenceKey, preference.toJson());
+  }
+
+  @override
+  Preference getPreferences() {
+    final data = _hiveBox.get(userPreferenceKey);
+    if (data == null) return Preference();
+    return PreferenceMapper.fromJson(data);
+  }
+
+  @override
+  void addReminder(Reminder reminder) {
+    final data = getReminders();
+    data.insert(0, reminder);
+
+    _hiveBox.put(remindersKey, jsonEncode(data.map((e) => e.toMap()).toList()));
+  }
+
+  @override
+  void removeReminder(Reminder reminder) {
+    final data = getReminders();
+    data.remove(reminder);
+    _hiveBox.put(remindersKey, jsonEncode(data.map((e) => e.toMap()).toList()));
+  }
+
+  @override
+  List<Reminder> getReminders() {
+    final data = _hiveBox.get(remindersKey, defaultValue: '');
+    if (data.isEmpty) return [];
+    return (jsonDecode(data) as List<dynamic>)
+        .map((element) => ReminderMapper.fromMap(element))
+        .toList();
   }
 }

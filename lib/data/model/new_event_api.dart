@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'category_api.dart';
-import 'hash_image.dart';
+import '../../domain/model/category.dart';
+import '../../domain/model/hash_image.dart';
 import 'price_api.dart';
 import 'venue_api.dart';
 
@@ -24,7 +24,7 @@ class NewEventRequest {
   final String? uid;
   final String? localTimestamp;
   final String? categoryUid;
-  final CategoryApi? category;
+  final Category? category;
   final String? onlineEventUrl;
   final List<PriceApi>? prices;
   final int durationMin;
@@ -36,7 +36,7 @@ class NewEventRequest {
   final int viewsCount;
   final String? eventType;
   final bool isRepeating;
-  final List<HashImageApi>? imageUrls;
+  final List<HashImage>? imageUrls;
   final String? name;
   final String? contactPhone;
   final String? ownerUid;

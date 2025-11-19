@@ -5,14 +5,12 @@ import '../../domain/model/category.dart';
 import '../../domain/model/membership.dart';
 import '../../domain/model/payment_details.dart';
 import '../../domain/model/user.dart';
-import 'category_api.dart';
-import 'user_response/user_response.dart';
 import 'payment_details_a.dart';
 
 class MembershipA implements DomainMapper<Membership> {
   final String? uid;
   final String? subscriptionUid;
-  final UserResponse? user;
+  final AUser? user;
   final String? membershipType;
   final String? startDate;
   final String? endDate;
@@ -20,7 +18,7 @@ class MembershipA implements DomainMapper<Membership> {
   final List<String>? benefits;
   final PaymentDetailsA? paymentDetails;
   final String? notes;
-  final CategoryApi? category;
+  final Category? category;
 
   const MembershipA(
       {this.uid,
@@ -45,10 +43,10 @@ class MembershipA implements DomainMapper<Membership> {
         subscriptionUid: data['subscription_uid'] as String?,
         category: data['category'] == null
             ? null
-            : CategoryApi.fromMap(data['category']),
+            : CategoryMapper.fromMap(data['category']),
         user: data['user'] == null
             ? null
-            : UserResponse.fromMap(data['user'] as Map<String, dynamic>),
+            : AUserMapper.fromMap(data['user'] as Map<String, dynamic>),
         membershipType: data['membership_type'] as String?,
         startDate: data['start_date'] as String?,
         endDate: data['end_date'] as String?,
@@ -90,7 +88,7 @@ class MembershipA implements DomainMapper<Membership> {
   MembershipA copyWith(
       {String? uid,
       String? subscriptionUid,
-      UserResponse? user,
+      AUser? user,
       String? membershipType,
       String? startDate,
       String? endDate,
@@ -98,7 +96,7 @@ class MembershipA implements DomainMapper<Membership> {
       List<String>? benefits,
       PaymentDetailsA? paymentDetails,
       String? notes,
-      CategoryApi? category}) {
+      Category? category}) {
     return MembershipA(
         uid: uid ?? this.uid,
         subscriptionUid: subscriptionUid ?? this.subscriptionUid,
@@ -118,7 +116,7 @@ class MembershipA implements DomainMapper<Membership> {
     return Membership(
         uid: uid ?? '',
         subscriptionUid: subscriptionUid ?? '',
-        user: user?.mapToDomain() ?? const AUser(),
+        user: user ?? const AUser(),
         membershipType: membershipType ?? '',
         startDate: startDate ?? '',
         endDate: endDate ?? '',
@@ -126,6 +124,6 @@ class MembershipA implements DomainMapper<Membership> {
         benefits: benefits ?? [],
         paymentDetails: paymentDetails?.mapToDomain() ?? const PaymentDetails(),
         notes: notes ?? '',
-        category: category?.mapToDomain() ?? const Category());
+        category: category ?? const Category());
   }
 }

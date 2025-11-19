@@ -6,6 +6,8 @@ class SearchEventResults {
   final List<Feed> events;
   final List<Feed> otherEvents;
   final List<Community> communities;
+    final List<Community> otherCommunities;
+
   final List<Service> services;
   final List<Service> otherServices;
 
@@ -13,6 +15,7 @@ class SearchEventResults {
       {this.events = const [],
       this.otherEvents = const [],
       this.communities = const [],
+      this.otherCommunities = const [],
       this.services = const [],
       this.otherServices = const []});
 

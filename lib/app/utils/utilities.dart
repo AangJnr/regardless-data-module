@@ -14,7 +14,8 @@ class Utils {
     if (isDarkMode) {
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
           statusBarColor: Colors.transparent,
-          systemNavigationBarColor: Colors.white12, systemNavigationBarDividerColor: Colors.white12));
+          systemNavigationBarColor: Colors.white12,
+          systemNavigationBarDividerColor: Colors.white12));
     } else {
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
           statusBarColor: Colors.transparent,

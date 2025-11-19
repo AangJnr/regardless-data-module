@@ -1,4 +1,8 @@
+import 'package:regardless_data_module/domain/model/new_user.dart';
+
 import '../../data/local/session_manager_service.dart';
+import 'preference.dart';
+import 'reminder.dart';
 import 'user.dart';
 import 'venue.dart';
 
@@ -15,18 +19,24 @@ abstract class SessionManager {
   void setAccessToken(String? token);
   String getEmail();
   void setEmail(String? email);
-  void setUserProfile(AUser user);
+  void setUser(AUser user);
   AUser getUserProfile();
+  void saveNewUserData(NewUser newUser);
+  void clearNewUserData();
+  NewUser getNewUserData();
   void invalidate();
-  void set(String key, String value);
-  String get(String key);
+  void set(String key, dynamic value);
+  dynamic get(String key);
   List<Venue> getLocations();
   void addLocation(Venue location);
-  UserType getUserType();
-  void setUserType(UserType state);
   void setNotificationCount([int count = 1]);
   int getNotificationCount();
   void increaseNotificationCount();
   double getDistance();
   void setDistance(double newValue);
+  void setPreferences(Preference preference);
+  Preference getPreferences();
+  void addReminder(Reminder reminder);
+  List<Reminder> getReminders();
+  void removeReminder(Reminder reminder);
 }

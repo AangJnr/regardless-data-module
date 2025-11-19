@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:multiple_result/multiple_result.dart';
 import '../../app/app.logger.dart';
 import '../../domain/model/session_manager.dart';
 import '../app.locator.dart';
@@ -8,22 +9,33 @@ import '../utils/url.dart';
 class SocialAuthService {
   final firebaseAuth = FirebaseAuth.instance;
   final _sessionManager = module<SessionManager>();
-  Future<User?> signInWithGoogle({bool isPlatformWeb = true}) async {
+  Future<Result<User, Exception>> signInWithGoogle(
+      {bool isPlatformWeb = true}) async {
     // Trigger the authentication flow
     try {
+      UserCredential userRequest;
+
       GoogleAuthProvider googleProvider = GoogleAuthProvider();
       googleProvider
           .addScope('https://www.googleapis.com/auth/contacts.readonly');
       // googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
       if (isPlatformWeb) {
-        return (await FirebaseAuth.instance.signInWithPopup(googleProvider))
-            .user;
+        userRequest =
+            await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      } else {
+        userRequest =
+            await FirebaseAuth.instance.signInWithProvider(googleProvider);
       }
-      return (await FirebaseAuth.instance.signInWithProvider(googleProvider))
-          .user;
-    } catch (e) {
+
+      if (userRequest.user != null) {
+        return Success(userRequest.user!);
+      }
+      return Error(Exception('Sign in not completed.'));
+    } on FirebaseAuthException catch (e) {
       getLogger("SocialAuthService").e(e);
-      return null;
+      //return Error(Exception(e));
+
+      rethrow;
     }
   }
 
@@ -41,16 +53,23 @@ class SocialAuthService {
     return null;
   }
 
-  Future<User?> signInWithApple() async {
+  Future<Result<User, Exception>> signInWithApple() async {
     try {
-      final appleProvider = AppleAuthProvider().addScope('email').addScope('fullName');
+      final appleProvider =
+          AppleAuthProvider().addScope('email').addScope('fullName');
+      UserCredential userRequest;
       if (kIsWeb) {
-        return (await FirebaseAuth.instance.signInWithPopup(appleProvider))
-            .user;
+        userRequest =
+            await FirebaseAuth.instance.signInWithPopup(appleProvider);
       } else {
-        return (await FirebaseAuth.instance.signInWithProvider(appleProvider))
-            .user;
+        userRequest =
+            await FirebaseAuth.instance.signInWithProvider(appleProvider);
       }
+
+      if (userRequest.user != null) {
+        return Success(userRequest.user!);
+      }
+      return Error(Exception('Sign in not completed.'));
     } catch (e) {
       getLogger("SocialAuthService").e(e);
       rethrow;
@@ -71,7 +90,8 @@ class SocialAuthService {
             email: email,
             actionCodeSettings: ActionCodeSettings(
                 url: '${Url.web}/verification',
-                dynamicLinkDomain: 'regardlesssocialapp.page.link',
+                // ignore: deprecated_member_use
+//dynamicLinkDomain: 'regardlesssocialapp.page.link',
                 handleCodeInApp: true,
                 androidInstallApp: true,
                 androidPackageName: 'com.regardless.social_app'))
@@ -102,14 +122,17 @@ class SocialAuthService {
     firebaseAuth.signOut();
   }
 
-  void listenToTokenChanges() async {
+  void listenToAuthTokenChanges() async {
     firebaseAuth.idTokenChanges().listen((user) async {
-      getLogger('SocialAuthService').i('Registering for token changes');
       if (user != null) {
+        try{
         final idToken = await user.getIdToken();
         if (idToken != null) {
           getLogger('SocialAuthService').e('idToken updated!');
           _sessionManager.setAccessToken(idToken);
+        }
+        }catch(e){
+          getLogger('SocialAuthService').e(e);
         }
       }
     });

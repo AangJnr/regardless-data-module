@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 import '../../../domain/domain_mapper.dart';
-import '../../../domain/model/user.dart';
-import '../../domain/model/follower.dart';
+ import '../../domain/model/follower.dart';
 
 class FollowerResponse implements DomainMapper<Follower> {
   final String? uid;

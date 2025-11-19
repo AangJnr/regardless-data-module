@@ -1,21 +1,20 @@
-import 'package:regardless_data_module/data/model/community_api/community_api.dart';
-import 'package:regardless_data_module/data/model/event_api.dart';
-
 import '../../../domain/domain_mapper.dart';
+import '../../../domain/model/community/community.dart';
 import '../../../domain/model/community_and_event.dart';
+import '../../../domain/model/event.dart';
 
 class CommunityAndEventApi implements DomainMapper<CommunityAndEvent> {
-  final CommunityApi community;
-  final EventApi? event;
+  final Community community;
+  final Event? event;
   CommunityAndEventApi({required this.event, required this.community});
 
   @override
-  CommunityAndEvent mapToDomain() => CommunityAndEvent(
-      community: community.mapToDomain(), event: event?.mapToDomain());
+  CommunityAndEvent mapToDomain() =>
+      CommunityAndEvent(community: community, event:  event);
 
   factory CommunityAndEventApi.fromMap(Map<String, dynamic> map) {
     return CommunityAndEventApi(
-        community: CommunityApi.fromMap(map['community']),
-        event: map['event'] != null ? EventApi.fromMap(map['event']) : null);
+        community: CommunityMapper.fromMap(map['community']),
+        event: map['event'] != null ? EventMapper.fromMap(map['event']) : null);
   }
 }

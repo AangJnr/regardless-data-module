@@ -1,4 +1,9 @@
-class CommunitySettings {
+import 'package:dart_mappable/dart_mappable.dart';
+
+part 'community_settings.mapper.dart';
+
+@MappableClass()
+class CommunitySettings with CommunitySettingsMappable {
   final bool isPublic;
   final bool allowComments;
   final int maxMembers;
@@ -12,17 +17,5 @@ class CommunitySettings {
   @override
   String toString() {
     return 'CommunitySettings(isPublic: $isPublic, allowComments: $allowComments, maxMembers: $maxMembers)';
-  }
-
-  CommunitySettings copyWith({
-    bool? isPublic,
-    bool? allowComments,
-    int? maxMembers,
-  }) {
-    return CommunitySettings(
-      isPublic: isPublic ?? this.isPublic,
-      allowComments: allowComments ?? this.allowComments,
-      maxMembers: maxMembers ?? this.maxMembers,
-    );
   }
 }

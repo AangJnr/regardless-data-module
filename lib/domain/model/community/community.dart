@@ -1,9 +1,15 @@
+import 'package:dart_mappable/dart_mappable.dart';
+
+import '../hash_image.dart';
 import '../user.dart';
 import '../venue.dart';
 import 'community_settings.dart';
 import 'member.dart';
 
-class Community {
+part 'community.mapper.dart';
+
+@MappableClass()
+class Community with CommunityMappable {
   final String name;
   final String description;
   final String ownerUid;
@@ -14,13 +20,16 @@ class Community {
   final DateTime? updatedAt;
   final bool isArchived;
   final double distance;
-
   final List<String> tags;
   final String uid;
   final int eventsCount;
   final List<Member> members;
   final Venue? venue;
   final AUser organizer;
+  final List<HashImage> imageUrls;
+  final List<String>? imageBase64Data;
+  final DateTime? joinedAt;
+
   const Community(
       {this.name = '',
       this.description = '',
@@ -29,18 +38,22 @@ class Community {
       this.membersCount = 0,
       this.createdAt,
       this.updatedAt,
+      this.joinedAt,
       this.tags = const [],
+      this.imageUrls = const [],
       this.isArchived = false,
       this.commentsCount = 0,
       this.eventsCount = 0,
-      this.uid = '',this.distance = 0.0,
-       this.members = const [],
+      this.uid = '',
+      this.distance = 0.0,
+      this.members = const [],
       this.organizer = const AUser(),
-      this.venue});
+      this.venue,
+      this.imageBase64Data});
 
   @override
   String toString() {
-    return 'CommunityApi(name: $name, description: $description, ownerUid: $ownerUid, communitySettings: $communitySettings)';
+    return 'CommunityApi( uid: $uid, name: $name, description: $description, ownerUid: $ownerUid, communitySettings: $communitySettings)';
   }
 
   String getMembersCountText() {
@@ -55,37 +68,11 @@ class Community {
     return eventsCount == 0
         ? ''
         : eventsCount > 9
-        ? "• $eventsCount events"
-        : "• $eventsCount event";
+            ? "• $eventsCount events"
+            : "• $eventsCount event";
   }
 
   String getName() {
-    return  name  ;
-  }
-
-  Community copyWith(
-      {String? name,
-      String? description,
-      String? ownerUid,
-      CommunitySettings? communitySettings,
-      int? membersCount,
-      int? commentsCount,
-      bool? isArchived,
-      List<String>? tags,
-      String? uid,
-      int? eventsCount,double? distance,
-      List<Member>? members}) {
-    return Community(
-        name: name ?? this.name,
-        description: description ?? this.description,
-        ownerUid: ownerUid ?? this.ownerUid,
-        communitySettings: communitySettings ?? this.communitySettings,
-        membersCount: membersCount ?? this.membersCount,
-        commentsCount: commentsCount ?? this.commentsCount,
-        tags: tags ?? this.tags,distance:distance??this.distance,
-        isArchived: isArchived ?? this.isArchived,
-        uid: uid ?? this.uid,
-        eventsCount: eventsCount ?? this.eventsCount,
-        members: members ?? this.members);
+    return name;
   }
 }

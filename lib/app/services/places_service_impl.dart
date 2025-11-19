@@ -7,7 +7,7 @@ class PlacesServiceImpl implements PlacesService {
   FlutterGooglePlacesSdk? _googlePlace;
   PlacesServiceImpl() {
     _googlePlace =
-        FlutterGooglePlacesSdk("AIzaSyC1Q7EaLBqzrldfVay8HDAVS2v9R1r88KY");
+        FlutterGooglePlacesSdk("AIzaSyA8w14yzjHUN5o7P-bJ4247kSNJUD4S_Ms");
   }
 
   @override

@@ -1,7 +1,10 @@
 import 'package:intl/intl.dart';
+import 'package:regardless_data_module/app/config/extensions.dart';
 
 // ignore_for_file: constant_identifier_names
 enum NotificationType {
+  EVENT_REMINDER,
+  NEW_MESSAGE,
   NEW_EVENT,
   NEW_EVENT_ADDED_TO_COMMUNITY,
   NEW_BOOKING,
@@ -10,6 +13,16 @@ enum NotificationType {
   NEW_COMMUNITY_JOIN_REQUEST_APPROVED,
   NEW_COMMUNITY_EVENT,
   NEW_ATTENDEE_EVENT,
+  EVENT,
+  COMMUNITY,
+  COMMUNITY_DISCOURSE,
+  EVENT_DISCOURSE,
+  NEW_MEMBER,
+  MEMBER_REMOVED,
+  NEW_TEAM_INVITATION,
+  NEW_TEAM_JOIN_REQUEST,
+  TEAM_JOIN_REQUEST_REJECTED,
+  TEAM_MANAGER_ADDED,
   NONE
 }
 
@@ -51,10 +64,15 @@ class Notification {
 
   String formatMonthYear() {
     try {
-      if (createdAt == null) return '';
+      if (createdAt.isToday()) {
+        return "Today";
+      }
 
-      if (isWithinThisMonth()) {
-        return "This month";
+      if (createdAt.isThisWeek()) {
+        return 'This Week';
+      }
+      if (createdAt.isWithinThisMonth()) {
+        return 'This Month';
       }
       return DateFormat.yMMMM().format(createdAt!).toString();
     } catch (e) {
@@ -65,20 +83,9 @@ class Notification {
   String getParsedDate() {
     if (createdAt == null) return '';
     try {
-      return DateFormat.yMMMMd().format(createdAt!).toString();
+      return DateFormat.yMMMMd().add_Hm().format(createdAt!).toString();
     } catch (e) {
       return '';
-    }
-  }
-
-  bool isWithinThisMonth() {
-    try {
-      if (createdAt == null) return false;
-
-      return DateFormat.yM().format(createdAt!) ==
-          DateFormat.yM().format(DateTime.now());
-    } catch (e) {
-      return false;
     }
   }
 

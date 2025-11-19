@@ -1,12 +1,13 @@
 // ignore: depend_on_referenced_packages
 
+// ignore_for_file: strict_top_level_inference
+
 import 'package:cross_file/cross_file.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import '../../../app/app.locator.dart';
 import '../../../app/app.logger.dart';
 import '../../../app/services/social_auth_service.dart';
-import '../../../app/utils/url.dart';
 import '../../../domain/model/session_manager.dart';
 
 mixin ApiHelpers {
@@ -22,13 +23,9 @@ mixin ApiHelpers {
 
     if (isSecure) {
       final token = await module<SocialAuthService>().getToken();
-        headersMap.putIfAbsent('Authorization', () => 'Token $token');
-      // if (Url.isDebug) {
-      //   headersMap.putIfAbsent('Authorization', () => 'Iamnotahumanbeing@2');
-      // } else {
-      //   final token = await module<SocialAuthService>().getToken();
-      //   headersMap.putIfAbsent('Authorization', () => 'Token $token');
-      // }
+      headersMap.putIfAbsent('Authorization', () => 'Token $token');
+
+      // headersMap.putIfAbsent('Authorization', () => 'Iamnotahumanbeing@2');
     }
     return headersMap;
   }
@@ -65,40 +62,40 @@ mixin ApiHelpers {
   }
 
   get(url, {required Map<String, String> headers}) {
-    log.i("url: $url");
-    log.i("headers: $headers");
+    log.i("GET || url: $url");
+    //log.i("headers: $headers");
     return http.get(Uri.parse(url), headers: headers);
   }
 
   post(url, {required Map<String, String> headers, body}) {
-    log.i("url: $url");
-    log.i("headers: $headers");
+    log.i("POST || url: $url");
+    //log.i("headers: $headers");
     log.i("body: $body");
     return http.post(Uri.parse(url), headers: headers, body: body);
   }
 
   delete(url, {required Map<String, String> headers, body}) {
-    log.i("url: $url");
-    log.i("headers: $headers");
+    log.i("DELETE || url: $url");
+    //log.i("headers: $headers");
     log.i("body: $body");
     return http.delete(Uri.parse(url), headers: headers, body: body);
   }
 
   patch(url, {required Map<String, String> headers, body}) {
-    log.i("url: $url");
-    log.i("headers: $headers");
+    log.i("PATCH || url: $url");
+    //log.i("headers: $headers");
     log.i("body: $body");
     return http.patch(Uri.parse(url), headers: headers, body: body);
   }
 
   put(url, {required Map<String, String> headers, body}) {
     log.i("url: $url");
-    log.i("headers: $headers");
+    //log.i("headers: $headers");
     log.i("body: $body");
     return http.put(Uri.parse(url), headers: headers, body: body);
   }
 
-  patchMultipart(
+  Future<Future<http.StreamedResponse>> patchMultipart(
     url, {
     required Map<String, String> headers,
     required List<ImageProperties> dataList,
@@ -123,9 +120,29 @@ mixin ApiHelpers {
     final request = http.MultipartRequest("POST", Uri.parse(url));
     log.i("url: $url");
     request.headers.addAll(headers);
+    for (ImageProperties imageProp in dataList) {
+      request.files.add(await http.MultipartFile.fromPath(
+        "images",
+        imageProp.file.path,
+      ));
+    }
+    return request.send();
+  }
+
+  postWithFiles(url,
+      {required Map<String, String> headers,
+      body,
+      List<ImageProperties> dataList = const []}) async {
+    final request = http.MultipartRequest("POST", Uri.parse(url));
+    log.i("POST || url: $url");
+
+    request.headers.addAll(headers);
     log.i("headers: ${request.headers}");
-    request.files.add(await http.MultipartFile.fromPath(
-        dataList.last.key, dataList.last.file.path));
+    request.fields['data'] = body;
+    for (ImageProperties f in dataList) {
+      request.files.add(await http.MultipartFile.fromPath(f.key, f.file.path));
+    }
+
     return request.send();
   }
 }

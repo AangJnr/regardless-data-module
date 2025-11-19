@@ -6,21 +6,24 @@ import 'slot.dart';
 class TimeSlot {
   final int order;
   final String day;
+  final String date;
+
   final List<Slot> slots;
 
-  const TimeSlot({this.day = '', this.slots = const [], this.order = 0});
+  const TimeSlot(
+      {this.day = '', this.slots = const [], this.date = '', this.order = 0});
 
   @override
   String toString() => 'TimeSlot(day: $day, slots: $slots)';
 
   String toSinglularString() => '$day @ ${slots.first.toString()}';
 
-  TimeSlot copyWith({
-    String? day,
-    List<Slot>? slots,
-  }) {
+  TimeSlot copyWith(
+      {String? day, String? date, List<Slot>? slots, int? order}) {
     return TimeSlot(
+      order: order ?? this.order,
       day: day ?? this.day,
+      date: date ?? this.date,
       slots: slots ?? this.slots,
     );
   }

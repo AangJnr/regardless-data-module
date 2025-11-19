@@ -11,7 +11,9 @@ import '../../../app/utils/internet_util.dart';
 import '../../../domain/model/session_manager.dart';
 import '../../../domain/api/api_service.dart';
 
-const TokenExpired = "Token expired";
+const noActiveInternetrationale =
+    "No Active internet connection available. Ensure you are connected to the internet and retry.";
+const TokenExpired = "INVALID_REFRESH_TOKEN";
 mixin BaseRepository {
   final _sessionManager = module<SessionManager>();
   final ApiService _apiService = module<ApiService>();
@@ -29,11 +31,18 @@ mixin BaseRepository {
             .i(" ${response.statusCode}\nresponseBody: $r}");
 
         if (response.statusCode >= 400) {
+          if (response.statusCode == 401) {
+            _sessionManager.invalidate();
+            getLogger("BaseRepository").i("SessionManager invalidated");
+          }
           return Error(Exception(parseErrors(r)));
         }
         return Success((r as Map<String, dynamic>)['data']);
       } catch (e) {
         getLogger("Error").e("$e");
+        if(e.toString().contains(TokenExpired)){
+          _sessionManager.invalidate();
+        }
         return Error(Exception(parseErrors(e)));
       }
     } else {
@@ -42,34 +51,39 @@ mixin BaseRepository {
     }
   }
 
-  Future<bool> processMultiPartRequest(Function request) async {
+  Future<Result<dynamic, Exception>> processMultiPartRequest(
+      Function request) async {
     if (await InternetUtil.isConnected()) {
       try {
-        var streamedResponse = (await request());
+        var streamedResponse = await request();
+                getLogger("BaseRepository").i("response body : $streamedResponse");
+
         final response = await Response.fromStream(streamedResponse);
+
         var data = json.decode(response.body);
 
-        getLogger("BaseRepository")
-            .i("response status code : ${response.statusCode}");
         getLogger("BaseRepository").i("response body : $data");
         var statusCode = response.statusCode;
         if (statusCode >= 400) {
-          return false;
+          return Error(Exception(parseErrors(data)));
         }
-        return statusCode == 200;
+        return Success((data as Map<String, dynamic>)['data']);
       } catch (e) {
-        getLogger("BaseRepositoryHa").e("$e");
-        rethrow;
+        getLogger("BaseRepository").e("ERROR! $e");
+        return Error(Exception(parseErrors(e)));
       }
     } else {
-      getLogger("BaseRepository").i('No internet connection available');
-      throw Exception('No internet connection available');
+      getLogger("BaseRepository").i(noActiveInternetrationale);
+      return Error(Exception(noActiveInternetrationale));
     }
   }
 
   String parseErrors(dynamic errorResponse) {
     getLogger("BaseRepository").e('$errorResponse');
 
+    if (errorResponse.toString().contains("ClientException")) {
+      return noActiveInternetrationale;
+    }
     if (errorResponse is List<dynamic>) {
       return errorResponse
           .fold('', (previousValue, element) => '$previousValue$element\n')

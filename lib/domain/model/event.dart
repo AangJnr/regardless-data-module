@@ -1,21 +1,22 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:collection/collection.dart';
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:intl/intl.dart';
-import 'package:regardless_data_module/data/model/attendee_api.dart';
 import 'package:regardless_data_module/domain/model/community/member.dart';
 
-import '../../data/model/event_api.dart';
-import '../domain_mapper.dart';
 import 'category.dart';
 import 'feed.dart';
 import 'hash_image.dart';
 import 'price.dart';
 import 'venue.dart';
+part 'event.mapper.dart';
 
+@MappableEnum()
 enum EventType { InPerson, Online, Nan }
 
-class Event implements DataMapper<EventApi> {
+@MappableClass()
+class Event with EventMappable {
   final Venue venue;
   final String archiveReason;
   final int durationHour;
@@ -27,7 +28,7 @@ class Event implements DataMapper<EventApi> {
   final String recurrenceLabel;
   final String verifiedAt;
   final String description;
-  final String recurrenceUuid;
+  final String recurrenceUid;
   final String recurrence;
   final DateTime? createdAt;
   final String uid;
@@ -69,7 +70,7 @@ class Event implements DataMapper<EventApi> {
       this.updateReason = '',
       this.verifiedAt = '',
       this.description = '',
-      this.recurrenceUuid = '',
+      this.recurrenceUid = '',
       this.recurrenceLabel = '',
       this.recurrence = '',
       this.createdAt,
@@ -104,7 +105,7 @@ class Event implements DataMapper<EventApi> {
 
   @override
   String toString() {
-    return 'EventApi(venue: $venue, archiveReason: $archiveReason, durationHour: $durationHour, isVerified: $isVerified, ticketsCancelled: $ticketsCancelled, isArchived: $isArchived, timezone: $timezone, updateReason: $updateReason, verifiedAt: $verifiedAt, description: $description, recurrenceUuid: $recurrenceUuid, createdAt: $createdAt, uid: $uid, localTimestamp: $localTimestamp, categoryUid: $categoryUid, onlineEventUrl: $onlineEventUrl, prices: $prices, durationMin: $durationMin, timestamp: $timestamp, updatedAt: $updatedAt, ticketsPurchased: $ticketsPurchased, contactEmail: $contactEmail, availableTickets: $availableTickets, viewsCount: $viewsCount, eventType: $eventType, isRepeating: $isRepeating, imageUrls: $imageUrls, name: $name, contactPhone: $contactPhone, ownerUid: $ownerUid, isSponsored: $isSponsored)';
+    return 'EventApi(venue: $venue, archiveReason: $archiveReason, durationHour: $durationHour, isVerified: $isVerified, ticketsCancelled: $ticketsCancelled, isArchived: $isArchived, timezone: $timezone, updateReason: $updateReason, verifiedAt: $verifiedAt, description: $description, recurrenceUuid: $recurrenceUid, createdAt: $createdAt, uid: $uid, localTimestamp: $localTimestamp, categoryUid: $categoryUid, onlineEventUrl: $onlineEventUrl, prices: $prices, durationMin: $durationMin, timestamp: $timestamp, updatedAt: $updatedAt, ticketsPurchased: $ticketsPurchased, contactEmail: $contactEmail, availableTickets: $availableTickets, viewsCount: $viewsCount, eventType: $eventType, isRepeating: $isRepeating, imageUrls: $imageUrls, name: $name, contactPhone: $contactPhone, ownerUid: $ownerUid, isSponsored: $isSponsored)';
   }
 
   HashImage getImage() => imageUrls.firstOrNull ?? const HashImage();
@@ -114,83 +115,7 @@ class Event implements DataMapper<EventApi> {
     return 'Repeats $recurrenceLabel';
   }
 
-  Event copyWith(
-      {Venue? venue,
-      String? archiveReason,
-      int? durationHour,
-      bool? isVerified,
-      int? ticketsCancelled,
-      bool? isArchived,
-      String? timezone,
-      String? updateReason,
-      String? verifiedAt,
-      String? description,
-      String? recurrenceUuid,
-      DateTime? createdAt,
-      String? uid,
-      String? localTimestamp,
-      String? categoryUid,
-      String? onlineEventUrl,
-      List<Price>? prices,
-      int? durationMin,
-      int? timestamp,
-      DateTime? updatedAt,
-      int? ticketsPurchased,
-      String? contactEmail,
-      int? availableTickets,
-      int? viewsCount,
-      EventType? eventType,
-      bool? isRepeating,
-      List<HashImage>? imageUrls,
-      String? name,
-      String? contactPhone,
-      String? ownerUid,
-      bool? isSponsored,
-      Price? selectedPrice,
-      String? communityUid,
-      String? recurrence,
-      String? recurrenceLabel,
-      bool? isFromFeed}) {
-    return Event(
-        venue: venue ?? this.venue,
-        archiveReason: archiveReason ?? this.archiveReason,
-        durationHour: durationHour ?? this.durationHour,
-        isVerified: isVerified ?? this.isVerified,
-        ticketsCancelled: ticketsCancelled ?? this.ticketsCancelled,
-        isArchived: isArchived ?? this.isArchived,
-        timezone: timezone ?? this.timezone,
-        updateReason: updateReason ?? this.updateReason,
-        verifiedAt: verifiedAt ?? this.verifiedAt,
-        description: description ?? this.description,
-        recurrenceUuid: recurrenceUuid ?? this.recurrenceUuid,
-        recurrence: recurrence ?? this.recurrence,
-        recurrenceLabel: recurrenceLabel ?? this.recurrenceLabel,
-        createdAt: createdAt ?? this.createdAt,
-        uid: uid ?? this.uid,
-        localTimestamp: localTimestamp ?? this.localTimestamp,
-        categoryUid: categoryUid ?? this.categoryUid,
-        onlineEventUrl: onlineEventUrl ?? this.onlineEventUrl,
-        prices: prices ?? this.prices,
-        durationMin: durationMin ?? this.durationMin,
-        timestamp: timestamp ?? this.timestamp,
-        updatedAt: updatedAt ?? this.updatedAt,
-        ticketsPurchased: ticketsPurchased ?? this.ticketsPurchased,
-        contactEmail: contactEmail ?? this.contactEmail,
-        availableTickets: availableTickets ?? this.availableTickets,
-        viewsCount: viewsCount ?? this.viewsCount,
-        eventType: eventType ?? this.eventType,
-        isRepeating: isRepeating ?? this.isRepeating,
-        imageUrls: imageUrls ?? this.imageUrls,
-        name: name ?? this.name,
-        contactPhone: contactPhone ?? this.contactPhone,
-        ownerUid: ownerUid ?? this.ownerUid,
-        isSponsored: isSponsored ?? this.isSponsored,
-        selectedPrice: selectedPrice ?? this.selectedPrice,
-        communityUid: communityUid ?? this.communityUid,
-        isFromFeed: isFromFeed ?? this.isFromFeed);
-  }
-
-  String getCategoryName() => category.name.isNotEmpty ? category.name : 'N/a';
+  String getCategoryName() => category.name.isNotEmpty ? category.name : '--';
 
   String getDisplayedDate({bool showFullDate = false}) {
     final dateFormat = DateFormat("dd-mm-yyyy");
@@ -207,16 +132,16 @@ class Event implements DataMapper<EventApi> {
     }
   }
 
+  DateTime getDate() {
+    return DateTime.fromMillisecondsSinceEpoch(timestamp);
+  }
+
   String getDisplayedDateTime() {
     try {
       return DateFormat('MMM dd, yyyy • h:mm a').format(getDate());
     } catch (e) {
       return "--";
     }
-  }
-
-  DateTime getDate() {
-    return DateTime.fromMillisecondsSinceEpoch(timestamp);
   }
 
   String formatOnlyTime() {
@@ -243,54 +168,9 @@ class Event implements DataMapper<EventApi> {
 
   String getAddress() => venue.getAddress();
 
-  @override
-  EventApi mapToApi() => EventApi(
-      venue: venue.mapToApi(),
-      archiveReason: archiveReason,
-      durationHour: durationHour,
-      isVerified: isVerified,
-      ticketsCancelled: ticketsCancelled,
-      isArchived: isArchived,
-      timezone: timezone,
-      updateReason: updateReason,
-      verifiedAt: verifiedAt,
-      description: description,
-      recurrenceUuid: recurrenceUuid,
-      recurrence: recurrence,
-      createdAt: createdAt,
-      uid: uid,
-      recurrenceLabel: recurrenceLabel,
-      localTimestamp: localTimestamp,
-      categoryUid: categoryUid,
-      onlineEventUrl: onlineEventUrl,
-      prices: prices.map((e) => e.mapToApi()).toList(),
-      durationMin: durationMin,
-      timestamp: timestamp,
-      category: category.mapToApi(),
-      updatedAt: updatedAt,
-      ticketsPurchased: ticketsPurchased,
-      contactEmail: contactEmail,
-      availableTickets: availableTickets,
-      viewsCount: viewsCount,
-      eventType: eventType.name,
-      isRepeating: isRepeating,
-      imageUrls: imageUrls.map((e) => e.mapToApi()).toList(),
-      name: name,
-      contactPhone: contactPhone,
-      ownerUid: ownerUid,
-      isSponsored: isSponsored,
-      ownerUserName: ownerUserName,
-      ownerProfileImageUrl: ownerProfileImageUrl,
-      communityUid: communityUid,
-      attendees: attendees
-          .map((e) => AttendeeApi(
-              uid: e.uid, profile: e.profile.mapToApi(), userName: e.userName))
-          .toList(),
-      attendeesCount: attendeesCount);
-
   factory Event.fromFeedItem(Feed feed) {
     return Event(
-        venue: Venue(address: feed.address),
+        venue: feed.venue,
         isArchived: feed.isArchived,
         timezone: '',
         description: feed.description,
@@ -310,6 +190,6 @@ class Event implements DataMapper<EventApi> {
         communityUid: feed.communityUid,
         isFromFeed: feed.isFromFeed,
         isRepeating: feed.isRepeating,
-        recurrenceUuid: feed.recurrenceUid);
+        recurrenceUid: feed.recurrenceUid);
   }
 }

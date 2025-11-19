@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import '../community_api/community_api.dart';
+import '../../../domain/model/community/community.dart';
 import '../feed_api.dart';
 import '../service_api/service_api.dart';
 
 class Results {
   final List<FeedApi>? events;
   final List<FeedApi>? otherEvents;
-  final List<CommunityApi>? communities;
+  final List<Community>? communities;
   final List<ServiceApi>? services;
   final List<ServiceApi>? otherServices;
 
@@ -31,7 +31,7 @@ class Results {
             ?.map((e) => FeedApi.fromMap(e as Map<String, dynamic>))
             .toList(),
         communities: (data['communities'] as List<dynamic>?)
-            ?.map((e) => CommunityApi.fromMap(e as Map<String, dynamic>))
+            ?.map((e) => CommunityMapper.fromMap(e as Map<String, dynamic>))
             .toList(),
         otherServices: (data['otherServices'] as List<dynamic>?)
             ?.map((e) => ServiceApi.fromMap(e as Map<String, dynamic>))

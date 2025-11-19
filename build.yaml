@@ -1,6 +1,9 @@
 targets:
   $default:
     builders:
-      stacked_generator|stackedRouterGenerator:
-        options:
-          navigator2: true
+      stacked_generator|stackedRouterBuilder:
+        generate_for:
+          include: []
+      stacked_generator|stackedLocatorBuilder:
+        generate_for:
+          include: []

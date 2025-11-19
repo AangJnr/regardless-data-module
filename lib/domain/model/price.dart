@@ -1,7 +1,12 @@
+import 'package:dart_mappable/dart_mappable.dart';
+
 import '../../data/model/price_api.dart';
 import '../domain_mapper.dart';
 
-class Price implements DataMapper<PriceApi> {
+part 'price.mapper.dart';
+
+@MappableClass()
+class Price with PriceMappable implements DataMapper<PriceApi> {
   final double amount;
   final String currency;
   final String type;
@@ -40,21 +45,6 @@ class Price implements DataMapper<PriceApi> {
     } else {
       return 'Starting from:$currency $amount';
     }
-  }
-
-  Price copyWith({
-    double? price,
-    String? currency,
-    String? type,
-    String? description,
-    int? quantity,
-  }) {
-    return Price(
-        amount: price ?? amount,
-        currency: currency ?? this.currency,
-        type: type ?? this.type,
-        quantity: quantity ?? this.quantity,
-        description: description ?? this.description);
   }
 
   bool isValid() {

@@ -103,13 +103,13 @@ class LocationService {
           .showConfirmationDialog(
               title: '',
               description:
-                'Location permissions are permantly denied, we cannot request permissions. Please provide location permission in settings.',
+                  'Location permissions are permantly denied, we cannot request permissions. Please provide location permission in settings.',
               barrierDismissible: false,
               cancelTitle: 'Cancel',
               confirmationTitle: 'OK')
           .then((value) async {
         if (value?.confirmed == true) {
-           await Geolocator.openLocationSettings();
+          await Geolocator.openLocationSettings();
         }
       });
 

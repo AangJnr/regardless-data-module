@@ -133,7 +133,7 @@ class Validators {
       return 'Name field is required';
     }
     if ((s.length) < 2) {
-      return 'Your name should be more than one character long';
+      return 'Name should be more than one character long';
     }
 
     // String pattern = r'^[a-zA-Z,\.\-\s\p{L}\p{M}\p{N}\p{S}\p{P}]+$';

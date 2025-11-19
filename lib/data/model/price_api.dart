@@ -1,6 +1,6 @@
 import 'dart:convert';
 
- import '../../domain/domain_mapper.dart';
+import '../../domain/domain_mapper.dart';
 
 import '../../../domain/model/price.dart';
 

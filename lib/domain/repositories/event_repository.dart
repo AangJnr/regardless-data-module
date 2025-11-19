@@ -21,8 +21,8 @@ abstract class EventRepository {
       SearchEventParams params);
   Future<Result<List<Feed>, Exception>> getPopularEvents(
       SearchEventParams params);
-  Future<Result<List<CommunityAndEvent>, Exception>> searchNearByCommunities(
-      SearchEventParams params);
+  Future<Result<List<CommunityAndEvent>, Exception>>
+      searchNearByCommunityAndEvents(SearchEventParams params);
 
 //recurring
   Future<Result<Pagination<Feed>, Exception>> getRecurringEvents(String uid,
@@ -50,10 +50,14 @@ abstract class EventRepository {
       {PaginationRequest? request});
   Future<Result<bool, Exception>> deleteEvent(
       String eventUid, EventActionType actionType);
-  Future<Result<bool, Exception>> attend(String eventUid);
-  Future<Result<bool, Exception>> unAttend(String eventUid);
-  Future<Result<Pagination<Member>, Exception>> getEventAttendees(String uid,
-      {PaginationRequest? request});
+  Future<Result<bool, Exception>> attend(
+      {required String eventUid, required String recurrenceUid});
+  Future<Result<bool, Exception>> unAttend(
+      {required String eventUid, required String recurrenceUid});
+  Future<Result<Pagination<Member>, Exception>> getEventAttendees(
+      {required String eventUid,
+      required String recurrenceUid,
+      PaginationRequest? request});
 
   Future<Result<Pagination<Feed>, Exception>> getFeedData(
       {PaginationRequest? request});
@@ -69,8 +73,9 @@ abstract class EventRepository {
       String providerUid,
       {PaginationRequest? request});
   Future<Result<Pagination<Feed>, Exception>> getCommunityEvents(
-      String communityUid,
-      {PaginationRequest? request});
+      {required String uid,
+      required String ownerUid,
+      PaginationRequest? request});
   Future<Result<bool, Exception>> linkToCommunity(
       String eventUid, Community community);
   Future<Result<bool, Exception>> unlinkFromCommunity(

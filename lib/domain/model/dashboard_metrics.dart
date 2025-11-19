@@ -1,16 +1,15 @@
-
 import 'appointment/appointment.dart';
 
-class DashboardMetrics  {
-  final int  eventsCount;
-  final int  appointmentsCount;
-  final int  notificationsCount;
+class DashboardMetrics {
+  final int eventsCount;
+  final int appointmentsCount;
+  final int notificationsCount;
   final List<Appointment> todaysBookings;
 
-  const DashboardMetrics ({
+  const DashboardMetrics({
     this.eventsCount = 0,
     this.appointmentsCount = 0,
-    this.notificationsCount =0,
+    this.notificationsCount = 0,
     this.todaysBookings = const [],
   });
 

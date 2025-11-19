@@ -1,7 +1,12 @@
+import 'package:dart_mappable/dart_mappable.dart';
+
 import '../../data/model/venue_api.dart';
 import '../domain_mapper.dart';
 
-class Venue implements DataMapper<VenueApi> {
+part 'venue.mapper.dart';
+
+@MappableClass()
+class Venue with VenueMappable implements DataMapper<VenueApi> {
   final String country;
   final String countryIso;
   final String placeId;
@@ -30,31 +35,6 @@ class Venue implements DataMapper<VenueApi> {
   String toString() {
     return 'Venue(country: $country, address: $address, lng: $lng, city: $city, name: $name, state: $state, lat: $lat)';
   }
-
-  Venue copyWith(
-      {String? country,
-      String? address,
-      double? lng,
-      String? city,
-      String? name,
-      String? state,
-      double? lat,
-      String? otherAddress,
-      String? placeId}) {
-    return Venue(
-        country: country ?? this.country,
-        address: address ?? this.address,
-        lng: lng ?? this.lng,
-        city: city ?? this.city,
-        name: name ?? this.name,
-        state: state ?? this.state,
-        lat: lat ?? this.lat,
-        countryIso: countryIso,
-        placeId: placeId ?? this.placeId,
-        otherAddress: otherAddress ?? this.otherAddress);
-  }
-
-// LatLng position() => LatLng(lat.abs(), lng);
 
   String getAddress() => name.isEmpty ? address : '$name | $address';
 

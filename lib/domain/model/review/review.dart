@@ -1,63 +1,35 @@
-import 'response.dart';
-import 'reviewer.dart';
+import 'package:dart_mappable/dart_mappable.dart';
+import 'package:intl/intl.dart';
 
-class Review {
-  final String reviewUid;
-  final String productId;
-  final Reviewer reviewer;
+import '../post/owner.dart';
+
+part 'review.mapper.dart';
+
+@MappableClass()
+class Review with ReviewMappable {
+  final String uid;
+  final Owner reviewer;
   final double rating;
   final String title;
   final String comment;
-  final String date;
-  final int helpfulVotes;
-  final bool verifiedPurchase;
-  final List<String> images;
-  final Response response;
-
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
   const Review({
-    this.reviewUid = '',
-    this.productId = '',
-    this.reviewer = const Reviewer(),
+    this.reviewer = const Owner(),
     this.rating = 0.0,
     this.title = '',
     this.comment = '',
-    this.date = '',
-    this.helpfulVotes = 0,
-    this.verifiedPurchase = true,
-    this.images = const [],
-    this.response = const Response(),
+    this.createdAt,
+    this.updatedAt,
+    this.uid = '',
   });
 
-  @override
-  String toString() {
-    return 'AReview(reviewId: $reviewUid, productId: $productId, reviewer: $reviewer, rating: $rating, title: $title, comment: $comment, date: $date, helpfulVotes: $helpfulVotes, verifiedPurchase: $verifiedPurchase, images: $images, response: $response)';
-  }
-
-  Review copyWith({
-    String? reviewId,
-    String? productId,
-    Reviewer? reviewer,
-    double? rating,
-    String? title,
-    String? comment,
-    String? date,
-    int? helpfulVotes,
-    bool? verifiedPurchase,
-    List<String>? images,
-    Response? response,
-  }) {
-    return Review(
-      reviewUid: reviewId ?? reviewUid,
-      productId: productId ?? this.productId,
-      reviewer: reviewer ?? this.reviewer,
-      rating: rating ?? this.rating,
-      title: title ?? this.title,
-      comment: comment ?? this.comment,
-      date: date ?? this.date,
-      helpfulVotes: helpfulVotes ?? this.helpfulVotes,
-      verifiedPurchase: verifiedPurchase ?? this.verifiedPurchase,
-      images: images ?? this.images,
-      response: response ?? this.response,
-    );
+  String getParsedDate() {
+    if (createdAt == null) return '';
+    try {
+      return DateFormat('dd/MM/yyyy').format(createdAt!).toString();
+    } catch (e) {
+      return '';
+    }
   }
 }

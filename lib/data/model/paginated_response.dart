@@ -29,12 +29,13 @@ class PaginatedResponse<T, S> {
 class PaginationRequest {
   final int limit;
   final dynamic last;
-
+  final String? query;
   const PaginationRequest({
     this.limit = 20,
     this.last,
+    this.query,
   });
 
   String toQueryParams({String additionalData = ''}) =>
-      '?limit=$limit&last=$last&data=$additionalData';
+      '?limit=$limit&last=$last$additionalData${query != null ? '&query=$query' : ''}';
 }

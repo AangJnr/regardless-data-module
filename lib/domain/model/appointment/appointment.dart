@@ -1,7 +1,10 @@
-import '../../../app/config/enums.dart';
-import 'appointment_details.dart';
+
+ import 'appointment_details.dart';
 import 'participant_detail.dart';
 import 'package:intl/intl.dart';
+
+//@MappableEnum()
+enum AppointmentStatus { scheduled, accepted, rejected, cancelled }
 
 class Appointment {
   final String uid;

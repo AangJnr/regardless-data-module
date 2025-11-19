@@ -24,7 +24,7 @@ class CacheServiceImpl implements CacheService {
       throw Exception('API call returned null, expected type: $T');
     }
     getLogger("CacheServiceImpl").e(
-        "memoizer hasRun ${memoizer.hasRun} || time Elapsed was : ${callTime.inMilliseconds}ms");
+        "memoizer hasRun ${memoizer.hasRun} || time Elapsed was : ${callTime.inMilliseconds} ms");
     _lastFetchTime = DateTime.now(); // Update last fetch time
 
     _memoizerMap[key] = memoizer;
@@ -51,8 +51,9 @@ class CacheServiceImpl implements CacheService {
   }
 
   @override
-  void clear(String s) {
-    _memoizerMap.remove(s);
+  void clear(String key) {
+    _memoizerMap.remove(key);
+    debugPrint("CacheServiceImpl - Cache cleared for $key");
   }
 }
 

@@ -5,14 +5,17 @@ import 'dart:convert';
 // ignore: depend_on_referenced_packages
 import 'package:cross_file/cross_file.dart';
 import 'package:http/http.dart' as http;
-import 'package:regardless_data_module/app/config/enums.dart';
-import 'package:regardless_data_module/data/model/community_api/comment_api.dart';
-import 'package:regardless_data_module/data/model/community_api/community_api.dart';
 import 'package:regardless_data_module/domain/model/community/community.dart';
 import 'package:regardless_data_module/domain/model/community/member.dart';
+import 'package:regardless_data_module/domain/model/review/review.dart';
+import 'package:regardless_data_module/domain/model/team/team.dart';
 import '../../domain/api/api_service.dart';
 import '../../domain/model/appointment/appointment.dart';
+import '../../domain/model/community/comment.dart';
 import '../../domain/model/follower.dart';
+import '../../domain/model/new_user.dart';
+import '../../domain/model/preference.dart';
+import '../../domain/model/update_user.dart';
 import '../../domain/model/user.dart';
 import '../../domain/repositories/event_repository.dart';
 import '../model/appointment_api/appointment_api.dart';
@@ -42,24 +45,47 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
-  Future<http.Response> updateUserProfile(AUser profile) async {
-    final body = profile.mapToApi().toMap();
-    var response = post(User().ProfileUpdate,
-        headers: await getHeaders(), body: json.encode(body));
+  Future<http.Response> updateUserProfile(UpdateUser user) async {
+    var response = patch(User().MeUpdate(user.uid),
+        headers: await getHeaders(), body: user.toJson());
     return response;
   }
 
   @override
-  Future<http.Response> updateUserName(String userName) async {
-    var response = post(User().ProfileUpdate,
+  Future<http.Response> createUserAccount(NewUser user) async {
+    var response =
+        post(User().Create, headers: await getHeaders(), body: user.toJson());
+    return response;
+  }
+
+  @override
+  Future<http.Response> updateUserName(
+      {required String profileUid, required String userName}) async {
+    var response = patch(User().MeUpdate(profileUid),
         headers: await getHeaders(), body: json.encode({"userName": userName}));
+    return response;
+  }
+
+  @override
+  Future<http.Response> setDefaultUserAccount(String profileUid) async {
+    var response =
+        get(User().DefaultAccount(profileUid), headers: await getHeaders());
     return response;
   }
 
   @override
   Future<http.Response> getUser() async {
     var response = get(
-      User().Profile,
+      User().Me,
+      headers: await getHeaders(),
+    );
+    return response;
+  }
+
+  @override
+  Future<http.Response> getUserAccounts() async {
+    var response = get(
+      User().MeAccounts,
       headers: await getHeaders(),
     );
     return response;
@@ -77,30 +103,26 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   @override
   Future<http.Response> deleteUser(String id) async {
     var response = delete(
-      Auth().DeleteAccount(sessionManager.getUserProfile().uid),
+      Auth().DeleteAccount,
       headers: await getHeaders(),
     );
     return response;
   }
 
   @override
-  Future<dynamic> uploadPhoto(String base64Data) async {
-    var response = post(User().ImageUpload,
+  Future<dynamic> uploadPhoto(String profileUid, XFile file) async {
+    var response = postMultipart(User().ImageUpload(profileUid),
         headers: await getHeaders(),
-        body: jsonEncode({'imageData': base64Data}));
+        dataList: [ImageProperties("images", file)]);
+
     return response;
   }
 
   @override
-  Future<http.Response> deleteAccount(String title, String message) async {
-    var response = delete(User().Delete(sessionManager.getUserProfile().uid),
-        headers: await getHeaders(),
-        body: jsonEncode({
-          'deletion_reason_title': title,
-          'deletion_reason_detail': message
-        }));
-    return response;
-  }
+  Future<http.Response> deleteAccount(String uid,
+      {String title = 'None', String reason = 'Not provided'}) async {
+    return delete(User().Delete(uid), headers: await getHeaders());
+   }
 
   @override
   Future<http.Response> updateFCMTokekn(NotificationRequest request,
@@ -114,7 +136,7 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   @override
   Future<http.Response> getFCMToken(String registrationId) async {
     var response = get(
-      User().UpdateFcm(registrationId),
+      User().Fcm(registrationId),
       headers: await getHeaders(),
     );
     return response;
@@ -145,7 +167,7 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   @override
   Future<http.Response> getEvents({PaginationRequest? request}) async {
     var response = get(
-      Event().All + request?.toQueryParams(),
+      '${Event().All}${request?.toQueryParams()}',
       headers: await getHeaders(),
     );
     return response;
@@ -164,8 +186,8 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   @override
   Future<http.Response> searchEvents(SearchFilter filter) async {
     var response = get(
-      Event().Search(toQueryParams(filter.toMap())),
-      headers: await getHeaders(isSecure: false),
+      ASearch().Search(toQueryParams(filter.toMap())),
+      headers: await getHeaders(isSecure: true),
     );
     return response;
   }
@@ -173,8 +195,18 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   @override
   Future<http.Response> searchEventsV2(SearchEventParams params) async {
     var response = get(
-      Event().Search(toQueryParams(params.toMap())),
-      headers: await getHeaders(isSecure: false),
+      ASearch().Search(toQueryParams(params.toMap())),
+      headers: await getHeaders(isSecure: true),
+    );
+    return response;
+  }
+
+  @override
+  Future<http.Response> searchNearbyCommunitiesAndEvents(
+      SearchEventParams params) async {
+    var response = get(
+      ASearch().SearchNearbyCommunityEvents(toQueryParams(params.toMap())),
+      headers: await getHeaders(isSecure: true),
     );
     return response;
   }
@@ -183,8 +215,36 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   Future<http.Response> searchNearbyCommunities(
       SearchEventParams params) async {
     var response = get(
-      Event().SearchNearbyCommunities(toQueryParams(params.toMap())),
-      headers: await getHeaders(isSecure: false),
+      ASearch().SearchNearbyCommunity(toQueryParams(params.toMap())),
+      headers: await getHeaders(isSecure: true),
+    );
+    return response;
+  }
+
+  @override
+  Future<http.Response> searchCommunitiesViaQuery(
+      SearchEventParams params) async {
+    var response = get(
+      ASearch().SearchCommunities(toQueryParams(params.toMap())),
+      headers: await getHeaders(isSecure: true),
+    );
+    return response;
+  }
+
+  @override
+  Future<http.Response> searchTrainersViaQuery(SearchEventParams params) async {
+    var response = get(
+      ASearch().SearchTrainers(toQueryParams(params.toMap())),
+      headers: await getHeaders(isSecure: true),
+    );
+    return response;
+  }
+
+  @override
+  Future<http.Response> searchUsers(SearchEventParams params) async {
+    var response = get(
+      ASearch().SearchUsers(toQueryParams(params.toMap())),
+      headers: await getHeaders(isSecure: true),
     );
     return response;
   }
@@ -241,13 +301,23 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   @override
   Future<http.Response> getFeed({PaginationRequest? request}) async {
     var response = get(
-      Feed().Fetch + request?.toQueryParams(),
+      '${Feed().Fetch}${request?.toQueryParams()}',
       headers: await getHeaders(isSecure: false),
     );
     return response;
   }
 
   @override
+
+  /// Reverse geocoding endpoint.
+  ///
+  /// Takes latitude and longitude and returns a place name.
+  ///
+  /// Used for getting the user's location.
+  ///
+  /// Example:
+  ///
+  ///
   Future<http.Response> reverseGeoLocation(double lat, double lng) async {
     var response = post(Event().Geocode,
         headers: await getHeaders(),
@@ -321,10 +391,12 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
-  Future<http.Response> getCommunityEvents(String communityUid,
-      {PaginationRequest? request}) async {
+  Future<http.Response> getCommunityEvents(
+      {PaginationRequest? request,
+      required String uid,
+      required String ownerUid}) async {
     var response = get(
-      Event().CommunityEvents(communityUid),
+      Event().CommunityEvents(ownerUid, uid) + (request?.toQueryParams() ?? ''),
       headers: await getHeaders(),
     );
     return response;
@@ -468,14 +540,14 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
-  Future<http.Response> addAComment(String uid, CommentApi comment) async {
+  Future<http.Response> addAComment(String uid, Comment comment) async {
     var response = post(ACommunity().CommentAdd(uid),
         headers: await getHeaders(), body: comment.toJson());
     return response;
   }
 
   @override
-  Future<http.Response> addCommunity(CommunityApi e) async {
+  Future<http.Response> addCommunity(Community e) async {
     var response =
         post(ACommunity().Add, headers: await getHeaders(), body: e.toJson());
     return response;
@@ -489,7 +561,7 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
-  Future<http.Response> deleteCommunity(String uid) async {
+  Future<http.Response> deleteCommunity({required String uid}) async {
     var response =
         delete(ACommunity().Delete(uid), headers: await getHeaders());
     return response;
@@ -542,15 +614,20 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
-  Future<http.Response> getUserJoinedCommunities() async {
-    var response =
-        get(ACommunity().CommunitiesJoined, headers: await getHeaders());
+  Future<http.Response> getUserJoinedCommunities(
+      {required String userUid, PaginationRequest? request}) async {
+    var response = get(
+        ACommunity().CommunitiesJoined(userUid) +
+            (request?.toQueryParams() ?? ''),
+        headers: await getHeaders());
     return response;
   }
 
   @override
-  Future<http.Response> joinCommunity(String uid) async {
-    var response = get(ACommunity().Join(uid), headers: await getHeaders());
+  Future<http.Response> joinCommunity(
+      {required String uid, required String ownerUid}) async {
+    var response = get(ACommunity().Join(uid: uid, ownerUid: ownerUid),
+        headers: await getHeaders());
     return response;
   }
 
@@ -569,36 +646,48 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
-  Future<http.Response> attendEvent(String eventUid) async {
-    return get(Event().Attend(eventUid), headers: await getHeaders());
+  Future<http.Response> attendEvent(
+      {required String eventUid, required String recurrenceUid}) async {
+    return get(Event().Attend(eventUid, recurrenceUid),
+        headers: await getHeaders());
   }
 
   @override
-  Future<http.Response> unattendEvent(String eventUid) async {
-    return delete(Event().UnAttend(eventUid), headers: await getHeaders());
+  Future<http.Response> unattendEvent(
+      {required String eventUid, required String recurrenceUid}) async {
+    return delete(Event().UnAttend(eventUid, recurrenceUid),
+        headers: await getHeaders());
   }
 
   @override
-  Future<http.Response> getEventAttendees(String uid,
-      {PaginationRequest? request}) async {
+  Future<http.Response> getEventAttendees(
+      {required String eventUid,
+      required String recurrenceUid,
+      PaginationRequest? request}) async {
     var response = get(
-        Event().Attendees(uid) + (request?.toQueryParams() ?? ''),
+        Event().Attendees(eventUid, recurrenceUid) +
+            (request?.toQueryParams() ?? ''),
         headers: await getHeaders());
     return response;
   }
 
   @override
-  Future<http.Response> requestToJoin(String uid,
-      {required String userUid}) async {
-    var response =
-        get(ACommunity().RequestToJoin(uid), headers: await getHeaders());
+  Future<http.Response> requestToJoin(
+      {required String uid,
+      required String ownerUid,
+      required String userUid}) async {
+    var response = get(ACommunity().RequestToJoin(uid: uid, ownerUid: ownerUid),
+        headers: await getHeaders());
     return response;
   }
 
   @override
   Future<http.Response> approveRequestToJoinCommunity(
-      String uid, Member member) async {
-    var response = post(ACommunity().ApproveRequestToJoin(uid),
+      {required String uid,
+      required String ownerUid,
+      required Member member}) async {
+    var response = post(
+        ACommunity().ApproveRequestToJoin(uid: uid, ownerUid: ownerUid),
         headers: await getHeaders(),
         body: jsonEncode({"requesterUid": member.uid}));
     return response;
@@ -690,11 +779,319 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
         headers: await getHeaders(), body: e.toJson());
     return response;
   }
-}
 
-class ImageProperties {
-  String? uuid;
-  String key;
-  XFile file;
-  ImageProperties(this.key, this.file, {this.uuid = ''});
+  @override
+  Future<http.Response> getPosts({PaginationRequest? request}) async {
+    var response = get(Post().GetPosts + (request?.toQueryParams() ?? ''),
+        headers: await getHeaders());
+    return response;
+  }
+
+  @override
+  Future<http.Response> likePost(String uid) async {
+    var response = get(
+      Post().Like(uid),
+      headers: await getHeaders(),
+    );
+    return response;
+  }
+
+  @override
+  Future<http.Response> unlikePost(String uid) async {
+    var response = delete(
+      Post().Like(uid),
+      headers: await getHeaders(),
+    );
+    return response;
+  }
+
+  @override
+  Future<dynamic> uploadImages(List<XFile> images) async {
+    var response = postMultipart(Media().UploadImages,
+        headers: await getHeaders(),
+        dataList:
+            images.map((file) => ImageProperties("images", file)).toList());
+    return response;
+  }
+
+  @override
+  Future<http.Response> getUserPreferences() async {
+    var response = get(
+      User().Preference,
+      headers: await getHeaders(),
+    );
+    return response;
+  }
+
+  @override
+  Future<http.Response> updatePreferences(Preference prefs) async {
+    var response = patch(User().UpdatePreference,
+        headers: await getHeaders(), body: prefs.toJson());
+    return response;
+  }
+
+  @override
+  Future<http.Response> addCommunityReview(
+      {String uid = '', required Review review}) async {
+    var response = post(ACommunity().Review(uid),
+        headers: await getHeaders(), body: review.toJson());
+    return response;
+  }
+
+  @override
+  Future<http.Response> getCommunityReviews(
+      {String uid = '', PaginationRequest? request}) async {
+    var response = get(
+        ACommunity().Review(uid) + (request?.toQueryParams() ?? ''),
+        headers: await getHeaders());
+    return response;
+  }
+
+  @override
+  Future<http.Response> addProviderReview(
+      {String uid = '', required Review review}) async {
+    var response = post(User().Review(uid),
+        headers: await getHeaders(), body: review.toJson());
+    return response;
+  }
+
+  @override
+  Future<http.Response> getProviderReviews(
+      {String uid = '', PaginationRequest? request}) async {
+    var response = get(User().Review(uid) + (request?.toQueryParams() ?? ''),
+        headers: await getHeaders());
+    return response;
+  }
+
+  @override
+  Future<http.Response> generateDescriptionSuggestions(String text) async {
+    var response = get(Admin().GetDescriptionSuggessions(text),
+        headers: await getHeaders());
+    return response;
+  }
+
+  @override
+  Future<http.Response> removeCommunityMember(
+      {required String uid, required String memberUid}) async {
+    var response = delete(ACommunity().RemoveMember(uid, memberUid),
+        headers: await getHeaders());
+    return response;
+  }
+
+  // Teams
+  @override
+  Future<dynamic> addTeam(Team team, {XFile? logo, XFile? headerImage}) async {
+    return postWithFiles(ATeam().Add,
+        headers: await getHeaders(),
+        body: team.toJson(),
+        dataList: [
+          if (logo != null) ImageProperties("logo", logo),
+          if (headerImage != null) ImageProperties("headerImage", headerImage),
+        ]);
+  }
+
+  @override
+  Future<http.Response> getUsersTeams(String ownerUid,
+      {PaginationRequest? request}) async {
+    return get(ATeam().UsersTeams(ownerUid) + (request?.toQueryParams() ?? ''),
+        headers: await getHeaders());
+  }
+
+  @override
+  Future<http.Response> getTeam(String ownerUid, String uid) async {
+    return get(ATeam().Get(ownerUid, uid), headers: await getHeaders());
+  }
+
+  @override
+  Future<http.Response> deleteTeam(String uid) async {
+    return delete(ATeam().Delete(uid), headers: await getHeaders());
+  }
+
+  @override
+  Future<http.Response> getTeamMembers(String uid,
+      {PaginationRequest? request}) async {
+    return get(ATeam().Members(uid) + (request?.toQueryParams() ?? ''),
+        headers: await getHeaders());
+  }
+
+  @override
+  Future<http.Response> removeTeamMember(String uid, String memberUid) async {
+    return delete(ATeam().RemoveMember(uid, memberUid),
+        headers: await getHeaders());
+  }
+
+  @override
+  Future<http.Response> requestToJoinTeam(String ownerUid, String uid) async {
+    return post(ATeam().RequestToJoin(ownerUid, uid),
+        headers: await getHeaders());
+  }
+
+  @override
+  Future<http.Response> inviteUserToTeam(List<AUser> users, String uid) async {
+    return post(ATeam().InviteUserToTeam(uid),
+        headers: await getHeaders(),
+        body: jsonEncode(users
+            .map(
+              (e) => {
+                "uid": e.uid,
+                "userName": e.userName,
+                "email": e.email,
+              },
+            )
+            .toList()));
+  }
+
+  @override
+  Future<http.Response> approveRequestToJoinTeam(
+      {required String ownerUid,
+      required String uid,
+      required String requesterUid,
+      String? role}) async {
+    return post(ATeam().ApproveRequestToJoin(ownerUid, uid),
+        headers: await getHeaders(),
+        body: jsonEncode(
+            {"requesterUid": requesterUid, if (role != null) "role": role}));
+  }
+
+  @override
+  Future<http.Response> getTeamJoinRequests(String uid,
+      {PaginationRequest? request}) async {
+    return get(ATeam().MemberRequests(uid) + (request?.toQueryParams() ?? ''),
+        headers: await getHeaders());
+  }
+
+  @override
+  Future<http.Response> inviteMemberByEmail(String uid,
+      {required String email, String? name, String? role}) async {
+    return post(ATeam().Invite(uid),
+        headers: await getHeaders(),
+        body: jsonEncode({
+          "email": email,
+          if (name != null) "name": name,
+          if (role != null) "role": role
+        }));
+  }
+
+  @override
+  Future<http.Response> invitePlayersByEmail(String teamUid,
+      {required List<String> emails}) async {
+    return post(ATeam().InvitePlayers(teamUid),
+        headers: await getHeaders(),
+        body: jsonEncode({
+          "emails": emails,
+        }));
+  }
+
+  @override
+  Future<http.Response> acceptTeamInvite(String token, String teamUid) async {
+    return post(ATeam().InviteAccept(),
+        headers: await getHeaders(isSecure: false),
+        body: jsonEncode({"token": token, "teamUid": teamUid}));
+  }
+
+  @override
+  Future<http.Response> finalizeTeamInvite(String token, String teamUid) async {
+    return post(ATeam().InviteFinalize(),
+        headers: await getHeaders(),
+        body: jsonEncode({"token": token, "teamUid": teamUid}));
+  }
+
+  @override
+  Future<http.Response> linkTeamWithEvent(
+      String ownerUid, String teamUid, String eventUid) async {
+    return post(ATeam().LinkEvent(),
+        headers: await getHeaders(),
+        body: jsonEncode(
+            {"ownerUid": ownerUid, "teamUid": teamUid, "eventUid": eventUid}));
+  }
+
+  @override
+  Future<http.Response> unlinkTeamWithEvent(
+      String ownerUid, String teamUid, String eventUid) async {
+    return post(ATeam().UnlinkEvent(),
+        headers: await getHeaders(),
+        body: jsonEncode(
+            {"ownerUid": ownerUid, "teamUid": teamUid, "eventUid": eventUid}));
+  }
+
+  @override
+  Future<http.Response> addTeamManager(
+      String teamUid, String managerUid) async {
+    return post(ATeam().AddManager(teamUid),
+        headers: await getHeaders(),
+        body: jsonEncode({"managerUid": managerUid}));
+  }
+
+  @override
+  Future<http.Response> removeTeamManager(
+      String teamUid, String managerUid) async {
+    return post(ATeam().RemoveManager(teamUid),
+        headers: await getHeaders(),
+        body: jsonEncode({"managerUid": managerUid}));
+  }
+
+  @override
+  Future<http.Response> getSportsCategories() async {
+    return get(Admin().SportsCategories,
+        headers: await getHeaders(isSecure: false));
+  }
+
+  @override
+  Future<http.Response> getTeamInvitees(String uid,
+      {PaginationRequest? request}) async {
+    return get(ATeam().Invitees(uid) + (request?.toQueryParams() ?? ''),
+        headers: await getHeaders());
+  }
+
+  @override
+  Future<http.Response> deleteTeamInvite(
+      String teamUid, String inviteeUid) async {
+    return delete(
+      ATeam().DeleteInvite(teamUid, inviteeUid),
+      headers: await getHeaders(),
+    );
+  }
+
+  @override
+  Future<http.Response> declineTeamJoinRequest(
+      String requesterUid, String teamUid) async {
+    return delete(
+      ATeam().DeclineRequestToJoin(requesterUid, teamUid),
+      headers: await getHeaders(),
+    );
+  }
+
+  @override
+  Future<http.Response> deleteTeamMedia(
+      String teamUid, List<String> uids) async {
+    return delete(
+      ATeam().DeleteMedia(teamUid),
+      headers: await getHeaders(),
+      body: jsonEncode({"uids": uids}),
+    );
+  }
+
+  @override
+  Future<http.Response> getTeamMedia(String teamUid,
+      {PaginationRequest? request}) async {
+    return get(
+        ATeam().GetTeamMedia(teamUid, params: request?.toQueryParams() ?? ''),
+        headers: await getHeaders());
+  }
+
+  @override
+  Future<http.Response> searchTeams(String teamUid,
+      {PaginationRequest? request}) async {
+    return get(ATeam().SearchTeams(request?.toQueryParams() ?? ''),
+        headers: await getHeaders());
+  }
+
+  @override
+  Future uploadTeamMedia(String teamUid, List<XFile> files) async {
+    var response = postMultipart(ATeam().UploadMedia(teamUid),
+        headers: await getHeaders(),
+        dataList:
+            files.map((file) => ImageProperties("images", file)).toList());
+    return response;
+  }
 }

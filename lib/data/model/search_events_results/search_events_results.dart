@@ -14,8 +14,7 @@ class SearchEventResultsApi implements DomainMapper<SearchEventResults> {
 
   factory SearchEventResultsApi.fromMap(Map<String, dynamic>? data) {
     return SearchEventResultsApi(
-      results:
-          data == null ? null : Results.fromMap(data),
+      results: data == null ? null : Results.fromMap(data),
     );
   }
 
@@ -49,8 +48,7 @@ class SearchEventResultsApi implements DomainMapper<SearchEventResults> {
         events: results?.events?.map((e) => e.mapToDomain()).toList() ?? [],
         otherEvents:
             results?.otherEvents?.map((e) => e.mapToDomain()).toList() ?? [],
-        communities:
-            results?.communities?.map((e) => e.mapToDomain()).toList() ?? [],
+        communities: results?.communities?.map((e) => e).toList() ?? [],
         services: results?.services?.map((e) => e.mapToDomain()).toList() ?? [],
         otherServices:
             results?.otherServices?.map((e) => e.mapToDomain()).toList() ?? [],

@@ -1,8 +1,16 @@
-enum Flavor { dev, prod }
+import 'dart:io';
+
+enum Flavor { local, dev, prod }
 
 class Url {
   static bool get isDebug {
-    return _flavor == Flavor.dev;
+    return _flavor == Flavor.local;
+  }
+
+  static String get firebaseEmulatorHost {
+    return Platform.isAndroid
+        ? '10.225.188.182' //'10.0.2.2'
+        : "127.0.0.1";
   }
 
   Url._();
@@ -15,23 +23,28 @@ class Url {
     return Url._().webAddress;
   }
 
-  static Flavor _flavor = Flavor.prod;
+  static Flavor _flavor = Flavor.local;
 
   static String _url() {
-    return (_flavor == Flavor.prod)
-        ? "https://api-duzwdhkz6a-uc.a.run.app/api"
-        : "http://127.0.0.1:5050/regardless-social-api/us-central1/api/api";
+    switch (_flavor) {
+      case Flavor.local:
+        return "http://$firebaseEmulatorHost:8080/api/v1";
+      case Flavor.dev:
+        return "https://regardless-api-service-dev-duzwdhkz6a-uc.a.run.app/api/v1";
+      case Flavor.prod:
+        return "https://regardless-api-service-dev-duzwdhkz6a-uc.a.run.app/api/v1";
+    }
   }
 
-  static setDebugMode(bool isDebugMode) {
-    _flavor = isDebugMode ? Flavor.dev : Flavor.prod;
+  static void setDebugMode(bool isDebugMode) {
+    _flavor = isDebugMode ? Flavor.local : Flavor.dev;
   }
 
-  get base => _url();
-  get productImagesBaseUrl => '$base/product_images/';
-  get blogImagesBaseUrl => '$base/blog_images/';
-  get adsBaseUrl => '$base';
-  get webAddress => (_flavor == Flavor.prod)
+  String get base => _url();
+  String get productImagesBaseUrl => '$base/product_images/';
+  String get blogImagesBaseUrl => '$base/blog_images/';
+  String get adsBaseUrl => base;
+  String get webAddress => (_flavor == Flavor.prod)
       ? "https://app.regardlessmode.com"
       : "http://localhost:61921";
 }

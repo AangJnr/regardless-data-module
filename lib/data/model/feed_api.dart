@@ -4,11 +4,12 @@ import '../../domain/domain_mapper.dart';
 
 import '../../../domain/model/category.dart';
 import '../../domain/model/feed.dart';
-import 'category_api.dart';
+import '../../domain/model/venue.dart';
 import 'hash_image.dart';
+import 'venue_api.dart';
 
 class FeedApi implements DomainMapper<Feed> {
-  final String? address;
+  final VenueApi? venue;
   final bool? isArchived;
   final String? description;
   final DateTime? createdAt;
@@ -16,7 +17,7 @@ class FeedApi implements DomainMapper<Feed> {
   final int? timestamp;
   final String? localTimestamp;
   final String? categoryUid;
-  final CategoryApi? category;
+  final Category? category;
   final DateTime? updatedAt;
   final List<HashImageApi>? imageUrls;
   final String? title;
@@ -38,7 +39,7 @@ class FeedApi implements DomainMapper<Feed> {
       this.createdAt,
       this.uid,
       this.category,
-      this.address,
+      this.venue,
       this.localTimestamp,
       this.categoryUid,
       this.updatedAt,
@@ -62,7 +63,8 @@ class FeedApi implements DomainMapper<Feed> {
           : DateTime.parse(data['createdAt'] as String),
       category: data['category'] == null
           ? null
-          : CategoryApi.fromMap((data['category'])),
+          : CategoryMapper.fromMap((data['category'])),
+      venue: data['venue'] == null ? null : VenueApi.fromMap((data['venue'])),
       uid: data['uid'] as String?,
       localTimestamp: data['localTimestamp'] as String?,
       categoryUid: data['categoryUid'] as String?,
@@ -100,7 +102,8 @@ class FeedApi implements DomainMapper<Feed> {
         'distance': distance,
         'communityUid': communityUid,
         'recurrenceUid': recurrenceUid,
-        'isRepeating': isRepeating
+        'isRepeating': isRepeating,
+        'venue': venue?.toMap()
       };
 
   /// `dart:convert`
@@ -121,10 +124,11 @@ class FeedApi implements DomainMapper<Feed> {
       description: description ?? '',
       createdAt: createdAt,
       uid: uid ?? '',
+      venue: venue?.mapToDomain() ?? const Venue(),
       timestamp: timestamp ?? 0,
       localTimestamp: localTimestamp ?? '',
       categoryUid: categoryUid ?? '',
-      category: category?.mapToDomain() ?? const Category(),
+      category: category ?? const Category(),
       updatedAt: updatedAt,
       imageUrls: imageUrls?.map((e) => e.mapToDomain()).toList() ?? const [],
       title: title ?? '',

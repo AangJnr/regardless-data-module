@@ -2,8 +2,7 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 
-import '../../../app/config/enums.dart';
-import '../../../domain/domain_mapper.dart';
+ import '../../../domain/domain_mapper.dart';
 import '../../../domain/model/appointment/appointment.dart';
 import '../../../domain/model/appointment/appointment_details.dart';
 import '../../../domain/model/appointment/participant_detail.dart';

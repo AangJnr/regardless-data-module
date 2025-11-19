@@ -11,7 +11,7 @@ class Slot {
     String displayTime = '';
     final dateFormat = DateFormat("h:mm a");
     if (startTime != null) {
-      displayTime += '${dateFormat.format(startTime!)} - ';
+      displayTime += '${dateFormat.format(startTime!)} to ';
     }
 
     if (endTime != null) {

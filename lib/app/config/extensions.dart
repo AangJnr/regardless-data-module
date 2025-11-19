@@ -2,8 +2,11 @@ import 'dart:convert' show base64Encode;
 import 'dart:math';
 
 import 'package:cross_file/cross_file.dart';
+import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
-import 'enums.dart';
+ import '../../domain/model/user.dart' show Gender;
+import '../app.logger.dart';
+import '../utils/url.dart' show Url;
 
 extension StringExtension on String? {
   SidebarItem toItem() {
@@ -75,6 +78,13 @@ extension StringExtension on String? {
         return Gender.RatherNotSay;
     }
   }
+  String formatImageUrl() {
+    if (this == null) return'';
+      return Url.isDebug
+              ? this!.replaceFirst('127.0.0.1', Url.firebaseEmulatorHost)
+              : this!;
+
+  }
 
   Gender stringToGender() {
     switch (this) {
@@ -145,6 +155,20 @@ extension XFileExtensions on XFile {
   }
 }
 
+extension ListExtension on List<XFile> {
+  Future<List<String>> toBase64ListData() async {
+    final List<String> imageData = [];
+    try {
+      for (XFile f in this) {
+        imageData.add(await f.fileToString());
+      }
+    } catch (e) {
+      getLogger('Extension on ListExtension').e(e);
+    }
+    return imageData;
+  }
+}
+
 enum SidebarItem {
   home,
   addEvent,
@@ -194,6 +218,44 @@ extension SidebarItemExtension on SidebarItem {
       //   return 'assets/icons/my_account.png';
       // case SidebarItem.settings:
       //   return 'assets/icons/settings.png';
+    }
+  }
+}
+
+extension DateTimeExtension on DateTime? {
+  bool isToday() {
+    try {
+      if (this == null) return false;
+
+      return DateFormat.yMd().format(this!) ==
+          DateFormat.yMd().format(DateTime.now());
+    } catch (e) {
+      return false;
+    }
+  }
+
+  bool isThisWeek() {
+    try {
+      if (this == null) return false;
+
+      final today = DateTime.now();
+      final startOfThisWeek =
+          DateTime(today.year, today.month, today.day - today.weekday + 1);
+      final startOfNextWeek = startOfThisWeek.add(Duration(days: 7));
+      return (this!.isAfter(startOfThisWeek) &&
+          this!.isBefore(startOfNextWeek));
+    } catch (e) {
+      return false;
+    }
+  }
+
+  bool isWithinThisMonth() {
+    try {
+      if (this == null) return false;
+      return DateFormat.yM().format(this!) ==
+          DateFormat.yM().format(DateTime.now());
+    } catch (e) {
+      return false;
     }
   }
 }

@@ -23,7 +23,7 @@ class SearchEventParams {
   List<String> categoryUids;
   Venue? location;
   String query;
-  int maxDistance;
+  num maxDistance;
   SearchEventParams({
     this.startDate,
     this.endDate,
