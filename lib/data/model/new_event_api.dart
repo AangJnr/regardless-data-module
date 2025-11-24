@@ -40,7 +40,7 @@ class NewEventRequest {
   final String? name;
   final String? contactPhone;
   final String? ownerUid;
-  final String? ownerUsername;
+  final String? ownerUserName;
   final String? ownerImageUrl;
   final bool isSponsored;
   final List<String>? imageBase64Data;
@@ -82,7 +82,7 @@ class NewEventRequest {
     this.contactPhone,
     this.ownerUid,
     this.ownerImageUrl,
-    this.ownerUsername,
+    this.ownerUserName,
     this.communityUid,
     this.isSponsored = false,
   });
@@ -119,7 +119,7 @@ class NewEventRequest {
       'name': name,
       'contactPhone': contactPhone,
       'ownerUid': ownerUid,
-      'ownerUsername': ownerUsername,
+      'ownerUserName': ownerUserName,
       'ownerImageUrl': ownerImageUrl,
       'isSponsored': isSponsored,
       'imageData': imageBase64Data,

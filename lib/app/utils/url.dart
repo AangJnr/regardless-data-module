@@ -9,7 +9,7 @@ class Url {
 
   static String get firebaseEmulatorHost {
     return Platform.isAndroid
-        ? '10.225.188.182' //'10.0.2.2'
+        ? '10.164.156.182' //'10.0.2.2'
         : "127.0.0.1";
   }
 
@@ -30,9 +30,11 @@ class Url {
       case Flavor.local:
         return "http://$firebaseEmulatorHost:8080/api/v1";
       case Flavor.dev:
-        return "https://regardless-api-service-dev-duzwdhkz6a-uc.a.run.app/api/v1";
+              return "https://regardless-api-service-dev-207833844155.us-central1.run.app/api/v1";
+
+        return "https://regardless-social-api-git-dev-aangjnrs-projects.vercel.app/api/v1";
       case Flavor.prod:
-        return "https://regardless-api-service-dev-duzwdhkz6a-uc.a.run.app/api/v1";
+        return "https://regardless-api-service-dev-207833844155.us-central1.run.app/api/v1";
     }
   }
 

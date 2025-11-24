@@ -40,8 +40,9 @@ mixin BaseRepository {
         return Success((r as Map<String, dynamic>)['data']);
       } catch (e) {
         getLogger("Error").e("$e");
-        if(e.toString().contains(TokenExpired)){
+        if (e.toString().contains(TokenExpired)) {
           _sessionManager.invalidate();
+          getLogger("BaseRepository").i("SessionManager invalidated");
         }
         return Error(Exception(parseErrors(e)));
       }
@@ -56,7 +57,7 @@ mixin BaseRepository {
     if (await InternetUtil.isConnected()) {
       try {
         var streamedResponse = await request();
-                getLogger("BaseRepository").i("response body : $streamedResponse");
+        getLogger("BaseRepository").i("response body : $streamedResponse");
 
         final response = await Response.fromStream(streamedResponse);
 

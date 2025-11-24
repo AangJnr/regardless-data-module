@@ -1,5 +1,5 @@
 import 'package:cross_file/cross_file.dart';
-import 'package:http/http.dart' show Response, StreamedResponse;
+import 'package:http/http.dart' show Response;
 import 'package:regardless_data_module/domain/model/team/team.dart';
 import 'package:regardless_data_module/domain/model/user.dart';
 
