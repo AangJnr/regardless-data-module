@@ -100,7 +100,7 @@ class AUserMapper extends ClassMapperBase<AUser> {
     'fullName',
     _$fullName,
     opt: true,
-    def: 'Regardless User',
+    def: '',
   );
   static String _$phone(AUser v) => v.phone;
   static const Field<AUser, String> _f$phone = Field(
