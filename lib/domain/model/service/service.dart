@@ -1,11 +1,14 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:regardless_data_module/domain/model/user.dart';
 
 import '../price.dart';
 import '../venue.dart';
 import 'time_slot.dart';
 import 'package:intl/intl.dart';
+part 'service.mapper.dart';
 
-class Service {
+@MappableClass()
+class Service with ServiceMappable {
   final DateTime? createdAt;
   final String uid;
   final List<String> keywords;
@@ -37,7 +40,7 @@ class Service {
 
   @override
   String toString() {
-    return 'ServiceApi(createdAt: $createdAt, uid: $uid, keywords: $keywords, price: $prices, name: $name, description: $description, timeSlots: $timeSlots, location: $location, ownerUid: $ownerUid, updatedAt: $updatedAt)';
+    return 'Service(createdAt: $createdAt, uid: $uid, keywords: $keywords, price: $prices, name: $name, description: $description, timeSlots: $timeSlots, location: $location, ownerUid: $ownerUid, updatedAt: $updatedAt)';
   }
 
   String getUserName() {
@@ -60,33 +63,6 @@ class Service {
         ownerUid: ownerUid,
         updatedAt: updatedAt,
         isActive: isActive,
-        provider: provider);
-  }
-
-  Service copyWith(
-      {DateTime? createdAt,
-      String? uid,
-      List<String>? keywords,
-      List<Price>? prices,
-      String? name,
-      String? description,
-      List<TimeSlot>? timeSlots,
-      Venue? location,
-      String? ownerUid,
-      DateTime? updatedAt,
-      bool? isActive}) {
-    return Service(
-        createdAt: createdAt ?? this.createdAt,
-        uid: uid ?? this.uid,
-        keywords: keywords ?? this.keywords,
-        prices: prices ?? this.prices,
-        name: name ?? this.name,
-        description: description ?? this.description,
-        timeSlots: timeSlots ?? this.timeSlots,
-        location: location ?? this.location,
-        ownerUid: ownerUid ?? this.ownerUid,
-        updatedAt: updatedAt ?? this.updatedAt,
-        isActive: isActive ?? this.isActive,
         provider: provider);
   }
 

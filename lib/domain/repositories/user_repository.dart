@@ -1,5 +1,6 @@
 import 'package:cross_file/cross_file.dart' show XFile;
 import 'package:multiple_result/multiple_result.dart';
+import 'package:regardless_data_module/domain/model/accounts.dart';
 import 'package:regardless_data_module/domain/model/dashboard_metrics.dart';
 import '../../data/model/notification_request.dart';
 import '../../data/model/paginated_response.dart';
@@ -17,7 +18,7 @@ import '../model/user.dart';
 
 abstract class UserRepository {
   Future<Result<AUser, Exception>> getUser();
-  Future<Result<List<AUser>, Exception>> getUserAccounts();
+  Future<Result<Accounts, Exception>> getUserAccounts([bool refresh = false]);
   Future<Result<AUser, Exception>> getPublicUser(String uid);
   Future<Result<AUser, Exception>> createUserAccount(NewUser user);
   Future<Result<AUser, Exception>> updateUserProfile(UpdateUser profile);

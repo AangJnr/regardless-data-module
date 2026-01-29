@@ -18,7 +18,6 @@ class SocialAuthService {
       GoogleAuthProvider googleProvider = GoogleAuthProvider();
       googleProvider
           .addScope('https://www.googleapis.com/auth/contacts.readonly');
-      // googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
       if (isPlatformWeb) {
         userRequest =
             await FirebaseAuth.instance.signInWithPopup(googleProvider);
@@ -33,9 +32,7 @@ class SocialAuthService {
       return Error(Exception('Sign in not completed.'));
     } on FirebaseAuthException catch (e) {
       getLogger("SocialAuthService").e(e);
-      //return Error(Exception(e));
-
-      rethrow;
+      return Error(Exception(e));
     }
   }
 
@@ -72,7 +69,7 @@ class SocialAuthService {
       return Error(Exception('Sign in not completed.'));
     } catch (e) {
       getLogger("SocialAuthService").e(e);
-      rethrow;
+      return Error(Exception(e));
     }
   }
 
@@ -125,13 +122,13 @@ class SocialAuthService {
   void listenToAuthTokenChanges() async {
     firebaseAuth.idTokenChanges().listen((user) async {
       if (user != null) {
-        try{
-        final idToken = await user.getIdToken();
-        if (idToken != null) {
-          getLogger('SocialAuthService').e('idToken updated!');
-          _sessionManager.setAccessToken(idToken);
-        }
-        }catch(e){
+        try {
+          final idToken = await user.getIdToken();
+          if (idToken != null) {
+            getLogger('SocialAuthService').e('idToken updated!');
+            _sessionManager.setAccessToken(idToken);
+          }
+        } catch (e) {
           getLogger('SocialAuthService').e(e);
         }
       }

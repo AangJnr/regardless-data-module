@@ -122,7 +122,7 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   Future<http.Response> deleteAccount(String uid,
       {String title = 'None', String reason = 'Not provided'}) async {
     return delete(User().Delete(uid), headers: await getHeaders());
-   }
+  }
 
   @override
   Future<http.Response> updateFCMTokekn(NotificationRequest request,
@@ -145,6 +145,12 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   @override
   Future<http.Response> getCategories() async {
     var response = get(Event().Categories, headers: await getHeaders());
+    return response;
+  }
+
+  @override
+  Future<http.Response> getSubCategories(String uid) async {
+    var response = get(Event().SubCategories(uid), headers: await getHeaders());
     return response;
   }
 
@@ -458,7 +464,7 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
-  Future<http.Response> addService(ServiceApi service) async {
+  Future<http.Response> addService(CreateService service) async {
     var response = post(Service().Add,
         headers: await getHeaders(), body: service.toJson());
     return response;
@@ -647,16 +653,20 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
 
   @override
   Future<http.Response> attendEvent(
-      {required String eventUid, required String recurrenceUid}) async {
-    return get(Event().Attend(eventUid, recurrenceUid),
+      {required String eventUid, required String? recurrenceUid}) async {
+    return post(Event().Attend,
+        body:
+            jsonEncode({'recurrenceUid': recurrenceUid, 'eventUid': eventUid}),
         headers: await getHeaders());
   }
 
   @override
   Future<http.Response> unattendEvent(
-      {required String eventUid, required String recurrenceUid}) async {
-    return delete(Event().UnAttend(eventUid, recurrenceUid),
-        headers: await getHeaders());
+      {required String eventUid, String? recurrenceUid}) async {
+    return delete(Event().UnAttend,
+        headers: await getHeaders(),
+        body:
+            jsonEncode({'recurrenceUid': recurrenceUid, 'eventUid': eventUid}));
   }
 
   @override
@@ -715,13 +725,6 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
-  Future<http.Response> attendRecurringEvent(
-      String eventUid, String recurrenceUid) async {
-    return get(RecurringEvent().Attend(eventUid, recurrenceUid),
-        headers: await getHeaders());
-  }
-
-  @override
   Future<http.Response> deleteRecurringEvent(
       String eventUid, String recurrenceUid, EventActionType actionType) async {
     return delete(
@@ -755,13 +758,6 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
         RecurringEvent().All(recurrenceUid) + (request?.toQueryParams() ?? ''),
         headers: await getHeaders());
     return response;
-  }
-
-  @override
-  Future<http.Response> unattendRecurringEvent(
-      String eventUid, String recurrenceUid) async {
-    return delete(RecurringEvent().UnAttend(eventUid, recurrenceUid),
-        headers: await getHeaders());
   }
 
   @override

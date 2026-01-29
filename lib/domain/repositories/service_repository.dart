@@ -13,7 +13,7 @@ abstract class ServiceRepository {
   Future<Result<Pagination<Service>, Exception>> getProviderServices(
       String providerUid);
   Future<Result<Service, Exception>> getService(String providerUid, String uid);
-  Future<Result<Service, Exception>> addService(ServiceApi e);
+  Future<Result<Service, Exception>> addService(CreateService e);
   Future<Result<bool, Exception>> deleteService(String uid);
   Future<Result<bool, Exception>> setActive(String uid, {bool isActive});
   Future<Result<Pagination<Appointment>, Exception>> getAppointments(
@@ -22,8 +22,8 @@ abstract class ServiceRepository {
   Future<Result<Appointment, Exception>> addAppointment(
       {required AUser user,
       required Service service,
-     required TimeSlot timeSlot,
-       String? notes = ""});
+      required TimeSlot timeSlot,
+      String? notes = ""});
   Future<Result<bool, Exception>> deleteAppointment(String uid);
   Future<Result<Pagination<Appointment>, Exception>> getAppointmentRequests(
       {PaginationRequest? request});

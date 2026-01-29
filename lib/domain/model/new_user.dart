@@ -9,6 +9,7 @@ class NewUser with NewUserMappable {
   final String email;
   final String fullName;
   final String phone;
+  final String bio;
   final Gender gender;
   final String defaultProfileUid;
   final bool isProvider;
@@ -16,11 +17,15 @@ class NewUser with NewUserMappable {
   final String userName;
   final List<String> privateCommunities;
   final List<String> publicCommunities;
+    final List<String> subCategoryUids;
+
   final String? categoryUid;
+
   const NewUser({
     this.email = '',
     this.fullName = 'Regardless User',
     this.phone = '',
+    this.bio='',
     this.picture = '',
     this.userName = '',
     this.categoryUid,
@@ -28,7 +33,8 @@ class NewUser with NewUserMappable {
     this.defaultProfileUid = '',
     this.gender = Gender.Unsure,
     this.privateCommunities = const [],
-    this.publicCommunities = const [],
+    this.publicCommunities  = const [],
+    this.subCategoryUids = const [],
   });
 
   factory NewUser.fromUser(User user) => NewUser(

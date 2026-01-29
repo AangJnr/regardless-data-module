@@ -225,6 +225,13 @@ class AUserMapper extends ClassMapperBase<AUser> {
     opt: true,
     def: const [],
   );
+  static List<String> _$subCategoryUids(AUser v) => v.subCategoryUids;
+  static const Field<AUser, List<String>> _f$subCategoryUids = Field(
+    'subCategoryUids',
+    _$subCategoryUids,
+    opt: true,
+    def: const [],
+  );
   static List<String> _$joinedCommunityUids(AUser v) => v.joinedCommunityUids;
   static const Field<AUser, List<String>> _f$joinedCommunityUids = Field(
     'joinedCommunityUids',
@@ -256,6 +263,7 @@ class AUserMapper extends ClassMapperBase<AUser> {
     #rating: _f$rating,
     #likedPostUids: _f$likedPostUids,
     #favoratesUids: _f$favoratesUids,
+    #subCategoryUids: _f$subCategoryUids,
     #joinedCommunityUids: _f$joinedCommunityUids,
   };
 
@@ -282,6 +290,7 @@ class AUserMapper extends ClassMapperBase<AUser> {
       rating: data.dec(_f$rating),
       likedPostUids: data.dec(_f$likedPostUids),
       favoratesUids: data.dec(_f$favoratesUids),
+      subCategoryUids: data.dec(_f$subCategoryUids),
       joinedCommunityUids: data.dec(_f$joinedCommunityUids),
     );
   }
@@ -338,6 +347,8 @@ abstract class AUserCopyWith<$R, $In extends AUser, $Out>
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
   get favoratesUids;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+  get subCategoryUids;
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
   get joinedCommunityUids;
   $R call({
     String? uid,
@@ -361,6 +372,7 @@ abstract class AUserCopyWith<$R, $In extends AUser, $Out>
     double? rating,
     List<String>? likedPostUids,
     List<String>? favoratesUids,
+    List<String>? subCategoryUids,
     List<String>? joinedCommunityUids,
   });
   AUserCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -388,6 +400,13 @@ class _AUserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, AUser, $Out>
     $value.favoratesUids,
     (v, t) => ObjectCopyWith(v, $identity, t),
     (v) => call(favoratesUids: v),
+  );
+  @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+  get subCategoryUids => ListCopyWith(
+    $value.subCategoryUids,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(subCategoryUids: v),
   );
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
@@ -419,6 +438,7 @@ class _AUserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, AUser, $Out>
     double? rating,
     List<String>? likedPostUids,
     List<String>? favoratesUids,
+    List<String>? subCategoryUids,
     List<String>? joinedCommunityUids,
   }) => $apply(
     FieldCopyWithData({
@@ -445,6 +465,7 @@ class _AUserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, AUser, $Out>
       if (rating != null) #rating: rating,
       if (likedPostUids != null) #likedPostUids: likedPostUids,
       if (favoratesUids != null) #favoratesUids: favoratesUids,
+      if (subCategoryUids != null) #subCategoryUids: subCategoryUids,
       if (joinedCommunityUids != null)
         #joinedCommunityUids: joinedCommunityUids,
     }),
@@ -478,6 +499,7 @@ class _AUserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, AUser, $Out>
     rating: data.get(#rating, or: $value.rating),
     likedPostUids: data.get(#likedPostUids, or: $value.likedPostUids),
     favoratesUids: data.get(#favoratesUids, or: $value.favoratesUids),
+    subCategoryUids: data.get(#subCategoryUids, or: $value.subCategoryUids),
     joinedCommunityUids: data.get(
       #joinedCommunityUids,
       or: $value.joinedCommunityUids,

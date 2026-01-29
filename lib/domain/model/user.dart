@@ -35,6 +35,7 @@ class AUser with AUserMappable {
   final bool isVerified;
   final List<String> favoratesUids;
   final List<String> likedPostUids;
+  final List<String> subCategoryUids;
   final List<String> joinedCommunityUids;
   final bool userNameAlreadyUpdated;
   final String userName;
@@ -61,6 +62,7 @@ class AUser with AUserMappable {
     this.rating = 5.0,
     this.likedPostUids = const [],
     this.favoratesUids = const [],
+    this.subCategoryUids = const [],
     this.joinedCommunityUids = const [],
   });
 

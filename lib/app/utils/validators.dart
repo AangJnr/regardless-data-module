@@ -89,7 +89,7 @@ class Validators {
   }
 
   static String? validatePhoneNumber(String? value) {
-    String pattern = r'(^[0-9]{10,15}$)';
+    String pattern = r'(^[0-9]{10}$)';
     RegExp regExp = RegExp(pattern);
     if (!regExp.hasMatch(value ?? "")) {
       return "Enter a valid phone number";

@@ -19,8 +19,8 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
   Future<Result<Appointment, Exception>> addAppointment(
       {required AUser user,
       required Service service,
-     required TimeSlot timeSlot,
-       String? notes = ""}) async {
+      required TimeSlot timeSlot,
+      String? notes = ""}) async {
     final appointment = AppointmentApi(
         ownerUid: user.uid,
         providerUid: service.ownerUid,
@@ -38,7 +38,8 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
             name: user.fullName,
             phone: user.phone,
             photoUrl: user.picture));
-    var data = await processRequest(() => apiService.addAppointment(appointment));
+    var data =
+        await processRequest(() => apiService.addAppointment(appointment));
     if (data.isSuccess()) {
       return Success(
           AppointmentApi.fromMap(data.tryGetSuccess()!).mapToDomain());
@@ -47,11 +48,12 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
   }
 
   @override
-  Future<Result<Service, Exception>> addService(ServiceApi e) async {
+  Future<Result<Service, Exception>> addService(CreateService e) async {
     var data = await processRequest(() => apiService.addService(e));
     try {
       if (data.isSuccess()) {
-        return Success(ServiceApi.fromMap(data.tryGetSuccess()!).mapToDomain());
+        return Success(
+            ServiceMapper.fromMap(data.tryGetSuccess()!) );
       }
     } catch (e) {
       getLogger('ServiceRepository').e(e.toString());
@@ -166,7 +168,7 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
           PaginatedResponse.fromMap(response.tryGetSuccess()!);
       try {
         final data = paginationResponse.data
-            ?.map((e) => ServiceApi.fromMap(e).mapToDomain())
+            ?.map((e) => ServiceMapper.fromMap(e))
             .toList();
         return Success(Pagination<Service>(
             data: data ?? [],
@@ -185,7 +187,8 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
     var data =
         await processRequest(() => apiService.getService(providerUid, uid));
     if (data.isSuccess()) {
-      return Success(ServiceApi.fromMap(data.tryGetSuccess()!).mapToDomain());
+      return Success(
+          ServiceMapper.fromMap(data.tryGetSuccess()!));
     }
     return Error(data.tryGetError()!);
   }

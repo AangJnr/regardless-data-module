@@ -1,20 +1,24 @@
 import 'dart:convert';
 
+import 'package:regardless_data_module/domain/model/results.dart';
+import 'package:regardless_data_module/domain/model/service/service.dart';
+
 import '../../../domain/model/community/community.dart';
 import '../feed_api.dart';
-import '../service_api/service_api.dart';
 
-class Results {
+class SearchResults {
   final List<FeedApi>? events;
   final List<FeedApi>? otherEvents;
   final List<Community>? communities;
-  final List<ServiceApi>? services;
-  final List<ServiceApi>? otherServices;
+  final List<Community>? otherCommunities;
+  final List<Service>? services;
+  final List<Service>? otherServices;
 
-  const Results(
+  const SearchResults(
       {this.events,
       this.otherEvents,
       this.communities,
+      this.otherCommunities,
       this.services,
       this.otherServices});
 
@@ -23,7 +27,7 @@ class Results {
     return 'Results(events: $events, otherEvents: $otherEvents)';
   }
 
-  factory Results.fromMap(Map<String, dynamic> data) => Results(
+  factory SearchResults.fromMap(Map<String, dynamic> data) => SearchResults(
         events: (data['events'] as List<dynamic>?)
             ?.map((e) => FeedApi.fromMap(e as Map<String, dynamic>))
             .toList(),
@@ -33,11 +37,14 @@ class Results {
         communities: (data['communities'] as List<dynamic>?)
             ?.map((e) => CommunityMapper.fromMap(e as Map<String, dynamic>))
             .toList(),
+        otherCommunities: (data['otherCommunities'] as List<dynamic>?)
+            ?.map((e) => CommunityMapper.fromMap(e as Map<String, dynamic>))
+            .toList(),
         otherServices: (data['otherServices'] as List<dynamic>?)
-            ?.map((e) => ServiceApi.fromMap(e as Map<String, dynamic>))
+            ?.map((e) => ServiceMapper.fromMap(e as Map<String, dynamic>))
             .toList(),
         services: (data['services'] as List<dynamic>?)
-            ?.map((e) => ServiceApi.fromMap(e as Map<String, dynamic>))
+            ?.map((e) => ServiceMapper.fromMap(e as Map<String, dynamic>))
             .toList(),
       );
 
@@ -51,13 +58,22 @@ class Results {
 
   /// `dart:convert`
   ///
-  /// Parses the string and returns the resulting Json object as [Results].
-  factory Results.fromJson(String data) {
-    return Results.fromMap(json.decode(data) as Map<String, dynamic>);
+  /// Parses the string and returns the resulting Json object as [SearchResults].
+  factory SearchResults.fromJson(String data) {
+    return SearchResults.fromMap(json.decode(data) as Map<String, dynamic>);
   }
 
   /// `dart:convert`
   ///
-  /// Converts [Results] to a JSON string.
+  /// Converts [SearchResults] to a JSON string.
   String toJson() => json.encode(toMap());
+
+  SearchEventResults mapToDomain() => SearchEventResults(
+        events: events?.map((e) => e.mapToDomain()).toList() ?? [],
+        otherEvents: otherEvents?.map((e) => e.mapToDomain()).toList() ?? [],
+        communities: communities?.map((e) => e).toList() ?? [],
+        otherCommunities: otherCommunities?.map((e) => e).toList() ?? [],
+        services: services ?? [],
+        otherServices: otherServices ?? [],
+      );
 }

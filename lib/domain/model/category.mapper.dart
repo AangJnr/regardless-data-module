@@ -71,6 +71,8 @@ class CategoryMapper extends ClassMapperBase<Category> {
     opt: true,
     def: '',
   );
+  static String? _$tag(Category v) => v.tag;
+  static const Field<Category, String> _f$tag = Field('tag', _$tag, opt: true);
   static String? _$hexColor(Category v) => v.hexColor;
   static const Field<Category, String> _f$hexColor = Field(
     'hexColor',
@@ -101,6 +103,7 @@ class CategoryMapper extends ClassMapperBase<Category> {
     #descriptionForProvider: _f$descriptionForProvider,
     #nameForProvider: _f$nameForProvider,
     #iconUrl: _f$iconUrl,
+    #tag: _f$tag,
     #hexColor: _f$hexColor,
     #isActive: _f$isActive,
     #serviceSupported: _f$serviceSupported,
@@ -115,6 +118,7 @@ class CategoryMapper extends ClassMapperBase<Category> {
       descriptionForProvider: data.dec(_f$descriptionForProvider),
       nameForProvider: data.dec(_f$nameForProvider),
       iconUrl: data.dec(_f$iconUrl),
+      tag: data.dec(_f$tag),
       hexColor: data.dec(_f$hexColor),
       isActive: data.dec(_f$isActive),
       serviceSupported: data.dec(_f$serviceSupported),
@@ -186,6 +190,7 @@ abstract class CategoryCopyWith<$R, $In extends Category, $Out>
     String? descriptionForProvider,
     String? nameForProvider,
     String? iconUrl,
+    String? tag,
     String? hexColor,
     bool? isActive,
     bool? serviceSupported,
@@ -210,6 +215,7 @@ class _CategoryCopyWithImpl<$R, $Out>
     String? descriptionForProvider,
     String? nameForProvider,
     String? iconUrl,
+    Object? tag = $none,
     Object? hexColor = $none,
     bool? isActive,
     bool? serviceSupported,
@@ -223,6 +229,7 @@ class _CategoryCopyWithImpl<$R, $Out>
         #descriptionForProvider: descriptionForProvider,
       if (nameForProvider != null) #nameForProvider: nameForProvider,
       if (iconUrl != null) #iconUrl: iconUrl,
+      if (tag != $none) #tag: tag,
       if (hexColor != $none) #hexColor: hexColor,
       if (isActive != null) #isActive: isActive,
       if (serviceSupported != null) #serviceSupported: serviceSupported,
@@ -240,6 +247,7 @@ class _CategoryCopyWithImpl<$R, $Out>
     ),
     nameForProvider: data.get(#nameForProvider, or: $value.nameForProvider),
     iconUrl: data.get(#iconUrl, or: $value.iconUrl),
+    tag: data.get(#tag, or: $value.tag),
     hexColor: data.get(#hexColor, or: $value.hexColor),
     isActive: data.get(#isActive, or: $value.isActive),
     serviceSupported: data.get(#serviceSupported, or: $value.serviceSupported),

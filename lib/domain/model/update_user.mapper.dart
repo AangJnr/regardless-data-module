@@ -23,13 +23,6 @@ class UpdateUserMapper extends ClassMapperBase<UpdateUser> {
 
   static String _$uid(UpdateUser v) => v.uid;
   static const Field<UpdateUser, String> _f$uid = Field('uid', _$uid);
-  static String _$email(UpdateUser v) => v.email;
-  static const Field<UpdateUser, String> _f$email = Field(
-    'email',
-    _$email,
-    opt: true,
-    def: '',
-  );
   static String _$fullName(UpdateUser v) => v.fullName;
   static const Field<UpdateUser, String> _f$fullName = Field(
     'fullName',
@@ -62,7 +55,6 @@ class UpdateUserMapper extends ClassMapperBase<UpdateUser> {
   @override
   final MappableFields<UpdateUser> fields = const {
     #uid: _f$uid,
-    #email: _f$email,
     #fullName: _f$fullName,
     #phone: _f$phone,
     #picture: _f$picture,
@@ -72,7 +64,6 @@ class UpdateUserMapper extends ClassMapperBase<UpdateUser> {
   static UpdateUser _instantiate(DecodingData data) {
     return UpdateUser(
       uid: data.dec(_f$uid),
-      email: data.dec(_f$email),
       fullName: data.dec(_f$fullName),
       phone: data.dec(_f$phone),
       picture: data.dec(_f$picture),
@@ -142,7 +133,6 @@ abstract class UpdateUserCopyWith<$R, $In extends UpdateUser, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({
     String? uid,
-    String? email,
     String? fullName,
     String? phone,
     String? picture,
@@ -162,7 +152,6 @@ class _UpdateUserCopyWithImpl<$R, $Out>
   @override
   $R call({
     String? uid,
-    String? email,
     String? fullName,
     String? phone,
     String? picture,
@@ -170,7 +159,6 @@ class _UpdateUserCopyWithImpl<$R, $Out>
   }) => $apply(
     FieldCopyWithData({
       if (uid != null) #uid: uid,
-      if (email != null) #email: email,
       if (fullName != null) #fullName: fullName,
       if (phone != null) #phone: phone,
       if (picture != null) #picture: picture,
@@ -180,7 +168,6 @@ class _UpdateUserCopyWithImpl<$R, $Out>
   @override
   UpdateUser $make(CopyWithData data) => UpdateUser(
     uid: data.get(#uid, or: $value.uid),
-    email: data.get(#email, or: $value.email),
     fullName: data.get(#fullName, or: $value.fullName),
     phone: data.get(#phone, or: $value.phone),
     picture: data.get(#picture, or: $value.picture),

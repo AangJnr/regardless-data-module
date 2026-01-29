@@ -1,6 +1,10 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:intl/intl.dart';
 
-class Slot {
+part 'slot.mapper.dart';
+
+@MappableClass()
+class Slot with SlotMappable {
   final DateTime? startTime;
   final DateTime? endTime;
 
@@ -18,16 +22,6 @@ class Slot {
       displayTime += dateFormat.format(endTime!);
     }
     return displayTime;
-  }
-
-  Slot copyWith({
-    DateTime? startTime,
-    DateTime? endTime,
-  }) {
-    return Slot(
-      startTime: startTime ?? this.startTime,
-      endTime: endTime ?? this.endTime,
-    );
   }
 
   @override

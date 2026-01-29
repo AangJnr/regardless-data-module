@@ -1,9 +1,13 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:regardless_data_module/data/model/service_api/slot_api.dart';
 
 import '../../../data/model/service_api/time_slot_api.dart';
 import 'slot.dart';
 
-class TimeSlot {
+part 'time_slot.mapper.dart';
+
+@MappableClass()
+class TimeSlot with TimeSlotMappable {
   final int order;
   final String day;
   final String date;
@@ -17,16 +21,6 @@ class TimeSlot {
   String toString() => 'TimeSlot(day: $day, slots: $slots)';
 
   String toSinglularString() => '$day @ ${slots.first.toString()}';
-
-  TimeSlot copyWith(
-      {String? day, String? date, List<Slot>? slots, int? order}) {
-    return TimeSlot(
-      order: order ?? this.order,
-      day: day ?? this.day,
-      date: date ?? this.date,
-      slots: slots ?? this.slots,
-    );
-  }
 
   bool isValid() {
     return slots.where((e) => e.endTime == null).isEmpty;

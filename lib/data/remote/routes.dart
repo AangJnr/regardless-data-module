@@ -28,8 +28,8 @@ class User extends ApiRoutes {
   String DefaultAccount(String profileUid) =>
       "$url/user/me/account/set-default/$profileUid";
 
-  String get Preference => '$url/user-preference/';
-  String get UpdatePreference => '$url/user/preference/';
+  String get Preference => '$url/preference/';
+  String get UpdatePreference => '$url/preference/';
   String get Logout => "$url/user/logout/";
   String get Follow => "$url/user/follow/";
   String GetFollowers(String params) => '$Follow$params';
@@ -76,6 +76,7 @@ class Event extends ApiRoutes {
   String get Purchase => '$url/event/ticket/purchase';
   String get Validate => '$url/event/ticket/validate';
   String get Categories => '$url/admin/category';
+  String SubCategories(String categoryUid) => '$url/admin/category/$categoryUid/subcategories';
   String get Geocode => '$url/admin/geocode';
   String Favorate(String uid) => '$url/event/favorate/$uid';
   String get AllFavorates => '$url/event/favorates/';
@@ -84,10 +85,10 @@ class Event extends ApiRoutes {
   String get UnLink => '$url/event/unlink-with-community';
   String CommunityEvents(String ownerUid, String uid) =>
       '$url/event/community-events/$ownerUid/$uid/';
-  String Attend(String eventUid, String recurrenceUid) =>
-      '$url/event/attendance/add/$eventUid/$recurrenceUid';
-  String UnAttend(String eventUid, String recurrenceUid) =>
-      '$url/event/attendance/remove/$eventUid/$recurrenceUid';
+  String  get Attend  =>
+      '$url/event/attendance/add';
+  String get UnAttend  =>
+      '$url/event/attendance/remove';
   String Attendees(String eventUid, String recurrenceUid) =>
       '$url/event/attendance/$eventUid/$recurrenceUid';
 }

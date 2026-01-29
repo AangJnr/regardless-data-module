@@ -31,10 +31,6 @@ mixin BaseRepository {
             .i(" ${response.statusCode}\nresponseBody: $r}");
 
         if (response.statusCode >= 400) {
-          if (response.statusCode == 401) {
-            _sessionManager.invalidate();
-            getLogger("BaseRepository").i("SessionManager invalidated");
-          }
           return Error(Exception(parseErrors(r)));
         }
         return Success((r as Map<String, dynamic>)['data']);

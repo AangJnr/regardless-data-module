@@ -6,7 +6,10 @@ import 'package:cross_file/cross_file.dart' show XFile;
 import 'package:flutter/foundation.dart';
 import 'package:mobile_device_identifier/mobile_device_identifier.dart';
 import 'package:multiple_result/multiple_result.dart';
+import 'package:regardless_data_module/app/app.locator.dart';
+import 'package:regardless_data_module/app/services/cache_service.dart';
 import 'package:regardless_data_module/data/model/dashboard_metrics_api.dart';
+import 'package:regardless_data_module/domain/model/accounts.dart';
 import 'package:regardless_data_module/domain/model/dashboard_metrics.dart';
 
 import '../../../app/app.logger.dart';
@@ -53,21 +56,24 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   }
 
   @override
-  Future<Result<List<AUser>, Exception>> getUserAccounts() async {
-    var data = await processRequest(() => apiService.getUserAccounts());
+  Future<Result<Accounts, Exception>> getUserAccounts(
+      [bool refresh = false]) async {
+    final cache = module<CacheService>();
 
-    if (data.isSuccess()) {
-      final userAcounts = (data.tryGetSuccess()! as List<dynamic>)
-          .map((e) => AUserMapper.fromMap(e))
-          .toList();
-      return Success(userAcounts
-          .map((e) => e.copyWith(
-              fullName: e.fullName.isEmpty && e.isProvider
-                  ? 'Provider User'
-                  : e.fullName))
-          .toList());
+    if (refresh) {
+      cache.clear('user_accounts');
     }
-    return Future.value(Error(data.tryGetError()!));
+    final accounts = await cache.execute<Accounts?>(() async {
+      var data = await processRequest(() => apiService.getUserAccounts());
+      if (data.isSuccess()) {
+        return AccountsMapper.fromMap(data.tryGetSuccess()!);
+      }
+      return null;
+    }, 'user_accounts');
+    if (accounts != null) {
+      return Success(accounts);
+    }
+    return Future.value(Error(Exception("Unable to fetch accounts")));
   }
 
   @override
@@ -149,7 +155,7 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
     var data =
         await processRequest(() => apiService.updateUserProfile(profile));
     if (data.isSuccess()) {
-      return Success(AUserMapper.fromJson(data.tryGetSuccess()!));
+      return Success(AUserMapper.fromMap(data.tryGetSuccess()!));
     }
     return Future.value(Error(data.tryGetError()!));
   }

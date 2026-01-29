@@ -42,16 +42,17 @@ const locationsKey = "locationsKey";
 const notificationCountKey = 'notificationCountKey';
 const distanceKey = 'distanceKey';
 const remindersKey = 'reminderKey';
+const hasAuthKey = 'hasAuthKey';
 
 const NotificationKey = 'notification';
 const NotificationReceivedKey = 'notification_received_key';
 
 enum AppState {
-  loggedIn,
   login,
   username,
   addAdditionalAccount,
   firstRun,
+  bio,
   verification,
   signUp,
   signUpPasswordInfo,
@@ -80,18 +81,16 @@ class SessionManagerImpl extends SessionManager {
 
   @override
   bool isLoggedIn() {
-    return _hiveBox.get(appStateKey) == AppState.loggedIn.name;
+    return _hiveBox.get(hasAuthKey, defaultValue: false) as bool;
   }
 
   @override
   void setUserAsLoggedIn() {
-    _hiveBox.put(appStateKey, AppState.loggedIn.name);
+    _hiveBox.put(hasAuthKey, true);
   }
 
   @override
-  void setOnBoardingCompleted() {
-    _hiveBox.put(appStateKey, AppState.login.name);
-  }
+  void setOnBoardingCompleted() {}
 
   @override
   String? getRefreshToken() {
@@ -158,9 +157,13 @@ class SessionManagerImpl extends SessionManager {
 
   @override
   NewUser getNewUserData() {
-    final data = _hiveBox.get(newUserKey);
-    if (data == null) return const NewUser();
-    return NewUserMapper.fromJson(data);
+    try {
+      final data = _hiveBox.get(newUserKey);
+      if (data == null) return const NewUser();
+      return NewUserMapper.fromJson(data);
+    } catch (ignore) {
+      return const NewUser();
+    }
   }
 
   @override

@@ -2,14 +2,13 @@ import 'dart:convert';
 
 import 'package:regardless_data_module/domain/model/user.dart';
 
-import '../../../domain/domain_mapper.dart';
 import '../../../domain/model/service/service.dart';
 import '../../../domain/model/venue.dart';
 import '../price_api.dart';
 import '../venue_api.dart';
 import 'time_slot_api.dart';
 
-class ServiceApi implements DomainMapper<Service> {
+class CreateService {
   final DateTime? createdAt;
   final String? uid;
   final List<String>? keywords;
@@ -24,7 +23,7 @@ class ServiceApi implements DomainMapper<Service> {
   final bool? isActive;
   final AUser? provider;
 
-  const ServiceApi(
+  const CreateService(
       {this.createdAt,
       this.uid,
       this.keywords,
@@ -44,37 +43,6 @@ class ServiceApi implements DomainMapper<Service> {
     return 'ServiceApi(createdAt: $createdAt, uid: $uid, keywords: $keywords, price: $prices, name: $name, description: $description, timeSlots: $timeSlots, location: $location, ownerUid: $ownerUid, updatedAt: $updatedAt)';
   }
 
-  factory ServiceApi.fromMap(Map<String, dynamic> data) => ServiceApi(
-      createdAt: data['createdAt'] == null
-          ? null
-          : DateTime.parse(data['createdAt'] as String),
-      uid: data['uid'] as String?,
-      keywords: data['keywords'] == null
-          ? null
-          : (data['keywords'] as List<dynamic>?)
-              ?.map((e) => e.toString())
-              .toList(),
-      prices: (data['prices'] as List<dynamic>?)
-          ?.map((e) => PriceApi.fromMap(e as Map<String, dynamic>))
-          .toList(),
-      name: data['name'] as String?,
-      categoryUid: data['categoryUid'] as String?,
-      description: data['description'] as String?,
-      timeSlots: (data['timeSlots'] as List<dynamic>?)
-          ?.map((e) => TimeSlotApi.fromMap(e as Map<String, dynamic>))
-          .toList(),
-      location: data['location'] == null
-          ? null
-          : VenueApi.fromMap(data['location'] as Map<String, dynamic>),
-      ownerUid: data['ownerUid'] as String?,
-      isActive: data['isActive'] as bool?,
-      updatedAt: data['updatedAt'] == null
-          ? null
-          : DateTime.parse(data['updatedAt'] as String),
-      provider: data['provider'] == null
-          ? null
-          : AUserMapper.fromMap(data['provider']));
-
   Map<String, dynamic> toMap() => {
         'createdAt': createdAt?.toIso8601String(),
         'uid': uid,
@@ -92,17 +60,10 @@ class ServiceApi implements DomainMapper<Service> {
 
   /// `dart:convert`
   ///
-  /// Parses the string and returns the resulting Json object as [ServiceApi].
-  factory ServiceApi.fromJson(String data) {
-    return ServiceApi.fromMap(json.decode(data) as Map<String, dynamic>);
-  }
-
-  /// `dart:convert`
-  ///
-  /// Converts [ServiceApi] to a JSON string.
+  /// Converts [CreateService] to a JSON string.
   String toJson() => json.encode(toMap());
 
-  ServiceApi copyWith(
+  CreateService copyWith(
       {DateTime? createdAt,
       String? uid,
       List<String>? keywords,
@@ -114,7 +75,7 @@ class ServiceApi implements DomainMapper<Service> {
       String? ownerUid,
       DateTime? updatedAt,
       String? categoryUid}) {
-    return ServiceApi(
+    return CreateService(
         createdAt: createdAt ?? this.createdAt,
         uid: uid ?? this.uid,
         keywords: keywords ?? this.keywords,
@@ -127,20 +88,4 @@ class ServiceApi implements DomainMapper<Service> {
         updatedAt: updatedAt ?? this.updatedAt,
         categoryUid: categoryUid ?? this.categoryUid);
   }
-
-  @override
-  Service mapToDomain() => Service(
-      createdAt: createdAt,
-      uid: uid ?? '',
-      keywords: keywords ?? const [],
-      prices: prices?.map((e) => e.mapToDomain()).toList() ?? const [],
-      name: name ?? '',
-      description: description ?? '',
-      timeSlots: timeSlots?.map((e) => e.mapToDomain()).toList() ?? const [],
-      location: location?.mapToDomain() ?? const Venue(),
-      ownerUid: ownerUid ?? '',
-      updatedAt: updatedAt,
-      categoryUid: categoryUid ?? '',
-      isActive: isActive ?? false,
-      provider: provider);
-}
+ }

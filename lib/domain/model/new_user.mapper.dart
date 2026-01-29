@@ -43,6 +43,13 @@ class NewUserMapper extends ClassMapperBase<NewUser> {
     opt: true,
     def: '',
   );
+  static String _$bio(NewUser v) => v.bio;
+  static const Field<NewUser, String> _f$bio = Field(
+    'bio',
+    _$bio,
+    opt: true,
+    def: '',
+  );
   static String _$picture(NewUser v) => v.picture;
   static const Field<NewUser, String> _f$picture = Field(
     'picture',
@@ -98,12 +105,20 @@ class NewUserMapper extends ClassMapperBase<NewUser> {
     opt: true,
     def: const [],
   );
+  static List<String> _$subCategoryUids(NewUser v) => v.subCategoryUids;
+  static const Field<NewUser, List<String>> _f$subCategoryUids = Field(
+    'subCategoryUids',
+    _$subCategoryUids,
+    opt: true,
+    def: const [],
+  );
 
   @override
   final MappableFields<NewUser> fields = const {
     #email: _f$email,
     #fullName: _f$fullName,
     #phone: _f$phone,
+    #bio: _f$bio,
     #picture: _f$picture,
     #userName: _f$userName,
     #categoryUid: _f$categoryUid,
@@ -112,6 +127,7 @@ class NewUserMapper extends ClassMapperBase<NewUser> {
     #gender: _f$gender,
     #privateCommunities: _f$privateCommunities,
     #publicCommunities: _f$publicCommunities,
+    #subCategoryUids: _f$subCategoryUids,
   };
 
   static NewUser _instantiate(DecodingData data) {
@@ -119,6 +135,7 @@ class NewUserMapper extends ClassMapperBase<NewUser> {
       email: data.dec(_f$email),
       fullName: data.dec(_f$fullName),
       phone: data.dec(_f$phone),
+      bio: data.dec(_f$bio),
       picture: data.dec(_f$picture),
       userName: data.dec(_f$userName),
       categoryUid: data.dec(_f$categoryUid),
@@ -127,6 +144,7 @@ class NewUserMapper extends ClassMapperBase<NewUser> {
       gender: data.dec(_f$gender),
       privateCommunities: data.dec(_f$privateCommunities),
       publicCommunities: data.dec(_f$publicCommunities),
+      subCategoryUids: data.dec(_f$subCategoryUids),
     );
   }
 
@@ -191,10 +209,13 @@ abstract class NewUserCopyWith<$R, $In extends NewUser, $Out>
   get privateCommunities;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
   get publicCommunities;
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+  get subCategoryUids;
   $R call({
     String? email,
     String? fullName,
     String? phone,
+    String? bio,
     String? picture,
     String? userName,
     String? categoryUid,
@@ -203,6 +224,7 @@ abstract class NewUserCopyWith<$R, $In extends NewUser, $Out>
     Gender? gender,
     List<String>? privateCommunities,
     List<String>? publicCommunities,
+    List<String>? subCategoryUids,
   });
   NewUserCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -230,10 +252,18 @@ class _NewUserCopyWithImpl<$R, $Out>
     (v) => call(publicCommunities: v),
   );
   @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+  get subCategoryUids => ListCopyWith(
+    $value.subCategoryUids,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(subCategoryUids: v),
+  );
+  @override
   $R call({
     String? email,
     String? fullName,
     String? phone,
+    String? bio,
     String? picture,
     String? userName,
     Object? categoryUid = $none,
@@ -242,11 +272,13 @@ class _NewUserCopyWithImpl<$R, $Out>
     Gender? gender,
     List<String>? privateCommunities,
     List<String>? publicCommunities,
+    List<String>? subCategoryUids,
   }) => $apply(
     FieldCopyWithData({
       if (email != null) #email: email,
       if (fullName != null) #fullName: fullName,
       if (phone != null) #phone: phone,
+      if (bio != null) #bio: bio,
       if (picture != null) #picture: picture,
       if (userName != null) #userName: userName,
       if (categoryUid != $none) #categoryUid: categoryUid,
@@ -255,6 +287,7 @@ class _NewUserCopyWithImpl<$R, $Out>
       if (gender != null) #gender: gender,
       if (privateCommunities != null) #privateCommunities: privateCommunities,
       if (publicCommunities != null) #publicCommunities: publicCommunities,
+      if (subCategoryUids != null) #subCategoryUids: subCategoryUids,
     }),
   );
   @override
@@ -262,6 +295,7 @@ class _NewUserCopyWithImpl<$R, $Out>
     email: data.get(#email, or: $value.email),
     fullName: data.get(#fullName, or: $value.fullName),
     phone: data.get(#phone, or: $value.phone),
+    bio: data.get(#bio, or: $value.bio),
     picture: data.get(#picture, or: $value.picture),
     userName: data.get(#userName, or: $value.userName),
     categoryUid: data.get(#categoryUid, or: $value.categoryUid),
@@ -279,6 +313,7 @@ class _NewUserCopyWithImpl<$R, $Out>
       #publicCommunities,
       or: $value.publicCommunities,
     ),
+    subCategoryUids: data.get(#subCategoryUids, or: $value.subCategoryUids),
   );
 
   @override

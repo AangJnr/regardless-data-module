@@ -42,6 +42,7 @@ abstract class ApiService {
   Future<Response> updatePreferences(Preference prefs);
 
   Future<Response> getCategories();
+  Future<Response> getSubCategories(String uid);
   Future<Response> getFeed({PaginationRequest? request});
   @Deprecated('Use searchEventsV2 instead')
   Future<Response> searchEvents(SearchFilter filter);
@@ -61,10 +62,10 @@ abstract class ApiService {
   Future<Response> addEvent(NewEventRequest e);
   Future<Response> attendEvent({
     required String eventUid,
-    required String recurrenceUid,
+    required String? recurrenceUid,
   });
   Future<Response> unattendEvent(
-      {required String eventUid, required String recurrenceUid});
+      {required String eventUid,   String? recurrenceUid});
   Future<Response> getEventAttendees(
       {required String eventUid,
       required String recurrenceUid,
@@ -77,9 +78,7 @@ abstract class ApiService {
       {PaginationRequest? request});
   Future<Response> updateRecurringEvent(
       NewEventRequest e, EventActionType actionType);
-  Future<Response> attendRecurringEvent(String eventUid, String recurrenceUid);
-  Future<Response> unattendRecurringEvent(
-      String eventUid, String recurrenceUid);
+
   Future<Response> getRecurringEventAttendees(String uid, String recurrenceUid,
       {PaginationRequest? request});
   Future<Response> deleteRecurringEvent(
@@ -113,7 +112,7 @@ abstract class ApiService {
   Future<Response> getAppointmentRequests({PaginationRequest? request});
   Future<Response> getAppointmentRequest(String uid);
 
-  Future<Response> addService(ServiceApi service);
+  Future<Response> addService(CreateService service);
   Future<Response> getService(String providerUid, String serviceUid);
   Future<Response> setServiceAsActive(String serviceUid, {bool isActive});
   Future<Response> deleteService(String uid);
@@ -200,7 +199,7 @@ abstract class ApiService {
   Future<dynamic> uploadTeamMedia(String teamUid, List<XFile> files);
   Future<Response> getTeamMedia(String teamUid, {PaginationRequest? request});
   Future<Response> searchTeams(String teamUid, {PaginationRequest? request});
-  Future<Response> deleteTeamMedia(String teamUid, List<String>  uids);
+  Future<Response> deleteTeamMedia(String teamUid, List<String> uids);
 
   // Sports Categories
   Future<Response> getSportsCategories();

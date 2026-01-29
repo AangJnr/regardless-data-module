@@ -1,5 +1,6 @@
 import 'package:multiple_result/multiple_result.dart';
- import 'package:regardless_data_module/domain/model/community/community.dart';
+import 'package:regardless_data_module/data/model/search_events_results/results.dart';
+import 'package:regardless_data_module/domain/model/community/community.dart';
 import 'package:regardless_data_module/domain/model/community/member.dart';
 
 import '../../../app/app.locator.dart';
@@ -14,10 +15,9 @@ import '../../../domain/model/results.dart';
 import '../../../domain/model/venue.dart';
 import '../../../domain/repositories/event_repository.dart';
 import '../../model/community_and_event.dart/community_and_event.dart';
- import '../../model/feed_api.dart';
+import '../../model/feed_api.dart';
 import '../../model/new_event_api.dart';
 import '../../model/paginated_response.dart';
-import '../../model/search_events_results/search_events_results.dart';
 import '../../model/search_filter.dart';
 import '../../model/venue_api.dart';
 import 'base_repository.dart';
@@ -28,7 +28,7 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
       SearchEventParams params) async {
     var data = await processRequest(() => apiService.searchEventsV2(params));
     if (data.isSuccess()) {
-      final results = SearchEventResultsApi.fromMap(data.tryGetSuccess()!);
+      final results = SearchResults.fromMap(data.tryGetSuccess()!);
       return Success(results.mapToDomain());
     }
     return Error(data.tryGetError()!);
@@ -110,6 +110,33 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   Future<List<Category>> _fetchAndCacheCategories() async {
     var results = await processRequest(() => apiService.getCategories());
+    List<Category> list = [];
+    if (results.isSuccess()) {
+      list.addAll((results.tryGetSuccess()! as List<dynamic>)
+          .map((e) => CategoryMapper.fromMap(e as Map<String, dynamic>))
+          .toList());
+      getLogger('EventRepositoryImpl').i("categories size => ${list.length}");
+    } else {
+      getLogger('EventRepositoryImpl').e("fetchCategoriesWasNotSuccessfull!");
+    }
+    return list;
+  }
+
+  @override
+  Future<Result<Pagination<Category>, Exception>> getSubCategories(
+      String categoryUid) async {
+    final cache = module<CacheService>();
+
+    final categories = await cache.execute(
+        () => _fetchAndCacheSubCategories(categoryUid), categoryUid);
+    if (categories.isEmpty) {
+      cache.clear(categoryUid);
+    }
+    return Success(Pagination<Category>(data: categories));
+  }
+
+  Future<List<Category>> _fetchAndCacheSubCategories(String uid) async {
+    var results = await processRequest(() => apiService.getSubCategories(uid));
     List<Category> list = [];
     if (results.isSuccess()) {
       list.addAll((results.tryGetSuccess()! as List<dynamic>)
@@ -287,7 +314,7 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
     var data = await processRequest(() => apiService.getEvent(uid));
     if (data.isSuccess()) {
       try {
-      return Success(EventMapper.fromMap(data.tryGetSuccess()!));
+        return Success(EventMapper.fromMap(data.tryGetSuccess()!));
       } catch (e) {
         getLogger('EventRepositoryImpl').e(e);
       }
@@ -326,7 +353,7 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
       try {
         final data = paginationResponse.data
-            ?.map((e) => EventMapper.fromMap(e) )
+            ?.map((e) => EventMapper.fromMap(e))
             .toList();
         return Success(Pagination<Event>(
             data: data ?? [],
@@ -341,7 +368,7 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   @override
   Future<Result<bool, Exception>> attend(
-      {required String eventUid, required String recurrenceUid}) async {
+      {required String eventUid, String? recurrenceUid}) async {
     var res = await processRequest(() => apiService.attendEvent(
         eventUid: eventUid, recurrenceUid: recurrenceUid));
     if (res.isSuccess()) {
@@ -352,7 +379,7 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   @override
   Future<Result<bool, Exception>> unAttend(
-      {required String eventUid, required String recurrenceUid}) async {
+      {required String eventUid, String? recurrenceUid}) async {
     var res = await processRequest(() => apiService.unattendEvent(
         eventUid: eventUid, recurrenceUid: recurrenceUid));
     if (res.isSuccess()) {
@@ -397,17 +424,6 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
   }
 
   @override
-  Future<Result<bool, Exception>> attendRecurring(
-      String eventUid, String recurrenceUid) async {
-    var res = await processRequest(
-        () => apiService.attendRecurringEvent(eventUid, recurrenceUid));
-    if (res.isSuccess()) {
-      return const Success(true);
-    }
-    return Error(res.tryGetError()!);
-  }
-
-  @override
   Future<Result<bool, Exception>> deleteRecurringEvent(
       String eventUid, String recurrenceUid, EventActionType actionType) async {
     var res = await processRequest(() =>
@@ -427,7 +443,7 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
         () => apiService.getRecurringEvent(uid, recurrenceUid));
     if (data.isSuccess()) {
       try {
-        return Success(EventMapper.fromMap(data.tryGetSuccess()!) );
+        return Success(EventMapper.fromMap(data.tryGetSuccess()!));
       } catch (e) {
         getLogger('EventRepositoryImpl').e(e);
       }
@@ -446,7 +462,7 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
           PaginatedResponse.fromMap(response.tryGetSuccess()!);
       try {
         final data = paginationResponse.data
-            ?.map((e) => MemberMapper.fromMap(e) )
+            ?.map((e) => MemberMapper.fromMap(e))
             .toList();
         return Success(Pagination<Member>(
             data: data ?? [],
@@ -480,17 +496,6 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
       }
     }
     return const Success(Pagination<Feed>());
-  }
-
-  @override
-  Future<Result<bool, Exception>> unAttendRecurring(
-      String eventUid, String recurrenceUid) async {
-    var res = await processRequest(
-        () => apiService.unattendRecurringEvent(eventUid, recurrenceUid));
-    if (res.isSuccess()) {
-      return const Success(true);
-    }
-    return Error(res.tryGetError()!);
   }
 
   @override

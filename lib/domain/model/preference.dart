@@ -22,16 +22,16 @@ class Preference with PreferenceMappable {
       {this.id = '',
       this.createdAt = '',
       this.updatedAt = '',
-      this.isActive = false,
+      this.isActive = true,
       this.emailNewFeatureAnnouncement = false,
       this.emailNewsletterWeekly = false,
       this.emailRecommendations = false,
       this.pushNewFeatureAnnouncement = false,
       this.pushNewsletterWeekly = false,
       this.pushRecommendations = false,
-      this.pushNotifications = false,
-      this.emailNotifications = false,
-      this.smsNotifications = false});
+      this.pushNotifications = true,
+      this.emailNotifications = true,
+      this.smsNotifications = true});
 
   @override
   String toString() {

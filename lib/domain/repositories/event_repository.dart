@@ -34,10 +34,7 @@ abstract class EventRepository {
 
   Future<Result<bool, Exception>> deleteRecurringEvent(
       String eventUid, String recurrenceUid, EventActionType actionType);
-  Future<Result<bool, Exception>> attendRecurring(
-      String eventUid, String recurrenceUid);
-  Future<Result<bool, Exception>> unAttendRecurring(
-      String eventUid, String recurrenceUid);
+
   Future<Result<Pagination<Member>, Exception>> getRecurringEventAttendees(
       String uid, String recurrenceUid,
       {PaginationRequest? request});
@@ -51,9 +48,9 @@ abstract class EventRepository {
   Future<Result<bool, Exception>> deleteEvent(
       String eventUid, EventActionType actionType);
   Future<Result<bool, Exception>> attend(
-      {required String eventUid, required String recurrenceUid});
+      {required String eventUid, String? recurrenceUid});
   Future<Result<bool, Exception>> unAttend(
-      {required String eventUid, required String recurrenceUid});
+      {required String eventUid, String? recurrenceUid});
   Future<Result<Pagination<Member>, Exception>> getEventAttendees(
       {required String eventUid,
       required String recurrenceUid,
@@ -62,7 +59,8 @@ abstract class EventRepository {
   Future<Result<Pagination<Feed>, Exception>> getFeedData(
       {PaginationRequest? request});
   Future<Result<Pagination<Category>, Exception>> getCategories();
-
+  Future<Result<Pagination<Category>, Exception>> getSubCategories(
+      String categoryUid);
   Future<Venue> geocode(double lat, double lng);
   Future<Result<Pagination<Feed>, Exception>> getFavorateEvents(
       {PaginationRequest? request});

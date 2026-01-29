@@ -8,12 +8,14 @@ class DashboardMetricsApi implements DomainMapper<DashboardMetrics> {
   final int? eventsCount;
   final int? appointmentsCount;
   final int? notificationsCount;
+  final int? communitiesCount;
   final List<AppointmentApi>? todaysBookings;
 
   const DashboardMetricsApi({
     this.eventsCount,
     this.appointmentsCount,
     this.notificationsCount,
+    this.communitiesCount,
     this.todaysBookings,
   });
 
@@ -27,6 +29,7 @@ class DashboardMetricsApi implements DomainMapper<DashboardMetrics> {
       eventsCount: data['eventsCount'] as int?,
       appointmentsCount: data['appointmentsCount'] as int?,
       notificationsCount: data['notificationsCount'] as int?,
+      communitiesCount: data['communitiesCount'] as int?,
       todaysBookings: (data['todaysBookings'] as List<dynamic>?)
           ?.map((e) => AppointmentApi.fromMap(e as Map<String, dynamic>))
           .toList(),
@@ -37,6 +40,7 @@ class DashboardMetricsApi implements DomainMapper<DashboardMetrics> {
         'eventsCount': eventsCount,
         'appointmentsCount': appointmentsCount,
         'notificationsCount': notificationsCount,
+        'communitiesCount': communitiesCount,
         'todaysBookings': todaysBookings?.map((e) => e.toMap()).toList(),
       };
 
@@ -57,12 +61,14 @@ class DashboardMetricsApi implements DomainMapper<DashboardMetrics> {
     int? eventsCount,
     int? appointmentsCount,
     int? notificationsCount,
+    int? communitiesCount,
     List<AppointmentApi>? todaysBookings,
   }) {
     return DashboardMetricsApi(
       eventsCount: eventsCount ?? this.eventsCount,
       appointmentsCount: appointmentsCount ?? this.appointmentsCount,
       notificationsCount: notificationsCount ?? this.notificationsCount,
+      communitiesCount: communitiesCount ?? this.communitiesCount,
       todaysBookings: todaysBookings ?? this.todaysBookings,
     );
   }
@@ -72,6 +78,7 @@ class DashboardMetricsApi implements DomainMapper<DashboardMetrics> {
         eventsCount: eventsCount ?? 0,
         appointmentsCount: appointmentsCount ?? 0,
         notificationsCount: notificationsCount ?? 0,
+        communitiesCount: communitiesCount ?? 0,
         todaysBookings:
             todaysBookings?.map((e) => e.mapToDomain()).toList() ?? const [],
       );
