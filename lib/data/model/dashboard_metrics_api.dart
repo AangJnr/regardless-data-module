@@ -79,7 +79,7 @@ class DashboardMetricsApi implements DomainMapper<DashboardMetrics> {
         appointmentsCount: appointmentsCount ?? 0,
         notificationsCount: notificationsCount ?? 0,
         communitiesCount: communitiesCount ?? 0,
-        todaysBookings:
-            todaysBookings?.map((e) => e.mapToDomain()).toList() ?? const [],
+        // todaysBookings:
+        //     todaysBookings?.map((e) => e.mapToDomain()).toList() ?? const [],
       );
 }

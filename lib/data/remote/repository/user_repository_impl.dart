@@ -38,6 +38,7 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   Future<Result<AUser, Exception>> createUserAccount(NewUser user) async {
     var data = await processRequest(() => apiService.createUserAccount(user));
     if (data.isSuccess()) {
+      await getUserAccounts(true);
       return Success(AUserMapper.fromMap(data.tryGetSuccess()!));
     }
     return Future.value(Error(data.tryGetError()!));
@@ -155,7 +156,9 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
     var data =
         await processRequest(() => apiService.updateUserProfile(profile));
     if (data.isSuccess()) {
-      return Success(AUserMapper.fromMap(data.tryGetSuccess()!));
+      final user = AUserMapper.fromMap(data.tryGetSuccess()!);
+      sessionManager.setUser(user);
+      return Success(user);
     }
     return Future.value(Error(data.tryGetError()!));
   }

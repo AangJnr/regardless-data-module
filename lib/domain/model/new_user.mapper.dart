@@ -70,6 +70,12 @@ class NewUserMapper extends ClassMapperBase<NewUser> {
     _$categoryUid,
     opt: true,
   );
+  static String? _$categoryName(NewUser v) => v.categoryName;
+  static const Field<NewUser, String> _f$categoryName = Field(
+    'categoryName',
+    _$categoryName,
+    opt: true,
+  );
   static bool _$isProvider(NewUser v) => v.isProvider;
   static const Field<NewUser, bool> _f$isProvider = Field(
     'isProvider',
@@ -122,6 +128,7 @@ class NewUserMapper extends ClassMapperBase<NewUser> {
     #picture: _f$picture,
     #userName: _f$userName,
     #categoryUid: _f$categoryUid,
+    #categoryName: _f$categoryName,
     #isProvider: _f$isProvider,
     #defaultProfileUid: _f$defaultProfileUid,
     #gender: _f$gender,
@@ -139,6 +146,7 @@ class NewUserMapper extends ClassMapperBase<NewUser> {
       picture: data.dec(_f$picture),
       userName: data.dec(_f$userName),
       categoryUid: data.dec(_f$categoryUid),
+      categoryName: data.dec(_f$categoryName),
       isProvider: data.dec(_f$isProvider),
       defaultProfileUid: data.dec(_f$defaultProfileUid),
       gender: data.dec(_f$gender),
@@ -219,6 +227,7 @@ abstract class NewUserCopyWith<$R, $In extends NewUser, $Out>
     String? picture,
     String? userName,
     String? categoryUid,
+    String? categoryName,
     bool? isProvider,
     String? defaultProfileUid,
     Gender? gender,
@@ -267,6 +276,7 @@ class _NewUserCopyWithImpl<$R, $Out>
     String? picture,
     String? userName,
     Object? categoryUid = $none,
+    Object? categoryName = $none,
     bool? isProvider,
     String? defaultProfileUid,
     Gender? gender,
@@ -282,6 +292,7 @@ class _NewUserCopyWithImpl<$R, $Out>
       if (picture != null) #picture: picture,
       if (userName != null) #userName: userName,
       if (categoryUid != $none) #categoryUid: categoryUid,
+      if (categoryName != $none) #categoryName: categoryName,
       if (isProvider != null) #isProvider: isProvider,
       if (defaultProfileUid != null) #defaultProfileUid: defaultProfileUid,
       if (gender != null) #gender: gender,
@@ -299,6 +310,7 @@ class _NewUserCopyWithImpl<$R, $Out>
     picture: data.get(#picture, or: $value.picture),
     userName: data.get(#userName, or: $value.userName),
     categoryUid: data.get(#categoryUid, or: $value.categoryUid),
+    categoryName: data.get(#categoryName, or: $value.categoryName),
     isProvider: data.get(#isProvider, or: $value.isProvider),
     defaultProfileUid: data.get(
       #defaultProfileUid,

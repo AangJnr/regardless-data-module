@@ -874,6 +874,21 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
     return response;
   }
 
+    // Teams
+  @override
+  Future<dynamic> createTeamAccount(Team team, NewUser user , {XFile? logo, XFile? headerImage}) async {
+    return postWithFiles(ATeam().CreateTeamAccount,
+        headers: await getHeaders(),
+        body: json.encode({
+          "team": team.toMap(),
+          "user": user.toMap(),
+        }),
+        dataList: [
+          if (logo != null) ImageProperties("logo", logo),
+          if (headerImage != null) ImageProperties("headerImage", headerImage),
+        ]);
+  }
+
   // Teams
   @override
   Future<dynamic> addTeam(Team team, {XFile? logo, XFile? headerImage}) async {

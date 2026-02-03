@@ -1,5 +1,6 @@
 import 'package:cross_file/cross_file.dart';
 import 'package:multiple_result/multiple_result.dart';
+import 'package:regardless_data_module/domain/model/new_user.dart';
 import '../media.dart';
 import '../model/pagination.dart';
 import '../../data/model/paginated_response.dart';
@@ -11,8 +12,15 @@ import '../model/team/team_member.dart';
 import '../model/user.dart';
 
 abstract class TeamRepository {
-  Future<Result<Team, Exception>> addTeam(
+  Future<Result<Team, Exception>> editTeam(
     Team team, {
+    XFile? logo,
+    XFile? headerImage,
+  });
+
+  Future<Result<Team, Exception>> createTeamAccount(
+    Team team,
+    NewUser user, {
     XFile? logo,
     XFile? headerImage,
   });
@@ -29,7 +37,7 @@ abstract class TeamRepository {
   Future<Result<bool, Exception>> requestToJoinTeam(
       String ownerUid, String uid);
   Future<Result<bool, Exception>> inviteUserToTeam(
-       List<AUser> users, String uid);
+      List<AUser> users, String uid);
   Future<Result<bool, Exception>> approveRequestToJoinTeam(
       {required String ownerUid,
       required String uid,

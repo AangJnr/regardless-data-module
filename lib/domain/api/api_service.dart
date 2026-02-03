@@ -65,7 +65,7 @@ abstract class ApiService {
     required String? recurrenceUid,
   });
   Future<Response> unattendEvent(
-      {required String eventUid,   String? recurrenceUid});
+      {required String eventUid, String? recurrenceUid});
   Future<Response> getEventAttendees(
       {required String eventUid,
       required String recurrenceUid,
@@ -166,6 +166,8 @@ abstract class ApiService {
 
   // Teams
   Future<dynamic> addTeam(Team team, {XFile? logo, XFile? headerImage});
+  Future<dynamic> createTeamAccount(Team team, NewUser user,
+      {XFile? logo, XFile? headerImage});
   Future<Response> getUsersTeams(String ownerUid, {PaginationRequest? request});
   Future<Response> getTeam(String ownerUid, String uid);
   Future<Response> deleteTeam(String uid);

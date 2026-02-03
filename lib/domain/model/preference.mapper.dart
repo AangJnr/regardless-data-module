@@ -47,7 +47,7 @@ class PreferenceMapper extends ClassMapperBase<Preference> {
     'isActive',
     _$isActive,
     opt: true,
-    def: false,
+    def: true,
   );
   static bool _$emailNewFeatureAnnouncement(Preference v) =>
       v.emailNewFeatureAnnouncement;
@@ -98,21 +98,21 @@ class PreferenceMapper extends ClassMapperBase<Preference> {
     'pushNotifications',
     _$pushNotifications,
     opt: true,
-    def: false,
+    def: true,
   );
   static bool _$emailNotifications(Preference v) => v.emailNotifications;
   static const Field<Preference, bool> _f$emailNotifications = Field(
     'emailNotifications',
     _$emailNotifications,
     opt: true,
-    def: false,
+    def: true,
   );
   static bool _$smsNotifications(Preference v) => v.smsNotifications;
   static const Field<Preference, bool> _f$smsNotifications = Field(
     'smsNotifications',
     _$smsNotifications,
     opt: true,
-    def: false,
+    def: true,
   );
 
   @override

@@ -175,6 +175,7 @@ class ASearch extends ApiRoutes {
 
 class ATeam extends ApiRoutes {
   String get Add => '$url/team';
+   String get CreateTeamAccount => '$url/team/create';
   String UsersTeams(String ownerUid) => '$url/team/all/$ownerUid';
   String Get(String ownerUid, String uid) => '$url/team/$ownerUid/$uid';
   String Delete(String uid) => '$url/team/$uid';

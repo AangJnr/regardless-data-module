@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:regardless_data_module/domain/media.dart';
+import 'package:regardless_data_module/domain/model/new_user.dart';
 import 'package:regardless_data_module/domain/model/pagination.dart';
 import 'package:regardless_data_module/domain/model/team/team.dart';
 import 'package:regardless_data_module/domain/model/team/team_invite.dart';
@@ -15,17 +16,33 @@ import '../../../app/services/cache_service.dart';
 import '../../../domain/model/sports/sports_category.dart';
 import '../../../domain/model/user.dart';
 import '../../model/paginated_response.dart';
- import 'base_repository.dart';
+import 'base_repository.dart';
 
 class TeamRepositoryImpl with BaseRepository implements TeamRepository {
   @override
-  Future<Result<Team, Exception>> addTeam(
+  Future<Result<Team, Exception>> editTeam(
     Team team, {
     XFile? logo,
     XFile? headerImage,
   }) async {
     final res = await processMultiPartRequest(
         () => apiService.addTeam(team, logo: logo, headerImage: headerImage));
+    if (res.isSuccess()) {
+      final data = res.tryGetSuccess()! as Map<String, dynamic>;
+      return Success(TeamMapper.fromMap(data));
+    }
+    return Error(res.tryGetError()!);
+  }
+
+  @override
+  Future<Result<Team, Exception>> createTeamAccount(
+    Team team,
+    NewUser user, {
+    XFile? logo,
+    XFile? headerImage,
+  }) async {
+    final res = await processMultiPartRequest(() => apiService
+        .createTeamAccount(team, user, logo: logo, headerImage: headerImage));
     if (res.isSuccess()) {
       final data = res.tryGetSuccess()! as Map<String, dynamic>;
       return Success(TeamMapper.fromMap(data));
@@ -98,8 +115,8 @@ class TeamRepositoryImpl with BaseRepository implements TeamRepository {
   @override
   Future<Result<bool, Exception>> inviteUserToTeam(
       List<AUser> users, String uid) async {
-    final res = await processRequest(
-        () => apiService.inviteUserToTeam(users, uid));
+    final res =
+        await processRequest(() => apiService.inviteUserToTeam(users, uid));
     if (res.isSuccess()) return const Success(true);
     return Error(res.tryGetError()!);
   }
@@ -284,7 +301,7 @@ class TeamRepositoryImpl with BaseRepository implements TeamRepository {
           PaginatedResponse.fromMap(data.tryGetSuccess()!);
       try {
         final parsed = paginationResponse.data
-            ?.mapIndexed((i, e) => MediaMapper.fromMap(e) )
+            ?.mapIndexed((i, e) => MediaMapper.fromMap(e))
             .toList();
         return Success(Pagination<Media>(
             data: parsed ?? [],

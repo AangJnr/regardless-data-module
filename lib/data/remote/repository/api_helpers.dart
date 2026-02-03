@@ -134,10 +134,11 @@ mixin ApiHelpers {
       body,
       List<ImageProperties> dataList = const []}) async {
     final request = http.MultipartRequest("POST", Uri.parse(url));
-    log.i("POST || url: $url");
-
+    log.i("url: $url");
     request.headers.addAll(headers);
     log.i("headers: ${request.headers}");
+    log.i("body: $body");
+
     request.fields['data'] = body;
     for (ImageProperties f in dataList) {
       request.files.add(await http.MultipartFile.fromPath(f.key, f.file.path));
