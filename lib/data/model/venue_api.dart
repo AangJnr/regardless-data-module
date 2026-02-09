@@ -6,11 +6,11 @@ import '../../../domain/model/venue.dart';
 class VenueApi implements DomainMapper<Venue> {
   final String? country;
   final String? address;
-  final dynamic lng;
+  final num? lng;
   final String? city;
   final String? name;
   final String? state;
-  final dynamic lat;
+  final num? lat;
   final String? otherAddress;
   final String? countryIso;
   final String? placeId;
@@ -35,11 +35,11 @@ class VenueApi implements DomainMapper<Venue> {
   factory VenueApi.fromMap(Map<String, dynamic> data) => VenueApi(
       country: data['country'] as String?,
       address: data['address'] as String?,
-      lng: data['lng'] as dynamic,
+      lng: data['lng'] as num?,
       city: data['city'] as String?,
       name: data['name'] as String?,
       state: data['state'] as String?,
-      lat: data['lat'] as dynamic,
+      lat: data['lat'] as num?,
       countryIso: data['countryIso'] as String?,
       placeId: data['placeId'] as String?,
       otherAddress: data['otherAddress'] as String?);
@@ -82,11 +82,11 @@ class VenueApi implements DomainMapper<Venue> {
     return VenueApi(
         country: country ?? this.country,
         address: address ?? this.address,
-        lng: lng ?? this.lng,
+        lng: lng,
         city: city ?? this.city,
         name: name ?? this.name,
         state: state ?? this.state,
-        lat: lat ?? this.lat,
+        lat: lat,
         countryIso: countryIso,
         otherAddress: otherAddress ?? this.otherAddress);
   }
@@ -95,10 +95,10 @@ class VenueApi implements DomainMapper<Venue> {
   Venue mapToDomain() => Venue(
       country: country ?? '',
       address: address ?? '',
-      lng: lng ?? -0.0,
+      lng: lng?.toDouble() ?? -0.0,
       city: city ?? '',
       name: name ?? '',
       state: state ?? '',
-      lat: lat ?? 0.0,
+      lat: lat?.toDouble() ?? 0.0,
       otherAddress: otherAddress ?? '');
 }

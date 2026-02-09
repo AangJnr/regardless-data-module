@@ -30,6 +30,7 @@ abstract class ApiService {
   Future<Response> setDefaultUserAccount(String profileUid);
   Future<Response> getPublicUser(String uid);
   Future<Response> deleteUser(String id);
+  Future<Response> deleteUserData();
   Future<dynamic> uploadPhoto(String profileUid, XFile file);
   Future<Response> deleteAccount(String uid,
       {String title = 'None', String reason = 'Not provided'});

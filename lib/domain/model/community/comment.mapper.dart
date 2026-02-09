@@ -62,12 +62,6 @@ class CommentMapper extends ClassMapperBase<Comment> {
     _$updatedAt,
     opt: true,
   );
-  static String? _$picture(Comment v) => v.picture;
-  static const Field<Comment, String> _f$picture = Field(
-    'picture',
-    _$picture,
-    opt: true,
-  );
   static List<HashImage> _$imageUrls(Comment v) => v.imageUrls;
   static const Field<Comment, List<HashImage>> _f$imageUrls = Field(
     'imageUrls',
@@ -84,7 +78,6 @@ class CommentMapper extends ClassMapperBase<Comment> {
     #uid: _f$uid,
     #createdAt: _f$createdAt,
     #updatedAt: _f$updatedAt,
-    #picture: _f$picture,
     #imageUrls: _f$imageUrls,
   };
 
@@ -96,7 +89,6 @@ class CommentMapper extends ClassMapperBase<Comment> {
       uid: data.dec(_f$uid),
       createdAt: data.dec(_f$createdAt),
       updatedAt: data.dec(_f$updatedAt),
-      picture: data.dec(_f$picture),
       imageUrls: data.dec(_f$imageUrls),
     );
   }
@@ -167,7 +159,6 @@ abstract class CommentCopyWith<$R, $In extends Comment, $Out>
     String? uid,
     DateTime? createdAt,
     DateTime? updatedAt,
-    String? picture,
     List<HashImage>? imageUrls,
   });
   CommentCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -196,7 +187,6 @@ class _CommentCopyWithImpl<$R, $Out>
     String? uid,
     Object? createdAt = $none,
     Object? updatedAt = $none,
-    Object? picture = $none,
     List<HashImage>? imageUrls,
   }) => $apply(
     FieldCopyWithData({
@@ -206,7 +196,6 @@ class _CommentCopyWithImpl<$R, $Out>
       if (uid != null) #uid: uid,
       if (createdAt != $none) #createdAt: createdAt,
       if (updatedAt != $none) #updatedAt: updatedAt,
-      if (picture != $none) #picture: picture,
       if (imageUrls != null) #imageUrls: imageUrls,
     }),
   );
@@ -218,7 +207,6 @@ class _CommentCopyWithImpl<$R, $Out>
     uid: data.get(#uid, or: $value.uid),
     createdAt: data.get(#createdAt, or: $value.createdAt),
     updatedAt: data.get(#updatedAt, or: $value.updatedAt),
-    picture: data.get(#picture, or: $value.picture),
     imageUrls: data.get(#imageUrls, or: $value.imageUrls),
   );
 

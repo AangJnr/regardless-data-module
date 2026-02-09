@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:intl/intl.dart';
+import 'package:regardless_data_module/extensions/extensions.dart';
 
 import '../hash_image.dart';
 part 'comment.mapper.dart';
@@ -13,17 +14,18 @@ class Comment with CommentMappable {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final List<HashImage> imageUrls;
-  final String? picture;
-
+ 
   const Comment({
     this.userUid = '',
     this.userName = '',
     this.comment = '',
     this.uid = '',
     this.createdAt,
-    this.updatedAt,this.picture,
+    this.updatedAt,
     this.imageUrls = const [],
   });
+
+   String get picture => userUid.profileUidToProfileUrl;
 
   @override
   String toString() {

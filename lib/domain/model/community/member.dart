@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:regardless_data_module/domain/model/user.dart';
+import 'package:regardless_data_module/extensions/extensions.dart';
 
 part 'member.mapper.dart';
 
@@ -25,6 +26,8 @@ class Member with MemberMappable {
   String toString() {
     return 'Member(uid: $uid, userName: $userName, profile: $profile, joinedAt: $joinedAt)';
   }
+
+  String get profileUrl => uid.profileUidToProfileUrl;
 
   String getDisplayedDateTime() {
     try {

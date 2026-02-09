@@ -27,6 +27,8 @@ abstract class UserRepository {
       String profileUid, XFile file);
   Future<Result<bool, Exception>> deleteAccount(String uid,
       {String title = 'None', String reason = 'Not provided'});
+  Future<bool> deleteUserData();
+
   Future<Result<bool, Exception>> updateDeviceToken(String token);
   Future<NotificationRequest?> getDeviceToken(String token);
   Future<Result<AUser, Exception>> updateUserName(String userName);
@@ -52,6 +54,5 @@ abstract class UserRepository {
       {PaginationRequest? request, String uid = ''});
   Future<Result<Review, Exception>> addProviderReview(
       {required Review review, String uid = ''});
-    Future<Result<List<AUser>, Exception>> searchUsers(
-      SearchEventParams params);
+  Future<Result<List<AUser>, Exception>> searchUsers(SearchEventParams params);
 }

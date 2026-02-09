@@ -135,13 +135,6 @@ class AUserMapper extends ClassMapperBase<AUser> {
     opt: true,
     def: Gender.Unsure,
   );
-  static String _$picture(AUser v) => v.picture;
-  static const Field<AUser, String> _f$picture = Field(
-    'picture',
-    _$picture,
-    opt: true,
-    def: '',
-  );
   static String _$bio(AUser v) => v.bio;
   static const Field<AUser, String> _f$bio = Field(
     'bio',
@@ -188,6 +181,12 @@ class AUserMapper extends ClassMapperBase<AUser> {
   static const Field<AUser, Category> _f$category = Field(
     'category',
     _$category,
+    opt: true,
+  );
+  static List<Category>? _$subCategories(AUser v) => v.subCategories;
+  static const Field<AUser, List<Category>> _f$subCategories = Field(
+    'subCategories',
+    _$subCategories,
     opt: true,
   );
   static int _$unreadNotificationCount(AUser v) => v.unreadNotificationCount;
@@ -250,7 +249,6 @@ class AUserMapper extends ClassMapperBase<AUser> {
     #updatedAt: _f$updatedAt,
     #isProvider: _f$isProvider,
     #gender: _f$gender,
-    #picture: _f$picture,
     #bio: _f$bio,
     #userName: _f$userName,
     #authUid: _f$authUid,
@@ -258,6 +256,7 @@ class AUserMapper extends ClassMapperBase<AUser> {
     #categoryUid: _f$categoryUid,
     #userNameAlreadyUpdated: _f$userNameAlreadyUpdated,
     #category: _f$category,
+    #subCategories: _f$subCategories,
     #unreadNotificationCount: _f$unreadNotificationCount,
     #reviewsCount: _f$reviewsCount,
     #rating: _f$rating,
@@ -277,7 +276,6 @@ class AUserMapper extends ClassMapperBase<AUser> {
       updatedAt: data.dec(_f$updatedAt),
       isProvider: data.dec(_f$isProvider),
       gender: data.dec(_f$gender),
-      picture: data.dec(_f$picture),
       bio: data.dec(_f$bio),
       userName: data.dec(_f$userName),
       authUid: data.dec(_f$authUid),
@@ -285,6 +283,7 @@ class AUserMapper extends ClassMapperBase<AUser> {
       categoryUid: data.dec(_f$categoryUid),
       userNameAlreadyUpdated: data.dec(_f$userNameAlreadyUpdated),
       category: data.dec(_f$category),
+      subCategories: data.dec(_f$subCategories),
       unreadNotificationCount: data.dec(_f$unreadNotificationCount),
       reviewsCount: data.dec(_f$reviewsCount),
       rating: data.dec(_f$rating),
@@ -342,6 +341,8 @@ extension AUserValueCopy<$R, $Out> on ObjectCopyWith<$R, AUser, $Out> {
 abstract class AUserCopyWith<$R, $In extends AUser, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   CategoryCopyWith<$R, Category, Category>? get category;
+  ListCopyWith<$R, Category, CategoryCopyWith<$R, Category, Category>>?
+  get subCategories;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
   get likedPostUids;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
@@ -359,7 +360,6 @@ abstract class AUserCopyWith<$R, $In extends AUser, $Out>
     DateTime? updatedAt,
     bool? isProvider,
     Gender? gender,
-    String? picture,
     String? bio,
     String? userName,
     String? authUid,
@@ -367,6 +367,7 @@ abstract class AUserCopyWith<$R, $In extends AUser, $Out>
     String? categoryUid,
     bool? userNameAlreadyUpdated,
     Category? category,
+    List<Category>? subCategories,
     int? unreadNotificationCount,
     int? reviewsCount,
     double? rating,
@@ -387,6 +388,15 @@ class _AUserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, AUser, $Out>
   @override
   CategoryCopyWith<$R, Category, Category>? get category =>
       $value.category?.copyWith.$chain((v) => call(category: v));
+  @override
+  ListCopyWith<$R, Category, CategoryCopyWith<$R, Category, Category>>?
+  get subCategories => $value.subCategories != null
+      ? ListCopyWith(
+          $value.subCategories!,
+          (v, t) => v.copyWith.$chain(t),
+          (v) => call(subCategories: v),
+        )
+      : null;
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
   get likedPostUids => ListCopyWith(
@@ -425,7 +435,6 @@ class _AUserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, AUser, $Out>
     Object? updatedAt = $none,
     bool? isProvider,
     Gender? gender,
-    String? picture,
     String? bio,
     String? userName,
     String? authUid,
@@ -433,6 +442,7 @@ class _AUserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, AUser, $Out>
     String? categoryUid,
     bool? userNameAlreadyUpdated,
     Object? category = $none,
+    Object? subCategories = $none,
     int? unreadNotificationCount,
     int? reviewsCount,
     double? rating,
@@ -450,7 +460,6 @@ class _AUserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, AUser, $Out>
       if (updatedAt != $none) #updatedAt: updatedAt,
       if (isProvider != null) #isProvider: isProvider,
       if (gender != null) #gender: gender,
-      if (picture != null) #picture: picture,
       if (bio != null) #bio: bio,
       if (userName != null) #userName: userName,
       if (authUid != null) #authUid: authUid,
@@ -459,6 +468,7 @@ class _AUserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, AUser, $Out>
       if (userNameAlreadyUpdated != null)
         #userNameAlreadyUpdated: userNameAlreadyUpdated,
       if (category != $none) #category: category,
+      if (subCategories != $none) #subCategories: subCategories,
       if (unreadNotificationCount != null)
         #unreadNotificationCount: unreadNotificationCount,
       if (reviewsCount != null) #reviewsCount: reviewsCount,
@@ -480,7 +490,6 @@ class _AUserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, AUser, $Out>
     updatedAt: data.get(#updatedAt, or: $value.updatedAt),
     isProvider: data.get(#isProvider, or: $value.isProvider),
     gender: data.get(#gender, or: $value.gender),
-    picture: data.get(#picture, or: $value.picture),
     bio: data.get(#bio, or: $value.bio),
     userName: data.get(#userName, or: $value.userName),
     authUid: data.get(#authUid, or: $value.authUid),
@@ -491,6 +500,7 @@ class _AUserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, AUser, $Out>
       or: $value.userNameAlreadyUpdated,
     ),
     category: data.get(#category, or: $value.category),
+    subCategories: data.get(#subCategories, or: $value.subCategories),
     unreadNotificationCount: data.get(
       #unreadNotificationCount,
       or: $value.unreadNotificationCount,

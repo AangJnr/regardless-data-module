@@ -101,9 +101,9 @@ class LocationService {
     if (permission == LocationPermission.deniedForever) {
       await DialogService()
           .showConfirmationDialog(
-              title: '',
+              title: 'Permission denied',
               description:
-                  'Location permissions are permantly denied, we cannot request permissions. Please provide location permission in settings.',
+                  'Location permissions are permantly denied. Please provide location permission in the settings app.',
               barrierDismissible: false,
               cancelTitle: 'Cancel',
               confirmationTitle: 'OK')
@@ -123,7 +123,7 @@ class LocationService {
           .showConfirmationDialog(
               title: 'Location services required',
               description:
-                  'LocationPermission is required to be able to provide access to events and commmunities around you. Please provide location permissions.',
+                  'LocationPermission is required to be able to provide access to events and communities around you. Please provide location permissions.',
               barrierDismissible: false,
               cancelTitle: 'Cancel',
               confirmationTitle: 'OK')

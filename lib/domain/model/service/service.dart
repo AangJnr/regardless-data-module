@@ -16,7 +16,7 @@ class Service with ServiceMappable {
   final String name;
   final String description;
   final List<TimeSlot> timeSlots;
-  final Venue location;
+  final Venue? location;
   final String ownerUid;
   final DateTime? updatedAt;
   final String categoryUid;

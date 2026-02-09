@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:regardless_data_module/extensions/extensions.dart';
 
 import 'category.dart';
 
@@ -25,10 +28,10 @@ class AUser with AUserMappable {
   final DateTime? updatedAt;
   final Gender gender;
   final bool isProvider;
-  final String picture;
   final String bio;
   final String categoryUid;
   final Category? category;
+  final List<Category>? subCategories;
   final int unreadNotificationCount;
   final double rating;
   final int reviewsCount;
@@ -49,7 +52,6 @@ class AUser with AUserMappable {
     this.updatedAt,
     this.isProvider = false,
     this.gender = Gender.Unsure,
-    this.picture = '',
     this.bio = '',
     this.userName = '',
     this.authUid = '',
@@ -57,6 +59,7 @@ class AUser with AUserMappable {
     this.categoryUid = '',
     this.userNameAlreadyUpdated = false,
     this.category,
+    this.subCategories,
     this.unreadNotificationCount = 0,
     this.reviewsCount = 0,
     this.rating = 5.0,
@@ -71,7 +74,11 @@ class AUser with AUserMappable {
     return 'User(id: $uid email: $email)';
   }
 
+  String get profileUrl => uid.profileUidToProfileUrl;
+
   bool profileCompleted() {
     return true;
   }
+
+  bool get isAnonymous => email.endsWith('@anonymous.com');
 }

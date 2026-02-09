@@ -73,7 +73,7 @@ class ServiceMapper extends ClassMapperBase<Service> {
     opt: true,
     def: const [],
   );
-  static Venue _$location(Service v) => v.location;
+  static Venue? _$location(Service v) => v.location;
   static const Field<Service, Venue> _f$location = Field(
     'location',
     _$location,
@@ -210,7 +210,7 @@ abstract class ServiceCopyWith<$R, $In extends Service, $Out>
   ListCopyWith<$R, Price, PriceCopyWith<$R, Price, Price>> get prices;
   ListCopyWith<$R, TimeSlot, TimeSlotCopyWith<$R, TimeSlot, TimeSlot>>
   get timeSlots;
-  VenueCopyWith<$R, Venue, Venue> get location;
+  VenueCopyWith<$R, Venue, Venue>? get location;
   AUserCopyWith<$R, AUser, AUser>? get provider;
   $R call({
     DateTime? createdAt,
@@ -260,8 +260,8 @@ class _ServiceCopyWithImpl<$R, $Out>
     (v) => call(timeSlots: v),
   );
   @override
-  VenueCopyWith<$R, Venue, Venue> get location =>
-      $value.location.copyWith.$chain((v) => call(location: v));
+  VenueCopyWith<$R, Venue, Venue>? get location =>
+      $value.location?.copyWith.$chain((v) => call(location: v));
   @override
   AUserCopyWith<$R, AUser, AUser>? get provider =>
       $value.provider?.copyWith.$chain((v) => call(provider: v));
@@ -274,7 +274,7 @@ class _ServiceCopyWithImpl<$R, $Out>
     String? name,
     String? description,
     List<TimeSlot>? timeSlots,
-    Venue? location,
+    Object? location = $none,
     String? ownerUid,
     Object? updatedAt = $none,
     bool? isActive,
@@ -289,7 +289,7 @@ class _ServiceCopyWithImpl<$R, $Out>
       if (name != null) #name: name,
       if (description != null) #description: description,
       if (timeSlots != null) #timeSlots: timeSlots,
-      if (location != null) #location: location,
+      if (location != $none) #location: location,
       if (ownerUid != null) #ownerUid: ownerUid,
       if (updatedAt != $none) #updatedAt: updatedAt,
       if (isActive != null) #isActive: isActive,

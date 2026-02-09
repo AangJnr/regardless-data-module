@@ -108,6 +108,20 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   }
 
   @override
+  Future<bool> deleteUserData() async {
+    try {
+      var data = await processRequest(() => apiService.deleteUserData());
+      if (data.isSuccess()) {
+        sessionManager.invalidate();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  @override
   Future<Result<bool, Exception>> updateDeviceToken(String token) async {
     if (!sessionManager.isLoggedIn()) {
       return Success(false);

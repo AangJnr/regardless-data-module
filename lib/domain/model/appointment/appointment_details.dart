@@ -6,7 +6,7 @@ class AppointmentDetail {
   final String description;
   final String startTime;
   final String endTime;
-  final Venue location;
+  final Venue? location;
 
   const AppointmentDetail({
     this.title = '',

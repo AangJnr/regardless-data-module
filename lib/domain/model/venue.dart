@@ -40,9 +40,11 @@ class Venue with VenueMappable implements DataMapper<VenueApi> {
 
   String getName() {
     if (address.isEmpty) return '';
-    if (address.toLowerCase() == 'current location') return 'you';
+    if (address.toLowerCase() == 'current location') return 'your location';
     return address;
   }
+
+  bool get isValidLocation => address.isNotEmpty && lat > 0;
 
   @override
   VenueApi mapToApi() => VenueApi(

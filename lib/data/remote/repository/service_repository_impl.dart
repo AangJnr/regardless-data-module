@@ -30,14 +30,14 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
           description: service.description,
           startTime: timeSlot.slots.first.startTime?.toIso8601String(),
           endTime: timeSlot.slots.first.endTime?.toIso8601String(),
-          location: service.location.mapToApi(),
+          location: service.location?.mapToApi(),
         ),
         status: AppointmentStatus.scheduled.name,
         participantDetails: ParticipantDetailApi(
             email: user.email,
             name: user.fullName,
             phone: user.phone,
-            photoUrl: user.picture));
+            photoUrl: user.profileUrl));
     var data =
         await processRequest(() => apiService.addAppointment(appointment));
     if (data.isSuccess()) {
@@ -52,8 +52,7 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
     var data = await processRequest(() => apiService.addService(e));
     try {
       if (data.isSuccess()) {
-        return Success(
-            ServiceMapper.fromMap(data.tryGetSuccess()!) );
+        return Success(ServiceMapper.fromMap(data.tryGetSuccess()!));
       }
     } catch (e) {
       getLogger('ServiceRepository').e(e.toString());
@@ -187,8 +186,7 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
     var data =
         await processRequest(() => apiService.getService(providerUid, uid));
     if (data.isSuccess()) {
-      return Success(
-          ServiceMapper.fromMap(data.tryGetSuccess()!));
+      return Success(ServiceMapper.fromMap(data.tryGetSuccess()!));
     }
     return Error(data.tryGetError()!);
   }

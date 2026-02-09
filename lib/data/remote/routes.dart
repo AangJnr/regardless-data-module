@@ -48,6 +48,7 @@ class User extends ApiRoutes {
   String Fcm(String registrationId) => "$url/fcm/$registrationId";
   String get UpdateFcm => "$url/fcm";
   String Review(String uid) => '$url/user/$uid/review';
+  String get DeleteUserData => "$url/user/delete-user-data";
 }
 
 class ProductUrl extends ApiRoutes {
@@ -76,7 +77,8 @@ class Event extends ApiRoutes {
   String get Purchase => '$url/event/ticket/purchase';
   String get Validate => '$url/event/ticket/validate';
   String get Categories => '$url/admin/category';
-  String SubCategories(String categoryUid) => '$url/admin/category/$categoryUid/subcategories';
+  String SubCategories(String categoryUid) =>
+      '$url/admin/category/$categoryUid/subcategories';
   String get Geocode => '$url/admin/geocode';
   String Favorate(String uid) => '$url/event/favorate/$uid';
   String get AllFavorates => '$url/event/favorates/';
@@ -85,10 +87,8 @@ class Event extends ApiRoutes {
   String get UnLink => '$url/event/unlink-with-community';
   String CommunityEvents(String ownerUid, String uid) =>
       '$url/event/community-events/$ownerUid/$uid/';
-  String  get Attend  =>
-      '$url/event/attendance/add';
-  String get UnAttend  =>
-      '$url/event/attendance/remove';
+  String get Attend => '$url/event/attendance/add';
+  String get UnAttend => '$url/event/attendance/remove';
   String Attendees(String eventUid, String recurrenceUid) =>
       '$url/event/attendance/$eventUid/$recurrenceUid';
 }
@@ -175,7 +175,7 @@ class ASearch extends ApiRoutes {
 
 class ATeam extends ApiRoutes {
   String get Add => '$url/team';
-   String get CreateTeamAccount => '$url/team/create';
+  String get CreateTeamAccount => '$url/team/create';
   String UsersTeams(String ownerUid) => '$url/team/all/$ownerUid';
   String Get(String ownerUid, String uid) => '$url/team/$ownerUid/$uid';
   String Delete(String uid) => '$url/team/$uid';

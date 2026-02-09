@@ -110,6 +110,15 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
+  Future<http.Response> deleteUserData() async {
+    var response = delete(
+      User().DeleteUserData,
+      headers: await getHeaders(),
+    );
+    return response;
+  }
+
+  @override
   Future<dynamic> uploadPhoto(String profileUid, XFile file) async {
     var response = postMultipart(User().ImageUpload(profileUid),
         headers: await getHeaders(),

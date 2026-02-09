@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:regardless_data_module/domain/model/user.dart';
 
-import '../../../domain/model/service/service.dart';
-import '../../../domain/model/venue.dart';
 import '../price_api.dart';
 import '../venue_api.dart';
 import 'time_slot_api.dart';

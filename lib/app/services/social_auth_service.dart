@@ -9,6 +9,7 @@ import '../utils/url.dart';
 class SocialAuthService {
   final firebaseAuth = FirebaseAuth.instance;
   final _sessionManager = module<SessionManager>();
+
   Future<Result<User, Exception>> signInWithGoogle(
       {bool isPlatformWeb = true}) async {
     // Trigger the authentication flow
@@ -26,6 +27,20 @@ class SocialAuthService {
             await FirebaseAuth.instance.signInWithProvider(googleProvider);
       }
 
+      if (userRequest.user != null) {
+        return Success(userRequest.user!);
+      }
+      return Error(Exception('Sign in not completed.'));
+    } on FirebaseAuthException catch (e) {
+      getLogger("SocialAuthService").e(e);
+      return Error(Exception(e));
+    }
+  }
+
+  Future<Result<User, Exception>> signInAnonymously() async {
+    // Trigger the authentication flow
+    try {
+      final userRequest = await FirebaseAuth.instance.signInAnonymously();
       if (userRequest.user != null) {
         return Success(userRequest.user!);
       }
