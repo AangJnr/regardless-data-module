@@ -34,6 +34,8 @@ class TeamRoleMapper extends EnumMapper<TeamRole> {
         return TeamRole.coach;
       case r'owner':
         return TeamRole.owner;
+      case r'collaborator':
+        return TeamRole.collaborator;
       default:
         throw MapperException.unknownEnumValue(value);
     }
@@ -50,6 +52,8 @@ class TeamRoleMapper extends EnumMapper<TeamRole> {
         return r'coach';
       case TeamRole.owner:
         return r'owner';
+      case TeamRole.collaborator:
+        return r'collaborator';
     }
   }
 }

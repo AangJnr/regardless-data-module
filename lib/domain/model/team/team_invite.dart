@@ -4,7 +4,7 @@ import 'package:intl/intl.dart' show DateFormat;
 part 'team_invite.mapper.dart';
 
 @MappableEnum()
-enum TeamRole { player, manager, coach, owner }
+enum TeamRole { player, manager, coach, owner, collaborator }
 
 @MappableEnum()
 enum TeamInviteStatus { pending, accepted, completed, expired }

@@ -883,9 +883,10 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
     return response;
   }
 
-    // Teams
+  // Teams
   @override
-  Future<dynamic> createTeamAccount(Team team, NewUser user , {XFile? logo, XFile? headerImage}) async {
+  Future<dynamic> createTeamAccount(Team team, NewUser user,
+      {XFile? logo, XFile? headerImage}) async {
     return postWithFiles(ATeam().CreateTeamAccount,
         headers: await getHeaders(),
         body: json.encode({
@@ -1113,5 +1114,95 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
         dataList:
             files.map((file) => ImageProperties("images", file)).toList());
     return response;
+  }
+
+  // Provider Media & Collaborators
+  @override
+  Future<dynamic> uploadProviderMedia(String uid, List<XFile> files) async {
+    var response = postMultipart(User().UploadMedia(uid),
+        headers: await getHeaders(),
+        dataList:
+            files.map((file) => ImageProperties("images", file)).toList());
+    return response;
+  }
+
+  @override
+  Future<http.Response> getProviderMedia(String uid,
+      {PaginationRequest? request}) async {
+    return get(User().GetMedia(uid, params: request?.toQueryParams() ?? ''),
+        headers: await getHeaders());
+  }
+
+  @override
+  Future<http.Response> deleteProviderMedia(
+      String uid, List<String> uids) async {
+    return delete(
+      User().DeleteMedia(uid),
+      headers: await getHeaders(),
+      body: jsonEncode({"uids": uids}),
+    );
+  }
+
+  @override
+  Future<http.Response> inviteCollaborators(
+      List<AUser> users, String uid) async {
+    return post(User().InviteCollaborators(uid),
+        headers: await getHeaders(),
+        body: jsonEncode(users
+            .map((e) => {
+                  "uid": e.uid,
+                  "userName": e.userName,
+                  "email": e.email,
+                })
+            .toList()));
+  }
+
+  @override
+  Future<http.Response> getInvitedCollaborators(String uid,
+      {PaginationRequest? request}) async {
+    return get(
+        User().GetInvitedCollaborators(uid,
+            params: request?.toQueryParams() ?? ''),
+        headers: await getHeaders());
+  }
+
+  @override
+  Future<http.Response> deleteCollaboratorInvite(
+      String uid, String inviteId) async {
+    return delete(
+      User().DeleteCollaboratorInvite(uid, inviteId),
+      headers: await getHeaders(),
+    );
+  }
+
+  @override
+  Future<http.Response> acceptCollaboratorInvite(
+      String token, String providerUid) async {
+    return post(User().AcceptCollaboratorInvite(),
+        headers: await getHeaders(isSecure: false),
+        body: jsonEncode({"token": token, "providerUid": providerUid}));
+  }
+
+  @override
+  Future<http.Response> finalizeCollaboratorInvite(
+      String token, String providerUid) async {
+    return post(User().FinalizeCollaboratorInvite(),
+        headers: await getHeaders(),
+        body: jsonEncode({"token": token, "providerUid": providerUid}));
+  }
+
+  @override
+  Future<http.Response> getCollaborators(String uid,
+      {PaginationRequest? request}) async {
+    return get(
+        User().GetCollaborators(uid, params: request?.toQueryParams() ?? ''),
+        headers: await getHeaders());
+  }
+
+  @override
+  Future<http.Response> removeCollaborator(
+      String uid, String collaboratorUid) async {
+    return delete(User().RemoveCollaborator(uid, collaboratorUid),
+        headers: await getHeaders());
   }
 }

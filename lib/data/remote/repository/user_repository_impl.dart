@@ -11,6 +11,9 @@ import 'package:regardless_data_module/app/services/cache_service.dart';
 import 'package:regardless_data_module/data/model/dashboard_metrics_api.dart';
 import 'package:regardless_data_module/domain/model/accounts.dart';
 import 'package:regardless_data_module/domain/model/dashboard_metrics.dart';
+import '../../../domain/media.dart';
+import '../../../domain/model/team/team_invite.dart';
+import '../../../domain/model/team/team_member.dart';
 
 import '../../../app/app.logger.dart';
 import '../../../domain/model/follower.dart';
@@ -439,5 +442,136 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
       return Success(results);
     }
     return Success([]);
+  }
+
+  @override
+  Future<Result<List<Media>, Exception>> uploadProviderMedia(
+      String uid, List<XFile> files) async {
+    final response = await processMultiPartRequest(
+        () => apiService.uploadProviderMedia(uid, files));
+    if (response.isSuccess()) {
+      return Success((response.tryGetSuccess()! as List)
+          .map((data) => MediaMapper.fromMap(data))
+          .toList());
+    }
+    return Error(response.tryGetError()!);
+  }
+
+  @override
+  Future<Result<Pagination<Media>, Exception>> getProviderMedia(String uid,
+      {PaginationRequest? request}) async {
+    final response = await processRequest(
+        () => apiService.getProviderMedia(uid, request: request));
+    if (response.isSuccess()) {
+      final paginationResponse =
+          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final parsed =
+          paginationResponse.data?.map((e) => MediaMapper.fromMap(e)).toList();
+      return Success(Pagination<Media>(
+          data: parsed ?? [],
+          hasNext: paginationResponse.hasNext,
+          last: paginationResponse.last));
+    }
+    return Error(response.tryGetError()!);
+  }
+
+  @override
+  Future<Result<bool, Exception>> deleteProviderMedia(
+      String uid, List<String> uids) async {
+    final response =
+        await processRequest(() => apiService.deleteProviderMedia(uid, uids));
+    return response.isSuccess()
+        ? Success(true)
+        : Error(response.tryGetError()!);
+  }
+
+  @override
+  Future<Result<bool, Exception>> inviteCollaborators(
+      List<AUser> users, String uid) async {
+    final response =
+        await processRequest(() => apiService.inviteCollaborators(users, uid));
+    return response.isSuccess()
+        ? Success(true)
+        : Error(response.tryGetError()!);
+  }
+
+  @override
+  Future<Result<Pagination<TeamInvite>, Exception>> getInvitedCollaborators(
+      String uid,
+      {PaginationRequest? request}) async {
+    final response = await processRequest(
+        () => apiService.getInvitedCollaborators(uid, request: request));
+    if (response.isSuccess()) {
+      final paginationResponse =
+          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final parsed = paginationResponse.data
+          ?.map((e) => TeamInviteMapper.fromMap(e))
+          .toList();
+      return Success(Pagination<TeamInvite>(
+          data: parsed ?? [],
+          hasNext: paginationResponse.hasNext,
+          last: paginationResponse.last));
+    }
+    return Error(response.tryGetError()!);
+  }
+
+  @override
+  Future<Result<bool, Exception>> deleteCollaboratorInvite(
+      String uid, String inviteId) async {
+    final response = await processRequest(
+        () => apiService.deleteCollaboratorInvite(uid, inviteId));
+    return response.isSuccess()
+        ? Success(true)
+        : Error(response.tryGetError()!);
+  }
+
+  @override
+  Future<Result<TeamInvite, Exception>> acceptCollaboratorInvite(
+      {required String token, required String providerUid}) async {
+    final response = await processRequest(
+        () => apiService.acceptCollaboratorInvite(token, providerUid));
+    if (response.isSuccess()) {
+      return Success(TeamInviteMapper.fromMap(response.tryGetSuccess()!));
+    }
+    return Error(response.tryGetError()!);
+  }
+
+  @override
+  Future<Result<bool, Exception>> finalizeCollaboratorInvite(
+      {required String token, required String providerUid}) async {
+    final response = await processRequest(
+        () => apiService.finalizeCollaboratorInvite(token, providerUid));
+    return response.isSuccess()
+        ? Success(true)
+        : Error(response.tryGetError()!);
+  }
+
+  @override
+  Future<Result<Pagination<TeamMember>, Exception>> getCollaborators(String uid,
+      {PaginationRequest? request}) async {
+    final response = await processRequest(
+        () => apiService.getCollaborators(uid, request: request));
+    if (response.isSuccess()) {
+      final paginationResponse =
+          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final parsed = paginationResponse.data
+          ?.map((e) => TeamMemberMapper.fromMap(e))
+          .toList();
+      return Success(Pagination<TeamMember>(
+          data: parsed ?? [],
+          hasNext: paginationResponse.hasNext,
+          last: paginationResponse.last));
+    }
+    return Error(response.tryGetError()!);
+  }
+
+  @override
+  Future<Result<bool, Exception>> removeCollaborator(
+      String uid, String collaboratorUid) async {
+    final response = await processRequest(
+        () => apiService.removeCollaborator(uid, collaboratorUid));
+    return response.isSuccess()
+        ? Success(true)
+        : Error(response.tryGetError()!);
   }
 }

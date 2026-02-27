@@ -49,6 +49,25 @@ class User extends ApiRoutes {
   String get UpdateFcm => "$url/fcm";
   String Review(String uid) => '$url/user/$uid/review';
   String get DeleteUserData => "$url/user/delete-user-data";
+
+  // Provider Media
+  String UploadMedia(String uid) => '$url/user/$uid/media';
+  String GetMedia(String uid, {String params = ''}) =>
+      '$url/user/$uid/media$params';
+  String DeleteMedia(String uid) => '$url/user/$uid/media';
+
+  // Provider Collaborators
+  String InviteCollaborators(String uid) => '$url/user/$uid/invites';
+  String GetInvitedCollaborators(String uid, {String params = ''}) =>
+      '$url/user/$uid/invites$params';
+  String DeleteCollaboratorInvite(String uid, String inviteId) =>
+      '$url/user/$uid/invites/$inviteId';
+  String AcceptCollaboratorInvite() => '$url/user/invites/accept';
+  String FinalizeCollaboratorInvite() => '$url/user/invites/finalize';
+  String GetCollaborators(String uid, {String params = ''}) =>
+      '$url/user/$uid/collaborators$params';
+  String RemoveCollaborator(String uid, String collaboratorUid) =>
+      '$url/user/$uid/collaborators/$collaboratorUid';
 }
 
 class ProductUrl extends ApiRoutes {

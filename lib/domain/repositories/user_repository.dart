@@ -2,6 +2,9 @@ import 'package:cross_file/cross_file.dart' show XFile;
 import 'package:multiple_result/multiple_result.dart';
 import 'package:regardless_data_module/domain/model/accounts.dart';
 import 'package:regardless_data_module/domain/model/dashboard_metrics.dart';
+import '../media.dart';
+import '../model/team/team_invite.dart';
+import '../model/team/team_member.dart';
 import '../../data/model/notification_request.dart';
 import '../../data/model/paginated_response.dart';
 import '../../data/model/search_filter.dart';
@@ -55,4 +58,29 @@ abstract class UserRepository {
   Future<Result<Review, Exception>> addProviderReview(
       {required Review review, String uid = ''});
   Future<Result<List<AUser>, Exception>> searchUsers(SearchEventParams params);
+
+  Future<Result<List<Media>, Exception>> uploadProviderMedia(
+      String uid, List<XFile> files);
+  Future<Result<Pagination<Media>, Exception>> getProviderMedia(String uid,
+      {PaginationRequest? request});
+  Future<Result<bool, Exception>> deleteProviderMedia(
+      String uid, List<String> uids);
+
+  Future<Result<bool, Exception>> inviteCollaborators(
+      List<AUser> users, String uid);
+  Future<Result<Pagination<TeamInvite>, Exception>> getInvitedCollaborators(
+      String uid,
+      {PaginationRequest? request});
+  Future<Result<bool, Exception>> deleteCollaboratorInvite(
+      String uid, String inviteId);
+
+  Future<Result<TeamInvite, Exception>> acceptCollaboratorInvite(
+      {required String token, required String providerUid});
+  Future<Result<bool, Exception>> finalizeCollaboratorInvite(
+      {required String token, required String providerUid});
+
+  Future<Result<Pagination<TeamMember>, Exception>> getCollaborators(String uid,
+      {PaginationRequest? request});
+  Future<Result<bool, Exception>> removeCollaborator(
+      String uid, String collaboratorUid);
 }

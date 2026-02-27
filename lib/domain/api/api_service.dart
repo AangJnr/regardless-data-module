@@ -206,4 +206,18 @@ abstract class ApiService {
 
   // Sports Categories
   Future<Response> getSportsCategories();
+  // Provider Media & Collaborators
+  Future<dynamic> uploadProviderMedia(String uid, List<XFile> files);
+  Future<Response> getProviderMedia(String uid, {PaginationRequest? request});
+  Future<Response> deleteProviderMedia(String uid, List<String> uids);
+
+  Future<Response> inviteCollaborators(List<AUser> users, String uid);
+  Future<Response> getInvitedCollaborators(String uid,
+      {PaginationRequest? request});
+  Future<Response> deleteCollaboratorInvite(String uid, String inviteId);
+  Future<Response> acceptCollaboratorInvite(String token, String providerUid);
+  Future<Response> finalizeCollaboratorInvite(String token, String providerUid);
+
+  Future<Response> getCollaborators(String uid, {PaginationRequest? request});
+  Future<Response> removeCollaborator(String uid, String collaboratorUid);
 }
