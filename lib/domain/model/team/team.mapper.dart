@@ -213,46 +213,47 @@ class _TeamCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Team, $Out>
     bool? isArchived,
     Object? createdAt = $none,
     Object? updatedAt = $none,
-  }) => $apply(
-    FieldCopyWithData({
-      if (uid != null) #uid: uid,
-      if (ownerUid != null) #ownerUid: ownerUid,
-      if (name != null) #name: name,
-      if (logo != $none) #logo: logo,
-      if (sportsCategoryUid != null) #sportsCategoryUid: sportsCategoryUid,
-      if (sportsCategoryName != $none) #sportsCategoryName: sportsCategoryName,
-      if (bio != null) #bio: bio,
-      if (headerUrl != $none) #headerUrl: headerUrl,
-      if (isPublic != null) #isPublic: isPublic,
-      if (isArchived != null) #isArchived: isArchived,
-      if (createdAt != $none) #createdAt: createdAt,
-      if (updatedAt != $none) #updatedAt: updatedAt,
-    }),
-  );
+  }) =>
+      $apply(
+        FieldCopyWithData({
+          if (uid != null) #uid: uid,
+          if (ownerUid != null) #ownerUid: ownerUid,
+          if (name != null) #name: name,
+          if (logo != $none) #logo: logo,
+          if (sportsCategoryUid != null) #sportsCategoryUid: sportsCategoryUid,
+          if (sportsCategoryName != $none)
+            #sportsCategoryName: sportsCategoryName,
+          if (bio != null) #bio: bio,
+          if (headerUrl != $none) #headerUrl: headerUrl,
+          if (isPublic != null) #isPublic: isPublic,
+          if (isArchived != null) #isArchived: isArchived,
+          if (createdAt != $none) #createdAt: createdAt,
+          if (updatedAt != $none) #updatedAt: updatedAt,
+        }),
+      );
   @override
   Team $make(CopyWithData data) => Team(
-    uid: data.get(#uid, or: $value.uid),
-    ownerUid: data.get(#ownerUid, or: $value.ownerUid),
-    name: data.get(#name, or: $value.name),
-    logo: data.get(#logo, or: $value.logo),
-    sportsCategoryUid: data.get(
-      #sportsCategoryUid,
-      or: $value.sportsCategoryUid,
-    ),
-    sportsCategoryName: data.get(
-      #sportsCategoryName,
-      or: $value.sportsCategoryName,
-    ),
-    bio: data.get(#bio, or: $value.bio),
-    headerUrl: data.get(#headerUrl, or: $value.headerUrl),
-    isPublic: data.get(#isPublic, or: $value.isPublic),
-    isArchived: data.get(#isArchived, or: $value.isArchived),
-    createdAt: data.get(#createdAt, or: $value.createdAt),
-    updatedAt: data.get(#updatedAt, or: $value.updatedAt),
-  );
+        uid: data.get(#uid, or: $value.uid),
+        ownerUid: data.get(#ownerUid, or: $value.ownerUid),
+        name: data.get(#name, or: $value.name),
+        logo: data.get(#logo, or: $value.logo),
+        sportsCategoryUid: data.get(
+          #sportsCategoryUid,
+          or: $value.sportsCategoryUid,
+        ),
+        sportsCategoryName: data.get(
+          #sportsCategoryName,
+          or: $value.sportsCategoryName,
+        ),
+        bio: data.get(#bio, or: $value.bio),
+        headerUrl: data.get(#headerUrl, or: $value.headerUrl),
+        isPublic: data.get(#isPublic, or: $value.isPublic),
+        isArchived: data.get(#isArchived, or: $value.isArchived),
+        createdAt: data.get(#createdAt, or: $value.createdAt),
+        updatedAt: data.get(#updatedAt, or: $value.updatedAt),
+      );
 
   @override
   TeamCopyWith<$R2, Team, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _TeamCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

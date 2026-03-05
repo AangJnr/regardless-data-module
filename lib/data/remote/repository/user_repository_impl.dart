@@ -8,12 +8,13 @@ import 'package:mobile_device_identifier/mobile_device_identifier.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:regardless_data_module/app/app.locator.dart';
 import 'package:regardless_data_module/app/services/cache_service.dart';
-import 'package:regardless_data_module/data/model/dashboard_metrics_api.dart';
 import 'package:regardless_data_module/domain/model/accounts.dart';
+import 'package:regardless_data_module/domain/model/collaborator/collaborator_invite.dart';
+import 'package:regardless_data_module/domain/model/collaborator/staff_member.dart';
 import 'package:regardless_data_module/domain/model/dashboard_metrics.dart';
+import 'package:regardless_data_module/domain/model/service/time_slot.dart';
 import '../../../domain/media.dart';
-import '../../../domain/model/team/team_invite.dart';
-import '../../../domain/model/team/team_member.dart';
+import '../../../domain/model/collaborator/collaborator_role.dart';
 
 import '../../../app/app.logger.dart';
 import '../../../domain/model/follower.dart';
@@ -368,8 +369,7 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
       String date) async {
     var data = await processRequest(() => apiService.getDashboardMetrics(date));
     if (data.isSuccess()) {
-      return Success(
-          DashboardMetricsApi.fromMap(data.tryGetSuccess()).mapToDomain());
+      return Success(DashboardMetricsMapper.fromMap(data.tryGetSuccess()));
     }
     return Future.value(Error(data.tryGetError()!));
   }
@@ -486,28 +486,44 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   }
 
   @override
-  Future<Result<bool, Exception>> inviteCollaborators(
-      List<AUser> users, String uid) async {
-    final response =
-        await processRequest(() => apiService.inviteCollaborators(users, uid));
+  Future<Result<bool, Exception>> inviteCollaborators(List<AUser> users,
+      String uid, CollaboratorRole role, List<String> permissions) async {
+    final response = await processRequest(() => apiService.inviteCollaborators(
+        users,
+        uid,
+        role.name[0].toUpperCase() + role.name.substring(1),
+        permissions));
     return response.isSuccess()
         ? Success(true)
         : Error(response.tryGetError()!);
   }
 
   @override
-  Future<Result<Pagination<TeamInvite>, Exception>> getInvitedCollaborators(
+  Future<Result<bool, Exception>> updateCollaboratorPermissions(
       String uid,
-      {PaginationRequest? request}) async {
+      String collaboratorUid,
+      CollaboratorRole role,
+      List<String> permissions) async {
+    final response = await processRequest(() =>
+        apiService.updateCollaboratorPermissions(uid, collaboratorUid,
+            role.name[0].toUpperCase() + role.name.substring(1), permissions));
+    return response.isSuccess()
+        ? Success(true)
+        : Error(response.tryGetError()!);
+  }
+
+  @override
+  Future<Result<Pagination<CollaboratorInvite>, Exception>>
+      getInvitedCollaborators(String uid, {PaginationRequest? request}) async {
     final response = await processRequest(
         () => apiService.getInvitedCollaborators(uid, request: request));
     if (response.isSuccess()) {
       final paginationResponse =
           PaginatedResponse.fromMap(response.tryGetSuccess()!);
       final parsed = paginationResponse.data
-          ?.map((e) => TeamInviteMapper.fromMap(e))
+          ?.map((e) => CollaboratorInviteMapper.fromMap(e))
           .toList();
-      return Success(Pagination<TeamInvite>(
+      return Success(Pagination<CollaboratorInvite>(
           data: parsed ?? [],
           hasNext: paginationResponse.hasNext,
           last: paginationResponse.last));
@@ -526,12 +542,13 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   }
 
   @override
-  Future<Result<TeamInvite, Exception>> acceptCollaboratorInvite(
+  Future<Result<CollaboratorInvite, Exception>> acceptCollaboratorInvite(
       {required String token, required String providerUid}) async {
     final response = await processRequest(
         () => apiService.acceptCollaboratorInvite(token, providerUid));
     if (response.isSuccess()) {
-      return Success(TeamInviteMapper.fromMap(response.tryGetSuccess()!));
+      return Success(
+          CollaboratorInviteMapper.fromMap(response.tryGetSuccess()!));
     }
     return Error(response.tryGetError()!);
   }
@@ -547,7 +564,8 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   }
 
   @override
-  Future<Result<Pagination<TeamMember>, Exception>> getCollaborators(String uid,
+  Future<Result<Pagination<StaffMember>, Exception>> getCollaborators(
+      String uid,
       {PaginationRequest? request}) async {
     final response = await processRequest(
         () => apiService.getCollaborators(uid, request: request));
@@ -555,12 +573,22 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
       final paginationResponse =
           PaginatedResponse.fromMap(response.tryGetSuccess()!);
       final parsed = paginationResponse.data
-          ?.map((e) => TeamMemberMapper.fromMap(e))
+          ?.map((e) => StaffMemberMapper.fromMap(e))
           .toList();
-      return Success(Pagination<TeamMember>(
+      return Success(Pagination<StaffMember>(
           data: parsed ?? [],
           hasNext: paginationResponse.hasNext,
           last: paginationResponse.last));
+    }
+    return Error(response.tryGetError()!);
+  }
+
+  @override
+  Future<Result<StaffMember, Exception>> getCollaborator(String uid) async {
+    final response =
+        await processRequest(() => apiService.getCollaborator(uid));
+    if (response.isSuccess()) {
+      return Success(StaffMemberMapper.fromMap(response.tryGetSuccess()!));
     }
     return Error(response.tryGetError()!);
   }
@@ -573,5 +601,18 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
     return response.isSuccess()
         ? Success(true)
         : Error(response.tryGetError()!);
+  }
+
+  @override
+  Future<Result<bool, Exception>> updateUserSchedule(
+      String uid, List<TimeSlot> schedule) async {
+    final response = await processRequest(() => apiService.updateUserSchedule(
+        uid, schedule.map((e) => e.toApi()).toList()));
+    if (response.isSuccess()) {
+      // Refresh user to update local session
+      await getUser();
+      return const Success(true);
+    }
+    return Error(response.tryGetError()!);
   }
 }

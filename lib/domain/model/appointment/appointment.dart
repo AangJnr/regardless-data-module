@@ -1,5 +1,4 @@
-
- import 'appointment_details.dart';
+import 'appointment_details.dart';
 import 'participant_detail.dart';
 import 'package:intl/intl.dart';
 

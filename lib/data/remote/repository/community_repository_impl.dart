@@ -183,9 +183,12 @@ class CommunityRepositoryImpl
     }
     return Error(data.tryGetError()!);
   }
+
   @override
-  Future<Result<bool, Exception>> removeCommunityMember({required String uid, required String memberUid})  async {
-    var data = await processRequest(() => apiService.removeCommunityMember(uid: uid, memberUid: memberUid));
+  Future<Result<bool, Exception>> removeCommunityMember(
+      {required String uid, required String memberUid}) async {
+    var data = await processRequest(
+        () => apiService.removeCommunityMember(uid: uid, memberUid: memberUid));
     if (data.isSuccess()) {
       return const Success(true);
     }

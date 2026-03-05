@@ -1,6 +1,6 @@
-import 'dart:math';
-
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:regardless_data_module/domain/model/collaborator/collaborator_permission.dart';
+import 'package:regardless_data_module/domain/model/service/time_slot.dart';
 import 'package:regardless_data_module/extensions/extensions.dart';
 
 import 'category.dart';
@@ -42,6 +42,7 @@ class AUser with AUserMappable {
   final List<String> joinedCommunityUids;
   final bool userNameAlreadyUpdated;
   final String userName;
+  final List<TimeSlot> schedule;
 
   const AUser({
     this.uid = '',
@@ -67,6 +68,7 @@ class AUser with AUserMappable {
     this.favoratesUids = const [],
     this.subCategoryUids = const [],
     this.joinedCommunityUids = const [],
+    this.schedule = const [],
   });
 
   @override
@@ -81,4 +83,10 @@ class AUser with AUserMappable {
   }
 
   bool get isAnonymous => email.endsWith('@anonymous.com');
+
+  bool get isSportsTeamAccount => categoryUid.contains(RegExp('team'));
+  bool get isLeagueManagerAccount => categoryUid.contains(RegExp('league'));
+  bool get isGymAccount => categoryUid.contains(RegExp('gym|facility'));
+  bool get isFitnessWellnessAccount =>
+      categoryUid.contains(RegExp('fitness|wellness'));
 }

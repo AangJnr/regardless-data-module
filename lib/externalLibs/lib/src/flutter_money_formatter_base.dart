@@ -42,8 +42,7 @@ class MoneyFormatter {
     return MoneyFormatterOutput(
         nonSymbol: urs,
         symbolOnLeft: '${settings?.symbol ?? ''}${_utilities.spacer}$urs',
-        symbolOnRight:
-            '$urs${_utilities.spacer}${settings?.symbol ?? ''}',
+        symbolOnRight: '$urs${_utilities.spacer}${settings?.symbol ?? ''}',
         compactNonSymbol: _compactNonSymbol,
         compactSymbolOnLeft:
             '${settings?.symbol ?? ''}${_utilities.spacer}$_compactNonSymbol',
@@ -82,8 +81,7 @@ class MoneyFormatter {
       case FastCalcType.percentageSubstraction:
         this.amount -= (amount / 100) * this.amount;
         break;
-
-      }
+    }
 
     return this;
   }

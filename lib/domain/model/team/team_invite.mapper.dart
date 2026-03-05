@@ -65,57 +65,57 @@ extension TeamRoleMapperExtension on TeamRole {
   }
 }
 
-class TeamInviteStatusMapper extends EnumMapper<TeamInviteStatus> {
-  TeamInviteStatusMapper._();
+class InviteStatusMapper extends EnumMapper<InviteStatus> {
+  InviteStatusMapper._();
 
-  static TeamInviteStatusMapper? _instance;
-  static TeamInviteStatusMapper ensureInitialized() {
+  static InviteStatusMapper? _instance;
+  static InviteStatusMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = TeamInviteStatusMapper._());
+      MapperContainer.globals.use(_instance = InviteStatusMapper._());
     }
     return _instance!;
   }
 
-  static TeamInviteStatus fromValue(dynamic value) {
+  static InviteStatus fromValue(dynamic value) {
     ensureInitialized();
     return MapperContainer.globals.fromValue(value);
   }
 
   @override
-  TeamInviteStatus decode(dynamic value) {
+  InviteStatus decode(dynamic value) {
     switch (value) {
       case r'pending':
-        return TeamInviteStatus.pending;
+        return InviteStatus.pending;
       case r'accepted':
-        return TeamInviteStatus.accepted;
+        return InviteStatus.accepted;
       case r'completed':
-        return TeamInviteStatus.completed;
+        return InviteStatus.completed;
       case r'expired':
-        return TeamInviteStatus.expired;
+        return InviteStatus.expired;
       default:
         throw MapperException.unknownEnumValue(value);
     }
   }
 
   @override
-  dynamic encode(TeamInviteStatus self) {
+  dynamic encode(InviteStatus self) {
     switch (self) {
-      case TeamInviteStatus.pending:
+      case InviteStatus.pending:
         return r'pending';
-      case TeamInviteStatus.accepted:
+      case InviteStatus.accepted:
         return r'accepted';
-      case TeamInviteStatus.completed:
+      case InviteStatus.completed:
         return r'completed';
-      case TeamInviteStatus.expired:
+      case InviteStatus.expired:
         return r'expired';
     }
   }
 }
 
-extension TeamInviteStatusMapperExtension on TeamInviteStatus {
+extension InviteStatusMapperExtension on InviteStatus {
   String toValue() {
-    TeamInviteStatusMapper.ensureInitialized();
-    return MapperContainer.globals.toValue<TeamInviteStatus>(this) as String;
+    InviteStatusMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<InviteStatus>(this) as String;
   }
 }
 
@@ -127,7 +127,7 @@ class TeamInviteMapper extends ClassMapperBase<TeamInvite> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TeamInviteMapper._());
       TeamRoleMapper.ensureInitialized();
-      TeamInviteStatusMapper.ensureInitialized();
+      InviteStatusMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -170,6 +170,13 @@ class TeamInviteMapper extends ClassMapperBase<TeamInvite> {
     opt: true,
     def: TeamRole.player,
   );
+  static List<String> _$permissions(TeamInvite v) => v.permissions;
+  static const Field<TeamInvite, List<String>> _f$permissions = Field(
+    'permissions',
+    _$permissions,
+    opt: true,
+    def: const [],
+  );
   static String _$invitedByUid(TeamInvite v) => v.invitedByUid;
   static const Field<TeamInvite, String> _f$invitedByUid = Field(
     'invitedByUid',
@@ -183,12 +190,12 @@ class TeamInviteMapper extends ClassMapperBase<TeamInvite> {
     _$invitedAt,
     opt: true,
   );
-  static TeamInviteStatus _$status(TeamInvite v) => v.status;
-  static const Field<TeamInvite, TeamInviteStatus> _f$status = Field(
+  static InviteStatus _$status(TeamInvite v) => v.status;
+  static const Field<TeamInvite, InviteStatus> _f$status = Field(
     'status',
     _$status,
     opt: true,
-    def: TeamInviteStatus.pending,
+    def: InviteStatus.pending,
   );
 
   @override
@@ -198,6 +205,7 @@ class TeamInviteMapper extends ClassMapperBase<TeamInvite> {
     #userName: _f$userName,
     #name: _f$name,
     #role: _f$role,
+    #permissions: _f$permissions,
     #invitedByUid: _f$invitedByUid,
     #invitedAt: _f$invitedAt,
     #status: _f$status,
@@ -210,6 +218,7 @@ class TeamInviteMapper extends ClassMapperBase<TeamInvite> {
       userName: data.dec(_f$userName),
       name: data.dec(_f$name),
       role: data.dec(_f$role),
+      permissions: data.dec(_f$permissions),
       invitedByUid: data.dec(_f$invitedByUid),
       invitedAt: data.dec(_f$invitedAt),
       status: data.dec(_f$status),
@@ -276,15 +285,17 @@ extension TeamInviteValueCopy<$R, $Out>
 
 abstract class TeamInviteCopyWith<$R, $In extends TeamInvite, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get permissions;
   $R call({
     String? uid,
     String? email,
     String? userName,
     String? name,
     TeamRole? role,
+    List<String>? permissions,
     String? invitedByUid,
     DateTime? invitedAt,
-    TeamInviteStatus? status,
+    InviteStatus? status,
   });
   TeamInviteCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -298,42 +309,53 @@ class _TeamInviteCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TeamInvite> $mapper =
       TeamInviteMapper.ensureInitialized();
   @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+      get permissions => ListCopyWith(
+            $value.permissions,
+            (v, t) => ObjectCopyWith(v, $identity, t),
+            (v) => call(permissions: v),
+          );
+  @override
   $R call({
     String? uid,
     String? email,
     String? userName,
     String? name,
     TeamRole? role,
+    List<String>? permissions,
     String? invitedByUid,
     Object? invitedAt = $none,
-    TeamInviteStatus? status,
-  }) => $apply(
-    FieldCopyWithData({
-      if (uid != null) #uid: uid,
-      if (email != null) #email: email,
-      if (userName != null) #userName: userName,
-      if (name != null) #name: name,
-      if (role != null) #role: role,
-      if (invitedByUid != null) #invitedByUid: invitedByUid,
-      if (invitedAt != $none) #invitedAt: invitedAt,
-      if (status != null) #status: status,
-    }),
-  );
+    InviteStatus? status,
+  }) =>
+      $apply(
+        FieldCopyWithData({
+          if (uid != null) #uid: uid,
+          if (email != null) #email: email,
+          if (userName != null) #userName: userName,
+          if (name != null) #name: name,
+          if (role != null) #role: role,
+          if (permissions != null) #permissions: permissions,
+          if (invitedByUid != null) #invitedByUid: invitedByUid,
+          if (invitedAt != $none) #invitedAt: invitedAt,
+          if (status != null) #status: status,
+        }),
+      );
   @override
   TeamInvite $make(CopyWithData data) => TeamInvite(
-    uid: data.get(#uid, or: $value.uid),
-    email: data.get(#email, or: $value.email),
-    userName: data.get(#userName, or: $value.userName),
-    name: data.get(#name, or: $value.name),
-    role: data.get(#role, or: $value.role),
-    invitedByUid: data.get(#invitedByUid, or: $value.invitedByUid),
-    invitedAt: data.get(#invitedAt, or: $value.invitedAt),
-    status: data.get(#status, or: $value.status),
-  );
+        uid: data.get(#uid, or: $value.uid),
+        email: data.get(#email, or: $value.email),
+        userName: data.get(#userName, or: $value.userName),
+        name: data.get(#name, or: $value.name),
+        role: data.get(#role, or: $value.role),
+        permissions: data.get(#permissions, or: $value.permissions),
+        invitedByUid: data.get(#invitedByUid, or: $value.invitedByUid),
+        invitedAt: data.get(#invitedAt, or: $value.invitedAt),
+        status: data.get(#status, or: $value.status),
+      );
 
   @override
   TeamInviteCopyWith<$R2, TeamInvite, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) => _TeamInviteCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) =>
+      _TeamInviteCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

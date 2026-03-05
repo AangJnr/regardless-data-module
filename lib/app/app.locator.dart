@@ -8,10 +8,13 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:regardless_data_module/app/app.logger.dart';
+import 'package:regardless_data_module/app/services/access_service.dart';
 import 'package:regardless_data_module/app/services/social_auth_service.dart';
 import 'package:regardless_data_module/domain/repositories/media_repository.dart';
+import 'package:regardless_data_module/firebase_options.dart';
 import 'package:stacked_shared/stacked_shared.dart';
 
 import '../data/local/session_manager_service.dart';
@@ -45,7 +48,9 @@ final module = StackedLocator.instance;
 
 Future<void> initFirebase(bool useEmualator, {String url = 'localhost'}) async {
   getLogger('AppLocator').d('Initializing Firebase => $url');
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   if (useEmualator) {
     FirebaseAuth.instance.useAuthEmulator(url, 9191);
     FirebaseFirestore.instance.useFirestoreEmulator(
@@ -56,6 +61,8 @@ Future<void> initFirebase(bool useEmualator, {String url = 'localhost'}) async {
         // persistenceEnabled: true,
         );
   }
+  getLogger('AppLocator')
+      .d("Firebase Project: ${Firebase.app().options.projectId}");
 }
 
 Future<void> initDataModule(
@@ -91,4 +98,5 @@ Future<void> initDataModule(
       .registerLazySingleton<ServiceRepository>(() => ServiceRepositoryImpl());
   module.registerLazySingleton<TGeocoder>(() => GeocoderImpl());
   module.registerLazySingleton<CacheService>(() => CacheServiceImpl());
+  module.registerLazySingleton(() => AccessService());
 }

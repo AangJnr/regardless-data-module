@@ -1,8 +1,13 @@
 import 'package:cross_file/cross_file.dart' show XFile;
 import 'package:multiple_result/multiple_result.dart';
+import 'package:regardless_data_module/data/model/service_api/time_slot_api.dart';
 import 'package:regardless_data_module/domain/model/accounts.dart';
+import 'package:regardless_data_module/domain/model/collaborator/collaborator_invite.dart';
+import 'package:regardless_data_module/domain/model/collaborator/staff_member.dart';
 import 'package:regardless_data_module/domain/model/dashboard_metrics.dart';
 import '../media.dart';
+import '../model/service/time_slot.dart';
+import '../model/collaborator/collaborator_role.dart';
 import '../model/team/team_invite.dart';
 import '../model/team/team_member.dart';
 import '../../data/model/notification_request.dart';
@@ -66,21 +71,28 @@ abstract class UserRepository {
   Future<Result<bool, Exception>> deleteProviderMedia(
       String uid, List<String> uids);
 
-  Future<Result<bool, Exception>> inviteCollaborators(
-      List<AUser> users, String uid);
-  Future<Result<Pagination<TeamInvite>, Exception>> getInvitedCollaborators(
-      String uid,
-      {PaginationRequest? request});
+  Future<Result<bool, Exception>> inviteCollaborators(List<AUser> users,
+      String uid, CollaboratorRole role, List<String> permissions);
+  Future<Result<bool, Exception>> updateCollaboratorPermissions(String uid,
+      String collaboratorUid, CollaboratorRole role, List<String> permissions);
+  Future<Result<Pagination<CollaboratorInvite>, Exception>>
+      getInvitedCollaborators(String uid, {PaginationRequest? request});
   Future<Result<bool, Exception>> deleteCollaboratorInvite(
       String uid, String inviteId);
 
-  Future<Result<TeamInvite, Exception>> acceptCollaboratorInvite(
+  Future<Result<CollaboratorInvite, Exception>> acceptCollaboratorInvite(
       {required String token, required String providerUid});
   Future<Result<bool, Exception>> finalizeCollaboratorInvite(
       {required String token, required String providerUid});
 
-  Future<Result<Pagination<TeamMember>, Exception>> getCollaborators(String uid,
+  Future<Result<Pagination<StaffMember>, Exception>> getCollaborators(
+      String uid,
       {PaginationRequest? request});
+  Future<Result<StaffMember, Exception>> getCollaborator(
+    String uid,
+  );
   Future<Result<bool, Exception>> removeCollaborator(
       String uid, String collaboratorUid);
+  Future<Result<bool, Exception>> updateUserSchedule(
+      String uid, List<TimeSlot> schedule);
 }

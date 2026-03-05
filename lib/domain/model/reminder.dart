@@ -17,7 +17,8 @@ class Reminder with ReminderMappable {
       required this.title,
       required this.description,
       required this.date,
-      this.recurrenceUid, this.metaData,
+      this.recurrenceUid,
+      this.metaData,
       this.duration});
 
   String getParsedDate() {

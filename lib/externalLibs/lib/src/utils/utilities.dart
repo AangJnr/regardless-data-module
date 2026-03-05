@@ -20,9 +20,7 @@ class _Utilities {
 
   /// Returns formatted number
   String get baseFormat => NumberFormat.currency(
-          symbol: '',
-          decimalDigits: settings?.fractionDigits,
-          locale: 'en_US')
+          symbol: '', decimalDigits: settings?.fractionDigits, locale: 'en_US')
       .format(amount);
 
   /// Returns formatted number with refined separator chars

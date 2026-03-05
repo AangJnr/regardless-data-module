@@ -133,7 +133,7 @@ extension ReminderValueCopy<$R, $Out> on ObjectCopyWith<$R, Reminder, $Out> {
 abstract class ReminderCopyWith<$R, $In extends Reminder, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   MapCopyWith<$R, String, dynamic, ObjectCopyWith<$R, dynamic, dynamic>>?
-  get metaData;
+      get metaData;
   $R call({
     String? uid,
     String? title,
@@ -156,13 +156,13 @@ class _ReminderCopyWithImpl<$R, $Out>
       ReminderMapper.ensureInitialized();
   @override
   MapCopyWith<$R, String, dynamic, ObjectCopyWith<$R, dynamic, dynamic>>?
-  get metaData => $value.metaData != null
-      ? MapCopyWith(
-          $value.metaData!,
-          (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(metaData: v),
-        )
-      : null;
+      get metaData => $value.metaData != null
+          ? MapCopyWith(
+              $value.metaData!,
+              (v, t) => ObjectCopyWith(v, $identity, t),
+              (v) => call(metaData: v),
+            )
+          : null;
   @override
   $R call({
     String? uid,
@@ -172,31 +172,32 @@ class _ReminderCopyWithImpl<$R, $Out>
     Object? recurrenceUid = $none,
     Object? metaData = $none,
     Object? duration = $none,
-  }) => $apply(
-    FieldCopyWithData({
-      if (uid != null) #uid: uid,
-      if (title != null) #title: title,
-      if (description != null) #description: description,
-      if (date != null) #date: date,
-      if (recurrenceUid != $none) #recurrenceUid: recurrenceUid,
-      if (metaData != $none) #metaData: metaData,
-      if (duration != $none) #duration: duration,
-    }),
-  );
+  }) =>
+      $apply(
+        FieldCopyWithData({
+          if (uid != null) #uid: uid,
+          if (title != null) #title: title,
+          if (description != null) #description: description,
+          if (date != null) #date: date,
+          if (recurrenceUid != $none) #recurrenceUid: recurrenceUid,
+          if (metaData != $none) #metaData: metaData,
+          if (duration != $none) #duration: duration,
+        }),
+      );
   @override
   Reminder $make(CopyWithData data) => Reminder(
-    uid: data.get(#uid, or: $value.uid),
-    title: data.get(#title, or: $value.title),
-    description: data.get(#description, or: $value.description),
-    date: data.get(#date, or: $value.date),
-    recurrenceUid: data.get(#recurrenceUid, or: $value.recurrenceUid),
-    metaData: data.get(#metaData, or: $value.metaData),
-    duration: data.get(#duration, or: $value.duration),
-  );
+        uid: data.get(#uid, or: $value.uid),
+        title: data.get(#title, or: $value.title),
+        description: data.get(#description, or: $value.description),
+        date: data.get(#date, or: $value.date),
+        recurrenceUid: data.get(#recurrenceUid, or: $value.recurrenceUid),
+        metaData: data.get(#metaData, or: $value.metaData),
+        duration: data.get(#duration, or: $value.duration),
+      );
 
   @override
   ReminderCopyWith<$R2, Reminder, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) => _ReminderCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) =>
+      _ReminderCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

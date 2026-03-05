@@ -1,4 +1,3 @@
-
 import 'compact_format_type.dart';
 
 /// [MoneyFormatterSettings] instance.

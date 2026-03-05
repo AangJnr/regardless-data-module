@@ -105,19 +105,18 @@ class _SlotCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Slot, $Out>
   late final ClassMapperBase<Slot> $mapper = SlotMapper.ensureInitialized();
   @override
   $R call({Object? startTime = $none, Object? endTime = $none}) => $apply(
-    FieldCopyWithData({
-      if (startTime != $none) #startTime: startTime,
-      if (endTime != $none) #endTime: endTime,
-    }),
-  );
+        FieldCopyWithData({
+          if (startTime != $none) #startTime: startTime,
+          if (endTime != $none) #endTime: endTime,
+        }),
+      );
   @override
   Slot $make(CopyWithData data) => Slot(
-    startTime: data.get(#startTime, or: $value.startTime),
-    endTime: data.get(#endTime, or: $value.endTime),
-  );
+        startTime: data.get(#startTime, or: $value.startTime),
+        endTime: data.get(#endTime, or: $value.endTime),
+      );
 
   @override
   SlotCopyWith<$R2, Slot, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _SlotCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

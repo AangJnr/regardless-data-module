@@ -14,7 +14,7 @@ class Comment with CommentMappable {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final List<HashImage> imageUrls;
- 
+
   const Comment({
     this.userUid = '',
     this.userName = '',
@@ -25,13 +25,14 @@ class Comment with CommentMappable {
     this.imageUrls = const [],
   });
 
-   String get picture => userUid.profileUidToProfileUrl;
+  String get picture => userUid.profileUidToProfileUrl;
 
   @override
   String toString() {
     return 'CommentApi(userUid: $userUid, userName: $userName, comment: $comment, uid: $uid, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
-    String getParsedDate() {
+
+  String getParsedDate() {
     if (createdAt == null) return '';
     try {
       return DateFormat('dd/MM/yyyy').format(createdAt!).toString();

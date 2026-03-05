@@ -66,8 +66,12 @@ class User extends ApiRoutes {
   String FinalizeCollaboratorInvite() => '$url/user/invites/finalize';
   String GetCollaborators(String uid, {String params = ''}) =>
       '$url/user/$uid/collaborators$params';
+  String GetCollaborator(String uid) => '$url/user/$uid/collaborator';
   String RemoveCollaborator(String uid, String collaboratorUid) =>
       '$url/user/$uid/collaborators/$collaboratorUid';
+  String UpdateCollaboratorPermissions(String uid, String collaboratorUid) =>
+      '$url/user/$uid/collaborators/$collaboratorUid/permissions';
+  String UpdateUserSchedule(String uid) => '$url/user/$uid/schedule';
 }
 
 class ProductUrl extends ApiRoutes {
@@ -178,7 +182,11 @@ class ACommunity extends ApiRoutes {
 
 class Post extends ApiRoutes {
   String get GetPosts => '$url/post';
+  String get GetUserAnnouncementPosts => '$url/post/me';
+  String get GetPublicAnnouncementPosts => '$url/post/announcement';
+  String get Announcement => '$url/post/announcement';
   String Like(String uid) => '$url/post/like/$uid';
+  String Delete(String uid) => '$url/post/$uid';
 }
 
 class ASearch extends ApiRoutes {

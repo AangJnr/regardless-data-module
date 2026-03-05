@@ -24,9 +24,9 @@ class NewUser with NewUserMappable {
 
   const NewUser({
     this.email = '',
-    this.fullName = 'Regardless User',
+    this.fullName = '',
     this.phone = '',
-    this.bio='',
+    this.bio = '',
     this.picture = '',
     this.userName = '',
     this.categoryUid,
@@ -35,7 +35,7 @@ class NewUser with NewUserMappable {
     this.defaultProfileUid = '',
     this.gender = Gender.Unsure,
     this.privateCommunities = const [],
-    this.publicCommunities  = const [],
+    this.publicCommunities = const [],
     this.subCategoryUids = const [],
   });
 
@@ -43,7 +43,7 @@ class NewUser with NewUserMappable {
       email: user.email ?? "",
       phone: user.phoneNumber ?? "",
       picture: user.photoURL ?? '',
-      userName: user.displayName?.isEmpty == true
-          ? (user.email?.split('@').firstOrNull ?? '')
-          : user.displayName ?? '');
+      fullName:
+          user.displayName ?? user.providerData.firstOrNull?.displayName ?? "",
+      userName: (user.email?.split('@').firstOrNull ?? ''));
 }

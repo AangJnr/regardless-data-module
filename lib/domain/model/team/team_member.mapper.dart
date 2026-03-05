@@ -60,6 +60,7 @@ class TeamMemberMapper extends ClassMapperBase<TeamMember> {
   static TeamMemberMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TeamMemberMapper._());
+      TeamRoleMapper.ensureInitialized();
       TeamMemberStatusMapper.ensureInitialized();
     }
     return _instance!;
@@ -88,18 +89,19 @@ class TeamMemberMapper extends ClassMapperBase<TeamMember> {
     opt: true,
     def: '',
   );
-  static String? _$profilePicture(TeamMember v) => v.profilePicture;
-  static const Field<TeamMember, String> _f$profilePicture = Field(
-    'profilePicture',
-    _$profilePicture,
-    opt: true,
-  );
-  static String _$role(TeamMember v) => v.role;
-  static const Field<TeamMember, String> _f$role = Field(
+  static TeamRole _$role(TeamMember v) => v.role;
+  static const Field<TeamMember, TeamRole> _f$role = Field(
     'role',
     _$role,
     opt: true,
-    def: 'player',
+    def: TeamRole.player,
+  );
+  static List<String> _$permissions(TeamMember v) => v.permissions;
+  static const Field<TeamMember, List<String>> _f$permissions = Field(
+    'permissions',
+    _$permissions,
+    opt: true,
+    def: const [],
   );
   static String _$fullName(TeamMember v) => v.fullName;
   static const Field<TeamMember, String> _f$fullName = Field(
@@ -127,8 +129,8 @@ class TeamMemberMapper extends ClassMapperBase<TeamMember> {
     #uid: _f$uid,
     #email: _f$email,
     #userName: _f$userName,
-    #profilePicture: _f$profilePicture,
     #role: _f$role,
+    #permissions: _f$permissions,
     #fullName: _f$fullName,
     #joinedAt: _f$joinedAt,
     #status: _f$status,
@@ -139,8 +141,8 @@ class TeamMemberMapper extends ClassMapperBase<TeamMember> {
       uid: data.dec(_f$uid),
       email: data.dec(_f$email),
       userName: data.dec(_f$userName),
-      profilePicture: data.dec(_f$profilePicture),
       role: data.dec(_f$role),
+      permissions: data.dec(_f$permissions),
       fullName: data.dec(_f$fullName),
       joinedAt: data.dec(_f$joinedAt),
       status: data.dec(_f$status),
@@ -207,12 +209,13 @@ extension TeamMemberValueCopy<$R, $Out>
 
 abstract class TeamMemberCopyWith<$R, $In extends TeamMember, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get permissions;
   $R call({
     String? uid,
     String? email,
     String? userName,
-    String? profilePicture,
-    String? role,
+    TeamRole? role,
+    List<String>? permissions,
     String? fullName,
     DateTime? joinedAt,
     TeamMemberStatus? status,
@@ -229,42 +232,50 @@ class _TeamMemberCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TeamMember> $mapper =
       TeamMemberMapper.ensureInitialized();
   @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+      get permissions => ListCopyWith(
+            $value.permissions,
+            (v, t) => ObjectCopyWith(v, $identity, t),
+            (v) => call(permissions: v),
+          );
+  @override
   $R call({
     String? uid,
     Object? email = $none,
     String? userName,
-    Object? profilePicture = $none,
-    String? role,
+    TeamRole? role,
+    List<String>? permissions,
     String? fullName,
     Object? joinedAt = $none,
     TeamMemberStatus? status,
-  }) => $apply(
-    FieldCopyWithData({
-      if (uid != null) #uid: uid,
-      if (email != $none) #email: email,
-      if (userName != null) #userName: userName,
-      if (profilePicture != $none) #profilePicture: profilePicture,
-      if (role != null) #role: role,
-      if (fullName != null) #fullName: fullName,
-      if (joinedAt != $none) #joinedAt: joinedAt,
-      if (status != null) #status: status,
-    }),
-  );
+  }) =>
+      $apply(
+        FieldCopyWithData({
+          if (uid != null) #uid: uid,
+          if (email != $none) #email: email,
+          if (userName != null) #userName: userName,
+          if (role != null) #role: role,
+          if (permissions != null) #permissions: permissions,
+          if (fullName != null) #fullName: fullName,
+          if (joinedAt != $none) #joinedAt: joinedAt,
+          if (status != null) #status: status,
+        }),
+      );
   @override
   TeamMember $make(CopyWithData data) => TeamMember(
-    uid: data.get(#uid, or: $value.uid),
-    email: data.get(#email, or: $value.email),
-    userName: data.get(#userName, or: $value.userName),
-    profilePicture: data.get(#profilePicture, or: $value.profilePicture),
-    role: data.get(#role, or: $value.role),
-    fullName: data.get(#fullName, or: $value.fullName),
-    joinedAt: data.get(#joinedAt, or: $value.joinedAt),
-    status: data.get(#status, or: $value.status),
-  );
+        uid: data.get(#uid, or: $value.uid),
+        email: data.get(#email, or: $value.email),
+        userName: data.get(#userName, or: $value.userName),
+        role: data.get(#role, or: $value.role),
+        permissions: data.get(#permissions, or: $value.permissions),
+        fullName: data.get(#fullName, or: $value.fullName),
+        joinedAt: data.get(#joinedAt, or: $value.joinedAt),
+        status: data.get(#status, or: $value.status),
+      );
 
   @override
   TeamMemberCopyWith<$R2, TeamMember, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) => _TeamMemberCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) =>
+      _TeamMemberCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

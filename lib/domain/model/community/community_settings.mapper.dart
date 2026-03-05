@@ -81,17 +81,14 @@ mixin CommunitySettingsMappable {
         .encodeMap<CommunitySettings>(this as CommunitySettings);
   }
 
-  CommunitySettingsCopyWith<
-    CommunitySettings,
-    CommunitySettings,
-    CommunitySettings
-  >
-  get copyWith =>
-      _CommunitySettingsCopyWithImpl<CommunitySettings, CommunitySettings>(
-        this as CommunitySettings,
-        $identity,
-        $identity,
-      );
+  CommunitySettingsCopyWith<CommunitySettings, CommunitySettings,
+          CommunitySettings>
+      get copyWith =>
+          _CommunitySettingsCopyWithImpl<CommunitySettings, CommunitySettings>(
+            this as CommunitySettings,
+            $identity,
+            $identity,
+          );
   @override
   String toString() {
     return CommunitySettingsMapper.ensureInitialized().stringifyValue(
@@ -118,17 +115,13 @@ mixin CommunitySettingsMappable {
 extension CommunitySettingsValueCopy<$R, $Out>
     on ObjectCopyWith<$R, CommunitySettings, $Out> {
   CommunitySettingsCopyWith<$R, CommunitySettings, $Out>
-  get $asCommunitySettings => $base.as(
-    (v, t, t2) => _CommunitySettingsCopyWithImpl<$R, $Out>(v, t, t2),
-  );
+      get $asCommunitySettings => $base.as(
+            (v, t, t2) => _CommunitySettingsCopyWithImpl<$R, $Out>(v, t, t2),
+          );
 }
 
-abstract class CommunitySettingsCopyWith<
-  $R,
-  $In extends CommunitySettings,
-  $Out
->
-    implements ClassCopyWith<$R, $In, $Out> {
+abstract class CommunitySettingsCopyWith<$R, $In extends CommunitySettings,
+    $Out> implements ClassCopyWith<$R, $In, $Out> {
   $R call({bool? isPublic, bool? allowComments, int? maxMembers});
   CommunitySettingsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -145,22 +138,22 @@ class _CommunitySettingsCopyWithImpl<$R, $Out>
       CommunitySettingsMapper.ensureInitialized();
   @override
   $R call({bool? isPublic, bool? allowComments, int? maxMembers}) => $apply(
-    FieldCopyWithData({
-      if (isPublic != null) #isPublic: isPublic,
-      if (allowComments != null) #allowComments: allowComments,
-      if (maxMembers != null) #maxMembers: maxMembers,
-    }),
-  );
+        FieldCopyWithData({
+          if (isPublic != null) #isPublic: isPublic,
+          if (allowComments != null) #allowComments: allowComments,
+          if (maxMembers != null) #maxMembers: maxMembers,
+        }),
+      );
   @override
   CommunitySettings $make(CopyWithData data) => CommunitySettings(
-    isPublic: data.get(#isPublic, or: $value.isPublic),
-    allowComments: data.get(#allowComments, or: $value.allowComments),
-    maxMembers: data.get(#maxMembers, or: $value.maxMembers),
-  );
+        isPublic: data.get(#isPublic, or: $value.isPublic),
+        allowComments: data.get(#allowComments, or: $value.allowComments),
+        maxMembers: data.get(#maxMembers, or: $value.maxMembers),
+      );
 
   @override
   CommunitySettingsCopyWith<$R2, CommunitySettings, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) => _CommunitySettingsCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) =>
+      _CommunitySettingsCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

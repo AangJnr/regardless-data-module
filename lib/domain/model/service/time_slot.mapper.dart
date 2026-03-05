@@ -147,24 +147,24 @@ class _TimeSlotCopyWithImpl<$R, $Out>
       );
   @override
   $R call({String? day, List<Slot>? slots, String? date, int? order}) => $apply(
-    FieldCopyWithData({
-      if (day != null) #day: day,
-      if (slots != null) #slots: slots,
-      if (date != null) #date: date,
-      if (order != null) #order: order,
-    }),
-  );
+        FieldCopyWithData({
+          if (day != null) #day: day,
+          if (slots != null) #slots: slots,
+          if (date != null) #date: date,
+          if (order != null) #order: order,
+        }),
+      );
   @override
   TimeSlot $make(CopyWithData data) => TimeSlot(
-    day: data.get(#day, or: $value.day),
-    slots: data.get(#slots, or: $value.slots),
-    date: data.get(#date, or: $value.date),
-    order: data.get(#order, or: $value.order),
-  );
+        day: data.get(#day, or: $value.day),
+        slots: data.get(#slots, or: $value.slots),
+        date: data.get(#date, or: $value.date),
+        order: data.get(#order, or: $value.order),
+      );
 
   @override
   TimeSlotCopyWith<$R2, TimeSlot, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) => _TimeSlotCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) =>
+      _TimeSlotCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

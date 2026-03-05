@@ -74,6 +74,7 @@ class AUserMapper extends ClassMapperBase<AUser> {
       MapperContainer.globals.use(_instance = AUserMapper._());
       GenderMapper.ensureInitialized();
       CategoryMapper.ensureInitialized();
+      TimeSlotMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -238,6 +239,13 @@ class AUserMapper extends ClassMapperBase<AUser> {
     opt: true,
     def: const [],
   );
+  static List<TimeSlot> _$schedule(AUser v) => v.schedule;
+  static const Field<AUser, List<TimeSlot>> _f$schedule = Field(
+    'schedule',
+    _$schedule,
+    opt: true,
+    def: const [],
+  );
 
   @override
   final MappableFields<AUser> fields = const {
@@ -264,6 +272,7 @@ class AUserMapper extends ClassMapperBase<AUser> {
     #favoratesUids: _f$favoratesUids,
     #subCategoryUids: _f$subCategoryUids,
     #joinedCommunityUids: _f$joinedCommunityUids,
+    #schedule: _f$schedule,
   };
 
   static AUser _instantiate(DecodingData data) {
@@ -291,6 +300,7 @@ class AUserMapper extends ClassMapperBase<AUser> {
       favoratesUids: data.dec(_f$favoratesUids),
       subCategoryUids: data.dec(_f$subCategoryUids),
       joinedCommunityUids: data.dec(_f$joinedCommunityUids),
+      schedule: data.dec(_f$schedule),
     );
   }
 
@@ -342,15 +352,17 @@ abstract class AUserCopyWith<$R, $In extends AUser, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   CategoryCopyWith<$R, Category, Category>? get category;
   ListCopyWith<$R, Category, CategoryCopyWith<$R, Category, Category>>?
-  get subCategories;
+      get subCategories;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-  get likedPostUids;
+      get likedPostUids;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-  get favoratesUids;
+      get favoratesUids;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-  get subCategoryUids;
+      get subCategoryUids;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-  get joinedCommunityUids;
+      get joinedCommunityUids;
+  ListCopyWith<$R, TimeSlot, TimeSlotCopyWith<$R, TimeSlot, TimeSlot>>
+      get schedule;
   $R call({
     String? uid,
     String? email,
@@ -375,6 +387,7 @@ abstract class AUserCopyWith<$R, $In extends AUser, $Out>
     List<String>? favoratesUids,
     List<String>? subCategoryUids,
     List<String>? joinedCommunityUids,
+    List<TimeSlot>? schedule,
   });
   AUserCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -390,41 +403,48 @@ class _AUserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, AUser, $Out>
       $value.category?.copyWith.$chain((v) => call(category: v));
   @override
   ListCopyWith<$R, Category, CategoryCopyWith<$R, Category, Category>>?
-  get subCategories => $value.subCategories != null
-      ? ListCopyWith(
-          $value.subCategories!,
-          (v, t) => v.copyWith.$chain(t),
-          (v) => call(subCategories: v),
-        )
-      : null;
+      get subCategories => $value.subCategories != null
+          ? ListCopyWith(
+              $value.subCategories!,
+              (v, t) => v.copyWith.$chain(t),
+              (v) => call(subCategories: v),
+            )
+          : null;
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-  get likedPostUids => ListCopyWith(
-    $value.likedPostUids,
-    (v, t) => ObjectCopyWith(v, $identity, t),
-    (v) => call(likedPostUids: v),
-  );
+      get likedPostUids => ListCopyWith(
+            $value.likedPostUids,
+            (v, t) => ObjectCopyWith(v, $identity, t),
+            (v) => call(likedPostUids: v),
+          );
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-  get favoratesUids => ListCopyWith(
-    $value.favoratesUids,
-    (v, t) => ObjectCopyWith(v, $identity, t),
-    (v) => call(favoratesUids: v),
-  );
+      get favoratesUids => ListCopyWith(
+            $value.favoratesUids,
+            (v, t) => ObjectCopyWith(v, $identity, t),
+            (v) => call(favoratesUids: v),
+          );
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-  get subCategoryUids => ListCopyWith(
-    $value.subCategoryUids,
-    (v, t) => ObjectCopyWith(v, $identity, t),
-    (v) => call(subCategoryUids: v),
-  );
+      get subCategoryUids => ListCopyWith(
+            $value.subCategoryUids,
+            (v, t) => ObjectCopyWith(v, $identity, t),
+            (v) => call(subCategoryUids: v),
+          );
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-  get joinedCommunityUids => ListCopyWith(
-    $value.joinedCommunityUids,
-    (v, t) => ObjectCopyWith(v, $identity, t),
-    (v) => call(joinedCommunityUids: v),
-  );
+      get joinedCommunityUids => ListCopyWith(
+            $value.joinedCommunityUids,
+            (v, t) => ObjectCopyWith(v, $identity, t),
+            (v) => call(joinedCommunityUids: v),
+          );
+  @override
+  ListCopyWith<$R, TimeSlot, TimeSlotCopyWith<$R, TimeSlot, TimeSlot>>
+      get schedule => ListCopyWith(
+            $value.schedule,
+            (v, t) => v.copyWith.$chain(t),
+            (v) => call(schedule: v),
+          );
   @override
   $R call({
     String? uid,
@@ -450,74 +470,77 @@ class _AUserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, AUser, $Out>
     List<String>? favoratesUids,
     List<String>? subCategoryUids,
     List<String>? joinedCommunityUids,
-  }) => $apply(
-    FieldCopyWithData({
-      if (uid != null) #uid: uid,
-      if (email != null) #email: email,
-      if (fullName != null) #fullName: fullName,
-      if (phone != null) #phone: phone,
-      if (createdAt != $none) #createdAt: createdAt,
-      if (updatedAt != $none) #updatedAt: updatedAt,
-      if (isProvider != null) #isProvider: isProvider,
-      if (gender != null) #gender: gender,
-      if (bio != null) #bio: bio,
-      if (userName != null) #userName: userName,
-      if (authUid != null) #authUid: authUid,
-      if (isVerified != null) #isVerified: isVerified,
-      if (categoryUid != null) #categoryUid: categoryUid,
-      if (userNameAlreadyUpdated != null)
-        #userNameAlreadyUpdated: userNameAlreadyUpdated,
-      if (category != $none) #category: category,
-      if (subCategories != $none) #subCategories: subCategories,
-      if (unreadNotificationCount != null)
-        #unreadNotificationCount: unreadNotificationCount,
-      if (reviewsCount != null) #reviewsCount: reviewsCount,
-      if (rating != null) #rating: rating,
-      if (likedPostUids != null) #likedPostUids: likedPostUids,
-      if (favoratesUids != null) #favoratesUids: favoratesUids,
-      if (subCategoryUids != null) #subCategoryUids: subCategoryUids,
-      if (joinedCommunityUids != null)
-        #joinedCommunityUids: joinedCommunityUids,
-    }),
-  );
+    List<TimeSlot>? schedule,
+  }) =>
+      $apply(
+        FieldCopyWithData({
+          if (uid != null) #uid: uid,
+          if (email != null) #email: email,
+          if (fullName != null) #fullName: fullName,
+          if (phone != null) #phone: phone,
+          if (createdAt != $none) #createdAt: createdAt,
+          if (updatedAt != $none) #updatedAt: updatedAt,
+          if (isProvider != null) #isProvider: isProvider,
+          if (gender != null) #gender: gender,
+          if (bio != null) #bio: bio,
+          if (userName != null) #userName: userName,
+          if (authUid != null) #authUid: authUid,
+          if (isVerified != null) #isVerified: isVerified,
+          if (categoryUid != null) #categoryUid: categoryUid,
+          if (userNameAlreadyUpdated != null)
+            #userNameAlreadyUpdated: userNameAlreadyUpdated,
+          if (category != $none) #category: category,
+          if (subCategories != $none) #subCategories: subCategories,
+          if (unreadNotificationCount != null)
+            #unreadNotificationCount: unreadNotificationCount,
+          if (reviewsCount != null) #reviewsCount: reviewsCount,
+          if (rating != null) #rating: rating,
+          if (likedPostUids != null) #likedPostUids: likedPostUids,
+          if (favoratesUids != null) #favoratesUids: favoratesUids,
+          if (subCategoryUids != null) #subCategoryUids: subCategoryUids,
+          if (joinedCommunityUids != null)
+            #joinedCommunityUids: joinedCommunityUids,
+          if (schedule != null) #schedule: schedule,
+        }),
+      );
   @override
   AUser $make(CopyWithData data) => AUser(
-    uid: data.get(#uid, or: $value.uid),
-    email: data.get(#email, or: $value.email),
-    fullName: data.get(#fullName, or: $value.fullName),
-    phone: data.get(#phone, or: $value.phone),
-    createdAt: data.get(#createdAt, or: $value.createdAt),
-    updatedAt: data.get(#updatedAt, or: $value.updatedAt),
-    isProvider: data.get(#isProvider, or: $value.isProvider),
-    gender: data.get(#gender, or: $value.gender),
-    bio: data.get(#bio, or: $value.bio),
-    userName: data.get(#userName, or: $value.userName),
-    authUid: data.get(#authUid, or: $value.authUid),
-    isVerified: data.get(#isVerified, or: $value.isVerified),
-    categoryUid: data.get(#categoryUid, or: $value.categoryUid),
-    userNameAlreadyUpdated: data.get(
-      #userNameAlreadyUpdated,
-      or: $value.userNameAlreadyUpdated,
-    ),
-    category: data.get(#category, or: $value.category),
-    subCategories: data.get(#subCategories, or: $value.subCategories),
-    unreadNotificationCount: data.get(
-      #unreadNotificationCount,
-      or: $value.unreadNotificationCount,
-    ),
-    reviewsCount: data.get(#reviewsCount, or: $value.reviewsCount),
-    rating: data.get(#rating, or: $value.rating),
-    likedPostUids: data.get(#likedPostUids, or: $value.likedPostUids),
-    favoratesUids: data.get(#favoratesUids, or: $value.favoratesUids),
-    subCategoryUids: data.get(#subCategoryUids, or: $value.subCategoryUids),
-    joinedCommunityUids: data.get(
-      #joinedCommunityUids,
-      or: $value.joinedCommunityUids,
-    ),
-  );
+        uid: data.get(#uid, or: $value.uid),
+        email: data.get(#email, or: $value.email),
+        fullName: data.get(#fullName, or: $value.fullName),
+        phone: data.get(#phone, or: $value.phone),
+        createdAt: data.get(#createdAt, or: $value.createdAt),
+        updatedAt: data.get(#updatedAt, or: $value.updatedAt),
+        isProvider: data.get(#isProvider, or: $value.isProvider),
+        gender: data.get(#gender, or: $value.gender),
+        bio: data.get(#bio, or: $value.bio),
+        userName: data.get(#userName, or: $value.userName),
+        authUid: data.get(#authUid, or: $value.authUid),
+        isVerified: data.get(#isVerified, or: $value.isVerified),
+        categoryUid: data.get(#categoryUid, or: $value.categoryUid),
+        userNameAlreadyUpdated: data.get(
+          #userNameAlreadyUpdated,
+          or: $value.userNameAlreadyUpdated,
+        ),
+        category: data.get(#category, or: $value.category),
+        subCategories: data.get(#subCategories, or: $value.subCategories),
+        unreadNotificationCount: data.get(
+          #unreadNotificationCount,
+          or: $value.unreadNotificationCount,
+        ),
+        reviewsCount: data.get(#reviewsCount, or: $value.reviewsCount),
+        rating: data.get(#rating, or: $value.rating),
+        likedPostUids: data.get(#likedPostUids, or: $value.likedPostUids),
+        favoratesUids: data.get(#favoratesUids, or: $value.favoratesUids),
+        subCategoryUids: data.get(#subCategoryUids, or: $value.subCategoryUids),
+        joinedCommunityUids: data.get(
+          #joinedCommunityUids,
+          or: $value.joinedCommunityUids,
+        ),
+        schedule: data.get(#schedule, or: $value.schedule),
+      );
 
   @override
   AUserCopyWith<$R2, AUser, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _AUserCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

@@ -10,7 +10,7 @@ class CommunityAndEventApi implements DomainMapper<CommunityAndEvent> {
 
   @override
   CommunityAndEvent mapToDomain() =>
-      CommunityAndEvent(community: community, event:  event);
+      CommunityAndEvent(community: community, event: event);
 
   factory CommunityAndEventApi.fromMap(Map<String, dynamic> map) {
     return CommunityAndEventApi(

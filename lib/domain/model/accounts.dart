@@ -4,9 +4,12 @@ part 'accounts.mapper.dart';
 
 @MappableClass()
 class Accounts with AccountsMappable {
-  final List<AUser> profiles;
-   final bool canAddMore;
-  Accounts(
-      {this.profiles = const [],
-       this.canAddMore = true});
+  final List<AUser> owned;
+  final List<AUser> collaborated;
+  final bool canAddMore;
+  Accounts({
+    this.owned = const [],
+    this.collaborated = const [],
+    this.canAddMore = false,
+  });
 }

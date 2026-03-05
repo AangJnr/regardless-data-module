@@ -9,6 +9,7 @@ import '../../data/model/notification_request.dart';
 import '../../data/model/paginated_response.dart';
 import '../../data/model/search_filter.dart';
 import '../../data/model/service_api/service_api.dart';
+import '../../data/model/service_api/time_slot_api.dart';
 import '../model/appointment/appointment.dart';
 import '../model/community/comment.dart';
 import '../model/community/community.dart';
@@ -158,6 +159,14 @@ abstract class ApiService {
   Future<Response> getPosts({PaginationRequest? request});
   Future<Response> likePost(String uid);
   Future<Response> unlikePost(String uid);
+
+  Future<Response> getUserAnnouncementPosts({PaginationRequest? request});
+  Future<Response> getPublicAnnouncements({PaginationRequest? request});
+  Future<Response> addAnnouncementPost(Map<String, dynamic> postData);
+  Future<Response> editAnnouncementPost(Map<String, dynamic> postData);
+
+  Future<Response> deleteAnnouncementPost(String uid);
+
   Future<dynamic> uploadImages(List<XFile> images);
 
   Future<Response> getProviderReviews(
@@ -211,7 +220,8 @@ abstract class ApiService {
   Future<Response> getProviderMedia(String uid, {PaginationRequest? request});
   Future<Response> deleteProviderMedia(String uid, List<String> uids);
 
-  Future<Response> inviteCollaborators(List<AUser> users, String uid);
+  Future<Response> inviteCollaborators(
+      List<AUser> users, String uid, String role, List<String> permissions);
   Future<Response> getInvitedCollaborators(String uid,
       {PaginationRequest? request});
   Future<Response> deleteCollaboratorInvite(String uid, String inviteId);
@@ -219,5 +229,10 @@ abstract class ApiService {
   Future<Response> finalizeCollaboratorInvite(String token, String providerUid);
 
   Future<Response> getCollaborators(String uid, {PaginationRequest? request});
+  Future<Response> getCollaborator(String uid);
+
   Future<Response> removeCollaborator(String uid, String collaboratorUid);
+  Future<Response> updateCollaboratorPermissions(String uid,
+      String collaboratorUid, String role, List<String> permissions);
+  Future<Response> updateUserSchedule(String uid, List<TimeSlotApi> schedule);
 }

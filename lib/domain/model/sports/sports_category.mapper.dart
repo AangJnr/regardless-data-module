@@ -100,11 +100,12 @@ mixin SportsCategoryMappable {
   }
 
   SportsCategoryCopyWith<SportsCategory, SportsCategory, SportsCategory>
-  get copyWith => _SportsCategoryCopyWithImpl<SportsCategory, SportsCategory>(
-    this as SportsCategory,
-    $identity,
-    $identity,
-  );
+      get copyWith =>
+          _SportsCategoryCopyWithImpl<SportsCategory, SportsCategory>(
+            this as SportsCategory,
+            $identity,
+            $identity,
+          );
   @override
   String toString() {
     return SportsCategoryMapper.ensureInitialized().stringifyValue(
@@ -163,27 +164,28 @@ class _SportsCategoryCopyWithImpl<$R, $Out>
     bool? isActive,
     Object? iconUrl = $none,
     Object? hexColor = $none,
-  }) => $apply(
-    FieldCopyWithData({
-      if (uid != null) #uid: uid,
-      if (name != null) #name: name,
-      if (isActive != null) #isActive: isActive,
-      if (iconUrl != $none) #iconUrl: iconUrl,
-      if (hexColor != $none) #hexColor: hexColor,
-    }),
-  );
+  }) =>
+      $apply(
+        FieldCopyWithData({
+          if (uid != null) #uid: uid,
+          if (name != null) #name: name,
+          if (isActive != null) #isActive: isActive,
+          if (iconUrl != $none) #iconUrl: iconUrl,
+          if (hexColor != $none) #hexColor: hexColor,
+        }),
+      );
   @override
   SportsCategory $make(CopyWithData data) => SportsCategory(
-    uid: data.get(#uid, or: $value.uid),
-    name: data.get(#name, or: $value.name),
-    isActive: data.get(#isActive, or: $value.isActive),
-    iconUrl: data.get(#iconUrl, or: $value.iconUrl),
-    hexColor: data.get(#hexColor, or: $value.hexColor),
-  );
+        uid: data.get(#uid, or: $value.uid),
+        name: data.get(#name, or: $value.name),
+        isActive: data.get(#isActive, or: $value.isActive),
+        iconUrl: data.get(#iconUrl, or: $value.iconUrl),
+        hexColor: data.get(#hexColor, or: $value.hexColor),
+      );
 
   @override
   SportsCategoryCopyWith<$R2, SportsCategory, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) => _SportsCategoryCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) =>
+      _SportsCategoryCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

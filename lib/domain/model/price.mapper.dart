@@ -145,26 +145,26 @@ class _PriceCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Price, $Out>
     String? type,
     int? quantity,
     String? description,
-  }) => $apply(
-    FieldCopyWithData({
-      if (amount != null) #amount: amount,
-      if (currency != null) #currency: currency,
-      if (type != null) #type: type,
-      if (quantity != null) #quantity: quantity,
-      if (description != null) #description: description,
-    }),
-  );
+  }) =>
+      $apply(
+        FieldCopyWithData({
+          if (amount != null) #amount: amount,
+          if (currency != null) #currency: currency,
+          if (type != null) #type: type,
+          if (quantity != null) #quantity: quantity,
+          if (description != null) #description: description,
+        }),
+      );
   @override
   Price $make(CopyWithData data) => Price(
-    amount: data.get(#amount, or: $value.amount),
-    currency: data.get(#currency, or: $value.currency),
-    type: data.get(#type, or: $value.type),
-    quantity: data.get(#quantity, or: $value.quantity),
-    description: data.get(#description, or: $value.description),
-  );
+        amount: data.get(#amount, or: $value.amount),
+        currency: data.get(#currency, or: $value.currency),
+        type: data.get(#type, or: $value.type),
+        quantity: data.get(#quantity, or: $value.quantity),
+        description: data.get(#description, or: $value.description),
+      );
 
   @override
   PriceCopyWith<$R2, Price, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _PriceCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

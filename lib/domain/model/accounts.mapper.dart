@@ -22,10 +22,17 @@ class AccountsMapper extends ClassMapperBase<Accounts> {
   @override
   final String id = 'Accounts';
 
-  static List<AUser> _$profiles(Accounts v) => v.profiles;
-  static const Field<Accounts, List<AUser>> _f$profiles = Field(
-    'profiles',
-    _$profiles,
+  static List<AUser> _$owned(Accounts v) => v.owned;
+  static const Field<Accounts, List<AUser>> _f$owned = Field(
+    'owned',
+    _$owned,
+    opt: true,
+    def: const [],
+  );
+  static List<AUser> _$collaborated(Accounts v) => v.collaborated;
+  static const Field<Accounts, List<AUser>> _f$collaborated = Field(
+    'collaborated',
+    _$collaborated,
     opt: true,
     def: const [],
   );
@@ -34,18 +41,20 @@ class AccountsMapper extends ClassMapperBase<Accounts> {
     'canAddMore',
     _$canAddMore,
     opt: true,
-    def: true,
+    def: false,
   );
 
   @override
   final MappableFields<Accounts> fields = const {
-    #profiles: _f$profiles,
+    #owned: _f$owned,
+    #collaborated: _f$collaborated,
     #canAddMore: _f$canAddMore,
   };
 
   static Accounts _instantiate(DecodingData data) {
     return Accounts(
-      profiles: data.dec(_f$profiles),
+      owned: data.dec(_f$owned),
+      collaborated: data.dec(_f$collaborated),
       canAddMore: data.dec(_f$canAddMore),
     );
   }
@@ -107,8 +116,9 @@ extension AccountsValueCopy<$R, $Out> on ObjectCopyWith<$R, Accounts, $Out> {
 
 abstract class AccountsCopyWith<$R, $In extends Accounts, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, AUser, AUserCopyWith<$R, AUser, AUser>> get profiles;
-  $R call({List<AUser>? profiles, bool? canAddMore});
+  ListCopyWith<$R, AUser, AUserCopyWith<$R, AUser, AUser>> get owned;
+  ListCopyWith<$R, AUser, AUserCopyWith<$R, AUser, AUser>> get collaborated;
+  $R call({List<AUser>? owned, List<AUser>? collaborated, bool? canAddMore});
   AccountsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -121,28 +131,38 @@ class _AccountsCopyWithImpl<$R, $Out>
   late final ClassMapperBase<Accounts> $mapper =
       AccountsMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, AUser, AUserCopyWith<$R, AUser, AUser>> get profiles =>
+  ListCopyWith<$R, AUser, AUserCopyWith<$R, AUser, AUser>> get owned =>
       ListCopyWith(
-        $value.profiles,
+        $value.owned,
         (v, t) => v.copyWith.$chain(t),
-        (v) => call(profiles: v),
+        (v) => call(owned: v),
       );
   @override
-  $R call({List<AUser>? profiles, bool? canAddMore}) => $apply(
-    FieldCopyWithData({
-      if (profiles != null) #profiles: profiles,
-      if (canAddMore != null) #canAddMore: canAddMore,
-    }),
-  );
+  ListCopyWith<$R, AUser, AUserCopyWith<$R, AUser, AUser>> get collaborated =>
+      ListCopyWith(
+        $value.collaborated,
+        (v, t) => v.copyWith.$chain(t),
+        (v) => call(collaborated: v),
+      );
+  @override
+  $R call({List<AUser>? owned, List<AUser>? collaborated, bool? canAddMore}) =>
+      $apply(
+        FieldCopyWithData({
+          if (owned != null) #owned: owned,
+          if (collaborated != null) #collaborated: collaborated,
+          if (canAddMore != null) #canAddMore: canAddMore,
+        }),
+      );
   @override
   Accounts $make(CopyWithData data) => Accounts(
-    profiles: data.get(#profiles, or: $value.profiles),
-    canAddMore: data.get(#canAddMore, or: $value.canAddMore),
-  );
+        owned: data.get(#owned, or: $value.owned),
+        collaborated: data.get(#collaborated, or: $value.collaborated),
+        canAddMore: data.get(#canAddMore, or: $value.canAddMore),
+      );
 
   @override
   AccountsCopyWith<$R2, Accounts, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) => _AccountsCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) =>
+      _AccountsCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

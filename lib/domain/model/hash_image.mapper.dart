@@ -116,20 +116,20 @@ class _HashImageCopyWithImpl<$R, $Out>
       HashImageMapper.ensureInitialized();
   @override
   $R call({String? url, String? hash}) => $apply(
-    FieldCopyWithData({
-      if (url != null) #url: url,
-      if (hash != null) #hash: hash,
-    }),
-  );
+        FieldCopyWithData({
+          if (url != null) #url: url,
+          if (hash != null) #hash: hash,
+        }),
+      );
   @override
   HashImage $make(CopyWithData data) => HashImage(
-    url: data.get(#url, or: $value.url),
-    hash: data.get(#hash, or: $value.hash),
-  );
+        url: data.get(#url, or: $value.url),
+        hash: data.get(#hash, or: $value.hash),
+      );
 
   @override
   HashImageCopyWith<$R2, HashImage, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) => _HashImageCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) =>
+      _HashImageCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

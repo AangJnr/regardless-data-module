@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:regardless_data_module/domain/model/results.dart';
 import 'package:regardless_data_module/domain/model/service/service.dart';
+import 'package:regardless_data_module/domain/model/user.dart';
 
 import '../../../domain/model/community/community.dart';
 import '../feed_api.dart';
@@ -13,18 +14,23 @@ class SearchResults {
   final List<Community>? otherCommunities;
   final List<Service>? services;
   final List<Service>? otherServices;
+  final List<AUser>? providers;
+  final List<AUser>? otherProviders;
 
-  const SearchResults(
-      {this.events,
-      this.otherEvents,
-      this.communities,
-      this.otherCommunities,
-      this.services,
-      this.otherServices});
+  const SearchResults({
+    this.events,
+    this.otherEvents,
+    this.communities,
+    this.otherCommunities,
+    this.services,
+    this.otherServices,
+    this.providers,
+    this.otherProviders,
+  });
 
   @override
   String toString() {
-    return 'Results(events: $events, otherEvents: $otherEvents)';
+    return 'Results(events: $events, otherEvents: $otherEvents, providers: $providers)';
   }
 
   factory SearchResults.fromMap(Map<String, dynamic> data) => SearchResults(
@@ -46,6 +52,12 @@ class SearchResults {
         services: (data['services'] as List<dynamic>?)
             ?.map((e) => ServiceMapper.fromMap(e as Map<String, dynamic>))
             .toList(),
+        providers: (data['providers'] as List<dynamic>?)
+            ?.map((e) => AUserMapper.fromMap(e as Map<String, dynamic>))
+            .toList(),
+        otherProviders: (data['otherProviders'] as List<dynamic>?)
+            ?.map((e) => AUserMapper.fromMap(e as Map<String, dynamic>))
+            .toList(),
       );
 
   Map<String, dynamic> toMap() => {
@@ -54,6 +66,8 @@ class SearchResults {
         'communities': communities?.map((e) => e.toMap()).toList(),
         'services': services?.map((e) => e.toMap()).toList(),
         'otherServices': otherServices?.map((e) => e.toMap()).toList(),
+        'providers': providers?.map((e) => e.toJson()).toList(),
+        'otherProviders': otherProviders?.map((e) => e.toJson()).toList(),
       };
 
   /// `dart:convert`
@@ -75,5 +89,7 @@ class SearchResults {
         otherCommunities: otherCommunities?.map((e) => e).toList() ?? [],
         services: services ?? [],
         otherServices: otherServices ?? [],
+        providers: providers ?? [],
+        otherProviders: otherProviders ?? [],
       );
 }

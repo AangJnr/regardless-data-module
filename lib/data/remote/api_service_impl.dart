@@ -5,6 +5,7 @@ import 'dart:convert';
 // ignore: depend_on_referenced_packages
 import 'package:cross_file/cross_file.dart';
 import 'package:http/http.dart' as http;
+import 'package:regardless_data_module/data/model/service_api/time_slot_api.dart';
 import 'package:regardless_data_module/domain/model/community/community.dart';
 import 'package:regardless_data_module/domain/model/community/member.dart';
 import 'package:regardless_data_module/domain/model/review/review.dart';
@@ -793,6 +794,40 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
+  Future<http.Response> getUserAnnouncementPosts(
+      {PaginationRequest? request}) async {
+    var response = get(
+        Post().GetUserAnnouncementPosts + (request?.toQueryParams() ?? ''),
+        headers: await getHeaders());
+    return response;
+  }
+
+  @override
+  Future<http.Response> addAnnouncementPost(
+      Map<String, dynamic> postData) async {
+    var response = post(Post().Announcement,
+        headers: await getHeaders(), body: jsonEncode(postData));
+    return response;
+  }
+
+  @override
+  Future<http.Response> editAnnouncementPost(
+      Map<String, dynamic> postData) async {
+    var response = patch(Post().Announcement,
+        headers: await getHeaders(), body: jsonEncode(postData));
+    return response;
+  }
+
+  @override
+  Future<http.Response> getPublicAnnouncements(
+      {PaginationRequest? request}) async {
+    var response = get(
+        Post().GetPublicAnnouncementPosts + (request?.toQueryParams() ?? ''),
+        headers: await getHeaders());
+    return response;
+  }
+
+  @override
   Future<http.Response> likePost(String uid) async {
     var response = get(
       Post().Like(uid),
@@ -805,6 +840,15 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   Future<http.Response> unlikePost(String uid) async {
     var response = delete(
       Post().Like(uid),
+      headers: await getHeaders(),
+    );
+    return response;
+  }
+
+  @override
+  Future<http.Response> deleteAnnouncementPost(String uid) async {
+    var response = delete(
+      Post().Delete(uid),
       headers: await getHeaders(),
     );
     return response;
@@ -1144,17 +1188,31 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
-  Future<http.Response> inviteCollaborators(
-      List<AUser> users, String uid) async {
+  Future<http.Response> inviteCollaborators(List<AUser> users, String uid,
+      String role, List<String> permissions) async {
     return post(User().InviteCollaborators(uid),
         headers: await getHeaders(),
         body: jsonEncode(users
             .map((e) => {
                   "uid": e.uid,
+                  "authUid": e.authUid,
                   "userName": e.userName,
                   "email": e.email,
+                  "role": role,
+                  "permissions": permissions,
                 })
             .toList()));
+  }
+
+  @override
+  Future<http.Response> updateCollaboratorPermissions(String uid,
+      String collaboratorUid, String role, List<String> permissions) async {
+    return patch(User().UpdateCollaboratorPermissions(uid, collaboratorUid),
+        headers: await getHeaders(),
+        body: jsonEncode({
+          "role": role,
+          "permissions": permissions,
+        }));
   }
 
   @override
@@ -1200,9 +1258,25 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
+  Future<http.Response> getCollaborator(String uid,
+      {PaginationRequest? request}) async {
+    return get(User().GetCollaborator(uid), headers: await getHeaders());
+  }
+
+  @override
   Future<http.Response> removeCollaborator(
       String uid, String collaboratorUid) async {
     return delete(User().RemoveCollaborator(uid, collaboratorUid),
         headers: await getHeaders());
+  }
+
+  @override
+  Future<http.Response> updateUserSchedule(
+      String uid, List<TimeSlotApi> schedule) async {
+    return patch(User().UpdateUserSchedule(uid),
+        headers: await getHeaders(),
+        body: jsonEncode({
+          "schedule": schedule.map((e) => e.toMap()).toList(),
+        }));
   }
 }

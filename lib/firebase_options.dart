@@ -21,15 +21,9 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -59,5 +53,27 @@ class DefaultFirebaseOptions {
     projectId: 'regardless-social-api',
     authDomain: 'regardless-social-api.firebaseapp.com',
     storageBucket: 'regardless-social-api.appspot.com',
+    measurementId: 'G-431S1PQK1B',
+  );
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyA8w14yzjHUN5o7P-bJ4247kSNJUD4S_Ms',
+    appId: '1:207833844155:android:dfd5bb5e150c2668399c9e',
+    messagingSenderId: '207833844155',
+    projectId: 'regardless-social-api',
+    storageBucket: 'regardless-social-api.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyApz4ZQSe-5ZmPgfCzYWUl6_urpNUh7NjA',
+    appId: '1:207833844155:ios:b5343c6747e7c88c399c9e',
+    messagingSenderId: '207833844155',
+    projectId: 'regardless-social-api',
+    storageBucket: 'regardless-social-api.appspot.com',
+    androidClientId:
+        '207833844155-6t60jkkldvaq79fo9ufqspht5ge2tfgo.apps.googleusercontent.com',
+    iosClientId:
+        '207833844155-vjp1rv2t1a0qeta6vll8mofafbd8es90.apps.googleusercontent.com',
+    iosBundleId: 'com.regardlessmode.app',
   );
 }

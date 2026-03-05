@@ -12,5 +12,12 @@ class Media with MediaMappable {
   final String uid;
   final String thumbnailUrl;
 
-  const Media({this.thumbnailUrl = '',this.uid ='', this.url = '', this.hash = 'LOEO@A0bM_RpWsxWW-s,9sn+-DWF', this.fileName = '', this.createdAt, this.mimeType = ''});
+  const Media(
+      {this.thumbnailUrl = '',
+      this.uid = '',
+      this.url = '',
+      this.hash = 'LOEO@A0bM_RpWsxWW-s,9sn+-DWF',
+      this.fileName = '',
+      this.createdAt,
+      this.mimeType = ''});
 }

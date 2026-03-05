@@ -209,7 +209,7 @@ abstract class ServiceCopyWith<$R, $In extends Service, $Out>
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get keywords;
   ListCopyWith<$R, Price, PriceCopyWith<$R, Price, Price>> get prices;
   ListCopyWith<$R, TimeSlot, TimeSlotCopyWith<$R, TimeSlot, TimeSlot>>
-  get timeSlots;
+      get timeSlots;
   VenueCopyWith<$R, Venue, Venue>? get location;
   AUserCopyWith<$R, AUser, AUser>? get provider;
   $R call({
@@ -254,11 +254,11 @@ class _ServiceCopyWithImpl<$R, $Out>
       );
   @override
   ListCopyWith<$R, TimeSlot, TimeSlotCopyWith<$R, TimeSlot, TimeSlot>>
-  get timeSlots => ListCopyWith(
-    $value.timeSlots,
-    (v, t) => v.copyWith.$chain(t),
-    (v) => call(timeSlots: v),
-  );
+      get timeSlots => ListCopyWith(
+            $value.timeSlots,
+            (v, t) => v.copyWith.$chain(t),
+            (v) => call(timeSlots: v),
+          );
   @override
   VenueCopyWith<$R, Venue, Venue>? get location =>
       $value.location?.copyWith.$chain((v) => call(location: v));
@@ -280,42 +280,42 @@ class _ServiceCopyWithImpl<$R, $Out>
     bool? isActive,
     String? categoryUid,
     Object? provider = $none,
-  }) => $apply(
-    FieldCopyWithData({
-      if (createdAt != $none) #createdAt: createdAt,
-      if (uid != null) #uid: uid,
-      if (keywords != null) #keywords: keywords,
-      if (prices != null) #prices: prices,
-      if (name != null) #name: name,
-      if (description != null) #description: description,
-      if (timeSlots != null) #timeSlots: timeSlots,
-      if (location != $none) #location: location,
-      if (ownerUid != null) #ownerUid: ownerUid,
-      if (updatedAt != $none) #updatedAt: updatedAt,
-      if (isActive != null) #isActive: isActive,
-      if (categoryUid != null) #categoryUid: categoryUid,
-      if (provider != $none) #provider: provider,
-    }),
-  );
+  }) =>
+      $apply(
+        FieldCopyWithData({
+          if (createdAt != $none) #createdAt: createdAt,
+          if (uid != null) #uid: uid,
+          if (keywords != null) #keywords: keywords,
+          if (prices != null) #prices: prices,
+          if (name != null) #name: name,
+          if (description != null) #description: description,
+          if (timeSlots != null) #timeSlots: timeSlots,
+          if (location != $none) #location: location,
+          if (ownerUid != null) #ownerUid: ownerUid,
+          if (updatedAt != $none) #updatedAt: updatedAt,
+          if (isActive != null) #isActive: isActive,
+          if (categoryUid != null) #categoryUid: categoryUid,
+          if (provider != $none) #provider: provider,
+        }),
+      );
   @override
   Service $make(CopyWithData data) => Service(
-    createdAt: data.get(#createdAt, or: $value.createdAt),
-    uid: data.get(#uid, or: $value.uid),
-    keywords: data.get(#keywords, or: $value.keywords),
-    prices: data.get(#prices, or: $value.prices),
-    name: data.get(#name, or: $value.name),
-    description: data.get(#description, or: $value.description),
-    timeSlots: data.get(#timeSlots, or: $value.timeSlots),
-    location: data.get(#location, or: $value.location),
-    ownerUid: data.get(#ownerUid, or: $value.ownerUid),
-    updatedAt: data.get(#updatedAt, or: $value.updatedAt),
-    isActive: data.get(#isActive, or: $value.isActive),
-    categoryUid: data.get(#categoryUid, or: $value.categoryUid),
-    provider: data.get(#provider, or: $value.provider),
-  );
+        createdAt: data.get(#createdAt, or: $value.createdAt),
+        uid: data.get(#uid, or: $value.uid),
+        keywords: data.get(#keywords, or: $value.keywords),
+        prices: data.get(#prices, or: $value.prices),
+        name: data.get(#name, or: $value.name),
+        description: data.get(#description, or: $value.description),
+        timeSlots: data.get(#timeSlots, or: $value.timeSlots),
+        location: data.get(#location, or: $value.location),
+        ownerUid: data.get(#ownerUid, or: $value.ownerUid),
+        updatedAt: data.get(#updatedAt, or: $value.updatedAt),
+        isActive: data.get(#isActive, or: $value.isActive),
+        categoryUid: data.get(#categoryUid, or: $value.categoryUid),
+        provider: data.get(#provider, or: $value.provider),
+      );
 
   @override
   ServiceCopyWith<$R2, Service, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _ServiceCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

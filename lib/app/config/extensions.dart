@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:cross_file/cross_file.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
- import '../../domain/model/user.dart' show Gender;
+import '../../domain/model/user.dart' show Gender;
 import '../app.logger.dart';
 import '../utils/url.dart' show Url;
 
@@ -78,12 +78,12 @@ extension StringExtension on String? {
         return Gender.RatherNotSay;
     }
   }
-  String formatImageUrl() {
-    if (this == null) return'';
-      return Url.isDebug
-              ? this!.replaceFirst('127.0.0.1', Url.firebaseEmulatorHost)
-              : this!;
 
+  String formatImageUrl() {
+    if (this == null) return '';
+    return Url.isDebug
+        ? this!.replaceFirst('127.0.0.1', Url.firebaseEmulatorHost)
+        : this!;
   }
 
   Gender stringToGender() {

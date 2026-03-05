@@ -156,27 +156,28 @@ class _UpdateUserCopyWithImpl<$R, $Out>
     String? phone,
     String? picture,
     String? bio,
-  }) => $apply(
-    FieldCopyWithData({
-      if (uid != null) #uid: uid,
-      if (fullName != null) #fullName: fullName,
-      if (phone != null) #phone: phone,
-      if (picture != null) #picture: picture,
-      if (bio != null) #bio: bio,
-    }),
-  );
+  }) =>
+      $apply(
+        FieldCopyWithData({
+          if (uid != null) #uid: uid,
+          if (fullName != null) #fullName: fullName,
+          if (phone != null) #phone: phone,
+          if (picture != null) #picture: picture,
+          if (bio != null) #bio: bio,
+        }),
+      );
   @override
   UpdateUser $make(CopyWithData data) => UpdateUser(
-    uid: data.get(#uid, or: $value.uid),
-    fullName: data.get(#fullName, or: $value.fullName),
-    phone: data.get(#phone, or: $value.phone),
-    picture: data.get(#picture, or: $value.picture),
-    bio: data.get(#bio, or: $value.bio),
-  );
+        uid: data.get(#uid, or: $value.uid),
+        fullName: data.get(#fullName, or: $value.fullName),
+        phone: data.get(#phone, or: $value.phone),
+        picture: data.get(#picture, or: $value.picture),
+        bio: data.get(#bio, or: $value.bio),
+      );
 
   @override
   UpdateUserCopyWith<$R2, UpdateUser, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) => _UpdateUserCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) =>
+      _UpdateUserCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

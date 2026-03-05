@@ -86,4 +86,4 @@ class CreateService {
         updatedAt: updatedAt ?? this.updatedAt,
         categoryUid: categoryUid ?? this.categoryUid);
   }
- }
+}

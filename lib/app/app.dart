@@ -12,6 +12,7 @@ import '../domain/repositories/event_repository.dart';
 import '../domain/repositories/service_repository.dart';
 import '../domain/repositories/team_repository.dart';
 import '../domain/repositories/user_repository.dart';
+import 'services/access_service.dart';
 import 'services/cache_service.dart';
 import 'services/geocoder_service_impl.dart';
 import 'services/places_service_impl.dart';
@@ -30,6 +31,7 @@ import 'services/places_service_impl.dart';
     LazySingleton(classType: TeamRepositoryImpl, asType: TeamRepository),
     LazySingleton(classType: GeocoderImpl, asType: TGeocoder),
     LazySingleton(classType: CacheServiceImpl, asType: CacheService),
+    LazySingleton(classType: AccessService),
     // @stacked-service
   ],
   bottomsheets: [

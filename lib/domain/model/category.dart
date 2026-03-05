@@ -16,7 +16,7 @@ class Category with CategoryMappable {
   final bool serviceSupported;
   final String nameForProvider;
   final bool isActive;
-final String? tag;
+  final String? tag;
   const Category(
       {this.name = '',
       this.description = '',
@@ -24,7 +24,8 @@ final String? tag;
       this.uid = '',
       this.descriptionForProvider = '',
       this.nameForProvider = '',
-      this.iconUrl = '',this.tag,
+      this.iconUrl = '',
+      this.tag,
       this.hexColor,
       this.isActive = true,
       this.serviceSupported = false});

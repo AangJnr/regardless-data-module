@@ -279,7 +279,7 @@ abstract class FeedCopyWith<$R, $In extends Feed, $Out>
   VenueCopyWith<$R, Venue, Venue> get venue;
   CategoryCopyWith<$R, Category, Category> get category;
   ListCopyWith<$R, HashImage, HashImageCopyWith<$R, HashImage, HashImage>>
-  get imageUrls;
+      get imageUrls;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get tags;
   $R call({
     Venue? venue,
@@ -322,11 +322,11 @@ class _FeedCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Feed, $Out>
       $value.category.copyWith.$chain((v) => call(category: v));
   @override
   ListCopyWith<$R, HashImage, HashImageCopyWith<$R, HashImage, HashImage>>
-  get imageUrls => ListCopyWith(
-    $value.imageUrls,
-    (v, t) => v.copyWith.$chain(t),
-    (v) => call(imageUrls: v),
-  );
+      get imageUrls => ListCopyWith(
+            $value.imageUrls,
+            (v, t) => v.copyWith.$chain(t),
+            (v) => call(imageUrls: v),
+          );
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get tags =>
       ListCopyWith(
@@ -358,64 +358,64 @@ class _FeedCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Feed, $Out>
     bool? isRepeating,
     double? distance,
     bool? isFromFeed,
-  }) => $apply(
-    FieldCopyWithData({
-      if (venue != null) #venue: venue,
-      if (description != null) #description: description,
-      if (createdAt != $none) #createdAt: createdAt,
-      if (uid != null) #uid: uid,
-      if (isArchived != null) #isArchived: isArchived,
-      if (title != null) #title: title,
-      if (timestamp != null) #timestamp: timestamp,
-      if (category != null) #category: category,
-      if (localTimestamp != null) #localTimestamp: localTimestamp,
-      if (categoryUid != null) #categoryUid: categoryUid,
-      if (updatedAt != $none) #updatedAt: updatedAt,
-      if (imageUrls != null) #imageUrls: imageUrls,
-      if (tags != null) #tags: tags,
-      if (ownerUid != null) #ownerUid: ownerUid,
-      if (ownerUserName != null) #ownerUserName: ownerUserName,
-      if (ownerProfileImageUrl != null)
-        #ownerProfileImageUrl: ownerProfileImageUrl,
-      if (isSponsored != null) #isSponsored: isSponsored,
-      if (communityUid != null) #communityUid: communityUid,
-      if (recurrenceUid != null) #recurrenceUid: recurrenceUid,
-      if (isRepeating != null) #isRepeating: isRepeating,
-      if (distance != null) #distance: distance,
-      if (isFromFeed != null) #isFromFeed: isFromFeed,
-    }),
-  );
+  }) =>
+      $apply(
+        FieldCopyWithData({
+          if (venue != null) #venue: venue,
+          if (description != null) #description: description,
+          if (createdAt != $none) #createdAt: createdAt,
+          if (uid != null) #uid: uid,
+          if (isArchived != null) #isArchived: isArchived,
+          if (title != null) #title: title,
+          if (timestamp != null) #timestamp: timestamp,
+          if (category != null) #category: category,
+          if (localTimestamp != null) #localTimestamp: localTimestamp,
+          if (categoryUid != null) #categoryUid: categoryUid,
+          if (updatedAt != $none) #updatedAt: updatedAt,
+          if (imageUrls != null) #imageUrls: imageUrls,
+          if (tags != null) #tags: tags,
+          if (ownerUid != null) #ownerUid: ownerUid,
+          if (ownerUserName != null) #ownerUserName: ownerUserName,
+          if (ownerProfileImageUrl != null)
+            #ownerProfileImageUrl: ownerProfileImageUrl,
+          if (isSponsored != null) #isSponsored: isSponsored,
+          if (communityUid != null) #communityUid: communityUid,
+          if (recurrenceUid != null) #recurrenceUid: recurrenceUid,
+          if (isRepeating != null) #isRepeating: isRepeating,
+          if (distance != null) #distance: distance,
+          if (isFromFeed != null) #isFromFeed: isFromFeed,
+        }),
+      );
   @override
   Feed $make(CopyWithData data) => Feed(
-    venue: data.get(#venue, or: $value.venue),
-    description: data.get(#description, or: $value.description),
-    createdAt: data.get(#createdAt, or: $value.createdAt),
-    uid: data.get(#uid, or: $value.uid),
-    isArchived: data.get(#isArchived, or: $value.isArchived),
-    title: data.get(#title, or: $value.title),
-    timestamp: data.get(#timestamp, or: $value.timestamp),
-    category: data.get(#category, or: $value.category),
-    localTimestamp: data.get(#localTimestamp, or: $value.localTimestamp),
-    categoryUid: data.get(#categoryUid, or: $value.categoryUid),
-    updatedAt: data.get(#updatedAt, or: $value.updatedAt),
-    imageUrls: data.get(#imageUrls, or: $value.imageUrls),
-    tags: data.get(#tags, or: $value.tags),
-    ownerUid: data.get(#ownerUid, or: $value.ownerUid),
-    ownerUserName: data.get(#ownerUserName, or: $value.ownerUserName),
-    ownerProfileImageUrl: data.get(
-      #ownerProfileImageUrl,
-      or: $value.ownerProfileImageUrl,
-    ),
-    isSponsored: data.get(#isSponsored, or: $value.isSponsored),
-    communityUid: data.get(#communityUid, or: $value.communityUid),
-    recurrenceUid: data.get(#recurrenceUid, or: $value.recurrenceUid),
-    isRepeating: data.get(#isRepeating, or: $value.isRepeating),
-    distance: data.get(#distance, or: $value.distance),
-    isFromFeed: data.get(#isFromFeed, or: $value.isFromFeed),
-  );
+        venue: data.get(#venue, or: $value.venue),
+        description: data.get(#description, or: $value.description),
+        createdAt: data.get(#createdAt, or: $value.createdAt),
+        uid: data.get(#uid, or: $value.uid),
+        isArchived: data.get(#isArchived, or: $value.isArchived),
+        title: data.get(#title, or: $value.title),
+        timestamp: data.get(#timestamp, or: $value.timestamp),
+        category: data.get(#category, or: $value.category),
+        localTimestamp: data.get(#localTimestamp, or: $value.localTimestamp),
+        categoryUid: data.get(#categoryUid, or: $value.categoryUid),
+        updatedAt: data.get(#updatedAt, or: $value.updatedAt),
+        imageUrls: data.get(#imageUrls, or: $value.imageUrls),
+        tags: data.get(#tags, or: $value.tags),
+        ownerUid: data.get(#ownerUid, or: $value.ownerUid),
+        ownerUserName: data.get(#ownerUserName, or: $value.ownerUserName),
+        ownerProfileImageUrl: data.get(
+          #ownerProfileImageUrl,
+          or: $value.ownerProfileImageUrl,
+        ),
+        isSponsored: data.get(#isSponsored, or: $value.isSponsored),
+        communityUid: data.get(#communityUid, or: $value.communityUid),
+        recurrenceUid: data.get(#recurrenceUid, or: $value.recurrenceUid),
+        isRepeating: data.get(#isRepeating, or: $value.isRepeating),
+        distance: data.get(#distance, or: $value.distance),
+        isFromFeed: data.get(#isFromFeed, or: $value.isFromFeed),
+      );
 
   @override
   FeedCopyWith<$R2, Feed, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _FeedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

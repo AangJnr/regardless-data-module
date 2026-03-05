@@ -512,7 +512,7 @@ abstract class EventCopyWith<$R, $In extends Event, $Out>
   CategoryCopyWith<$R, Category, Category> get category;
   ListCopyWith<$R, Price, PriceCopyWith<$R, Price, Price>> get prices;
   ListCopyWith<$R, HashImage, HashImageCopyWith<$R, HashImage, HashImage>>
-  get imageUrls;
+      get imageUrls;
   PriceCopyWith<$R, Price, Price>? get selectedPrice;
   ListCopyWith<$R, Member, MemberCopyWith<$R, Member, Member>> get attendees;
   $R call({
@@ -583,11 +583,11 @@ class _EventCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Event, $Out>
       );
   @override
   ListCopyWith<$R, HashImage, HashImageCopyWith<$R, HashImage, HashImage>>
-  get imageUrls => ListCopyWith(
-    $value.imageUrls,
-    (v, t) => v.copyWith.$chain(t),
-    (v) => call(imageUrls: v),
-  );
+      get imageUrls => ListCopyWith(
+            $value.imageUrls,
+            (v, t) => v.copyWith.$chain(t),
+            (v) => call(imageUrls: v),
+          );
   @override
   PriceCopyWith<$R, Price, Price>? get selectedPrice =>
       $value.selectedPrice?.copyWith.$chain((v) => call(selectedPrice: v));
@@ -642,104 +642,107 @@ class _EventCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Event, $Out>
     List<Member>? attendees,
     int? attendeesCount,
     bool? isFromFeed,
-  }) => $apply(
-    FieldCopyWithData({
-      if (venue != null) #venue: venue,
-      if (archiveReason != null) #archiveReason: archiveReason,
-      if (durationHour != null) #durationHour: durationHour,
-      if (isVerified != null) #isVerified: isVerified,
-      if (ticketsCancelled != null) #ticketsCancelled: ticketsCancelled,
-      if (isArchived != null) #isArchived: isArchived,
-      if (timezone != null) #timezone: timezone,
-      if (updateReason != null) #updateReason: updateReason,
-      if (verifiedAt != null) #verifiedAt: verifiedAt,
-      if (description != null) #description: description,
-      if (recurrenceUid != null) #recurrenceUid: recurrenceUid,
-      if (recurrenceLabel != null) #recurrenceLabel: recurrenceLabel,
-      if (recurrence != null) #recurrence: recurrence,
-      if (createdAt != $none) #createdAt: createdAt,
-      if (uid != null) #uid: uid,
-      if (category != null) #category: category,
-      if (localTimestamp != null) #localTimestamp: localTimestamp,
-      if (categoryUid != null) #categoryUid: categoryUid,
-      if (onlineEventUrl != null) #onlineEventUrl: onlineEventUrl,
-      if (prices != null) #prices: prices,
-      if (durationMin != null) #durationMin: durationMin,
-      if (timestamp != null) #timestamp: timestamp,
-      if (updatedAt != $none) #updatedAt: updatedAt,
-      if (ticketsPurchased != null) #ticketsPurchased: ticketsPurchased,
-      if (contactEmail != null) #contactEmail: contactEmail,
-      if (availableTickets != null) #availableTickets: availableTickets,
-      if (viewsCount != null) #viewsCount: viewsCount,
-      if (eventType != null) #eventType: eventType,
-      if (isRepeating != null) #isRepeating: isRepeating,
-      if (imageUrls != null) #imageUrls: imageUrls,
-      if (name != null) #name: name,
-      if (contactPhone != null) #contactPhone: contactPhone,
-      if (ownerUid != null) #ownerUid: ownerUid,
-      if (selectedPrice != $none) #selectedPrice: selectedPrice,
-      if (ownerUserName != null) #ownerUserName: ownerUserName,
-      if (ownerProfileImageUrl != null)
-        #ownerProfileImageUrl: ownerProfileImageUrl,
-      if (isSponsored != null) #isSponsored: isSponsored,
-      if (communityUid != null) #communityUid: communityUid,
-      if (distance != null) #distance: distance,
-      if (attendees != null) #attendees: attendees,
-      if (attendeesCount != null) #attendeesCount: attendeesCount,
-      if (isFromFeed != null) #isFromFeed: isFromFeed,
-    }),
-  );
+  }) =>
+      $apply(
+        FieldCopyWithData({
+          if (venue != null) #venue: venue,
+          if (archiveReason != null) #archiveReason: archiveReason,
+          if (durationHour != null) #durationHour: durationHour,
+          if (isVerified != null) #isVerified: isVerified,
+          if (ticketsCancelled != null) #ticketsCancelled: ticketsCancelled,
+          if (isArchived != null) #isArchived: isArchived,
+          if (timezone != null) #timezone: timezone,
+          if (updateReason != null) #updateReason: updateReason,
+          if (verifiedAt != null) #verifiedAt: verifiedAt,
+          if (description != null) #description: description,
+          if (recurrenceUid != null) #recurrenceUid: recurrenceUid,
+          if (recurrenceLabel != null) #recurrenceLabel: recurrenceLabel,
+          if (recurrence != null) #recurrence: recurrence,
+          if (createdAt != $none) #createdAt: createdAt,
+          if (uid != null) #uid: uid,
+          if (category != null) #category: category,
+          if (localTimestamp != null) #localTimestamp: localTimestamp,
+          if (categoryUid != null) #categoryUid: categoryUid,
+          if (onlineEventUrl != null) #onlineEventUrl: onlineEventUrl,
+          if (prices != null) #prices: prices,
+          if (durationMin != null) #durationMin: durationMin,
+          if (timestamp != null) #timestamp: timestamp,
+          if (updatedAt != $none) #updatedAt: updatedAt,
+          if (ticketsPurchased != null) #ticketsPurchased: ticketsPurchased,
+          if (contactEmail != null) #contactEmail: contactEmail,
+          if (availableTickets != null) #availableTickets: availableTickets,
+          if (viewsCount != null) #viewsCount: viewsCount,
+          if (eventType != null) #eventType: eventType,
+          if (isRepeating != null) #isRepeating: isRepeating,
+          if (imageUrls != null) #imageUrls: imageUrls,
+          if (name != null) #name: name,
+          if (contactPhone != null) #contactPhone: contactPhone,
+          if (ownerUid != null) #ownerUid: ownerUid,
+          if (selectedPrice != $none) #selectedPrice: selectedPrice,
+          if (ownerUserName != null) #ownerUserName: ownerUserName,
+          if (ownerProfileImageUrl != null)
+            #ownerProfileImageUrl: ownerProfileImageUrl,
+          if (isSponsored != null) #isSponsored: isSponsored,
+          if (communityUid != null) #communityUid: communityUid,
+          if (distance != null) #distance: distance,
+          if (attendees != null) #attendees: attendees,
+          if (attendeesCount != null) #attendeesCount: attendeesCount,
+          if (isFromFeed != null) #isFromFeed: isFromFeed,
+        }),
+      );
   @override
   Event $make(CopyWithData data) => Event(
-    venue: data.get(#venue, or: $value.venue),
-    archiveReason: data.get(#archiveReason, or: $value.archiveReason),
-    durationHour: data.get(#durationHour, or: $value.durationHour),
-    isVerified: data.get(#isVerified, or: $value.isVerified),
-    ticketsCancelled: data.get(#ticketsCancelled, or: $value.ticketsCancelled),
-    isArchived: data.get(#isArchived, or: $value.isArchived),
-    timezone: data.get(#timezone, or: $value.timezone),
-    updateReason: data.get(#updateReason, or: $value.updateReason),
-    verifiedAt: data.get(#verifiedAt, or: $value.verifiedAt),
-    description: data.get(#description, or: $value.description),
-    recurrenceUid: data.get(#recurrenceUid, or: $value.recurrenceUid),
-    recurrenceLabel: data.get(#recurrenceLabel, or: $value.recurrenceLabel),
-    recurrence: data.get(#recurrence, or: $value.recurrence),
-    createdAt: data.get(#createdAt, or: $value.createdAt),
-    uid: data.get(#uid, or: $value.uid),
-    category: data.get(#category, or: $value.category),
-    localTimestamp: data.get(#localTimestamp, or: $value.localTimestamp),
-    categoryUid: data.get(#categoryUid, or: $value.categoryUid),
-    onlineEventUrl: data.get(#onlineEventUrl, or: $value.onlineEventUrl),
-    prices: data.get(#prices, or: $value.prices),
-    durationMin: data.get(#durationMin, or: $value.durationMin),
-    timestamp: data.get(#timestamp, or: $value.timestamp),
-    updatedAt: data.get(#updatedAt, or: $value.updatedAt),
-    ticketsPurchased: data.get(#ticketsPurchased, or: $value.ticketsPurchased),
-    contactEmail: data.get(#contactEmail, or: $value.contactEmail),
-    availableTickets: data.get(#availableTickets, or: $value.availableTickets),
-    viewsCount: data.get(#viewsCount, or: $value.viewsCount),
-    eventType: data.get(#eventType, or: $value.eventType),
-    isRepeating: data.get(#isRepeating, or: $value.isRepeating),
-    imageUrls: data.get(#imageUrls, or: $value.imageUrls),
-    name: data.get(#name, or: $value.name),
-    contactPhone: data.get(#contactPhone, or: $value.contactPhone),
-    ownerUid: data.get(#ownerUid, or: $value.ownerUid),
-    selectedPrice: data.get(#selectedPrice, or: $value.selectedPrice),
-    ownerUserName: data.get(#ownerUserName, or: $value.ownerUserName),
-    ownerProfileImageUrl: data.get(
-      #ownerProfileImageUrl,
-      or: $value.ownerProfileImageUrl,
-    ),
-    isSponsored: data.get(#isSponsored, or: $value.isSponsored),
-    communityUid: data.get(#communityUid, or: $value.communityUid),
-    distance: data.get(#distance, or: $value.distance),
-    attendees: data.get(#attendees, or: $value.attendees),
-    attendeesCount: data.get(#attendeesCount, or: $value.attendeesCount),
-    isFromFeed: data.get(#isFromFeed, or: $value.isFromFeed),
-  );
+        venue: data.get(#venue, or: $value.venue),
+        archiveReason: data.get(#archiveReason, or: $value.archiveReason),
+        durationHour: data.get(#durationHour, or: $value.durationHour),
+        isVerified: data.get(#isVerified, or: $value.isVerified),
+        ticketsCancelled:
+            data.get(#ticketsCancelled, or: $value.ticketsCancelled),
+        isArchived: data.get(#isArchived, or: $value.isArchived),
+        timezone: data.get(#timezone, or: $value.timezone),
+        updateReason: data.get(#updateReason, or: $value.updateReason),
+        verifiedAt: data.get(#verifiedAt, or: $value.verifiedAt),
+        description: data.get(#description, or: $value.description),
+        recurrenceUid: data.get(#recurrenceUid, or: $value.recurrenceUid),
+        recurrenceLabel: data.get(#recurrenceLabel, or: $value.recurrenceLabel),
+        recurrence: data.get(#recurrence, or: $value.recurrence),
+        createdAt: data.get(#createdAt, or: $value.createdAt),
+        uid: data.get(#uid, or: $value.uid),
+        category: data.get(#category, or: $value.category),
+        localTimestamp: data.get(#localTimestamp, or: $value.localTimestamp),
+        categoryUid: data.get(#categoryUid, or: $value.categoryUid),
+        onlineEventUrl: data.get(#onlineEventUrl, or: $value.onlineEventUrl),
+        prices: data.get(#prices, or: $value.prices),
+        durationMin: data.get(#durationMin, or: $value.durationMin),
+        timestamp: data.get(#timestamp, or: $value.timestamp),
+        updatedAt: data.get(#updatedAt, or: $value.updatedAt),
+        ticketsPurchased:
+            data.get(#ticketsPurchased, or: $value.ticketsPurchased),
+        contactEmail: data.get(#contactEmail, or: $value.contactEmail),
+        availableTickets:
+            data.get(#availableTickets, or: $value.availableTickets),
+        viewsCount: data.get(#viewsCount, or: $value.viewsCount),
+        eventType: data.get(#eventType, or: $value.eventType),
+        isRepeating: data.get(#isRepeating, or: $value.isRepeating),
+        imageUrls: data.get(#imageUrls, or: $value.imageUrls),
+        name: data.get(#name, or: $value.name),
+        contactPhone: data.get(#contactPhone, or: $value.contactPhone),
+        ownerUid: data.get(#ownerUid, or: $value.ownerUid),
+        selectedPrice: data.get(#selectedPrice, or: $value.selectedPrice),
+        ownerUserName: data.get(#ownerUserName, or: $value.ownerUserName),
+        ownerProfileImageUrl: data.get(
+          #ownerProfileImageUrl,
+          or: $value.ownerProfileImageUrl,
+        ),
+        isSponsored: data.get(#isSponsored, or: $value.isSponsored),
+        communityUid: data.get(#communityUid, or: $value.communityUid),
+        distance: data.get(#distance, or: $value.distance),
+        attendees: data.get(#attendees, or: $value.attendees),
+        attendeesCount: data.get(#attendeesCount, or: $value.attendeesCount),
+        isFromFeed: data.get(#isFromFeed, or: $value.isFromFeed),
+      );
 
   @override
   EventCopyWith<$R2, Event, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _EventCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

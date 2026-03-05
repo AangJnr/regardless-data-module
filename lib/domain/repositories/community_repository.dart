@@ -23,7 +23,8 @@ abstract class CommunityRepository {
     required Community community,
   });
   Future<Result<bool, Exception>> leaveCommunity(String uid);
-    Future<Result<bool, Exception>> removeCommunityMember({required String uid, required String memberUid});
+  Future<Result<bool, Exception>> removeCommunityMember(
+      {required String uid, required String memberUid});
   Future<Result<Member, Exception>> approveRequestToJoinCommunity(
       {required Community community, required Member member});
   Future<Result<Pagination<Community>, Exception>> getUserJoinedCommunities(

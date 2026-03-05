@@ -158,28 +158,28 @@ class _MemberCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Member, $Out>
     Object? joinedAt = $none,
     Object? requestedAt = $none,
     Object? confirmedAt = $none,
-  }) => $apply(
-    FieldCopyWithData({
-      if (uid != null) #uid: uid,
-      if (userName != null) #userName: userName,
-      if (profile != null) #profile: profile,
-      if (joinedAt != $none) #joinedAt: joinedAt,
-      if (requestedAt != $none) #requestedAt: requestedAt,
-      if (confirmedAt != $none) #confirmedAt: confirmedAt,
-    }),
-  );
+  }) =>
+      $apply(
+        FieldCopyWithData({
+          if (uid != null) #uid: uid,
+          if (userName != null) #userName: userName,
+          if (profile != null) #profile: profile,
+          if (joinedAt != $none) #joinedAt: joinedAt,
+          if (requestedAt != $none) #requestedAt: requestedAt,
+          if (confirmedAt != $none) #confirmedAt: confirmedAt,
+        }),
+      );
   @override
   Member $make(CopyWithData data) => Member(
-    uid: data.get(#uid, or: $value.uid),
-    userName: data.get(#userName, or: $value.userName),
-    profile: data.get(#profile, or: $value.profile),
-    joinedAt: data.get(#joinedAt, or: $value.joinedAt),
-    requestedAt: data.get(#requestedAt, or: $value.requestedAt),
-    confirmedAt: data.get(#confirmedAt, or: $value.confirmedAt),
-  );
+        uid: data.get(#uid, or: $value.uid),
+        userName: data.get(#userName, or: $value.userName),
+        profile: data.get(#profile, or: $value.profile),
+        joinedAt: data.get(#joinedAt, or: $value.joinedAt),
+        requestedAt: data.get(#requestedAt, or: $value.requestedAt),
+        confirmedAt: data.get(#confirmedAt, or: $value.confirmedAt),
+      );
 
   @override
   MemberCopyWith<$R2, Member, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _MemberCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-
