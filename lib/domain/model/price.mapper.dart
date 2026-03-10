@@ -56,6 +56,12 @@ class PriceMapper extends ClassMapperBase<Price> {
     opt: true,
     def: '',
   );
+  static int? _$durationDays(Price v) => v.durationDays;
+  static const Field<Price, int> _f$durationDays = Field(
+    'durationDays',
+    _$durationDays,
+    opt: true,
+  );
 
   @override
   final MappableFields<Price> fields = const {
@@ -64,6 +70,7 @@ class PriceMapper extends ClassMapperBase<Price> {
     #type: _f$type,
     #quantity: _f$quantity,
     #description: _f$description,
+    #durationDays: _f$durationDays,
   };
 
   static Price _instantiate(DecodingData data) {
@@ -73,6 +80,7 @@ class PriceMapper extends ClassMapperBase<Price> {
       type: data.dec(_f$type),
       quantity: data.dec(_f$quantity),
       description: data.dec(_f$description),
+      durationDays: data.dec(_f$durationDays),
     );
   }
 
@@ -128,6 +136,7 @@ abstract class PriceCopyWith<$R, $In extends Price, $Out>
     String? type,
     int? quantity,
     String? description,
+    int? durationDays,
   });
   PriceCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -145,26 +154,29 @@ class _PriceCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Price, $Out>
     String? type,
     int? quantity,
     String? description,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (amount != null) #amount: amount,
-          if (currency != null) #currency: currency,
-          if (type != null) #type: type,
-          if (quantity != null) #quantity: quantity,
-          if (description != null) #description: description,
-        }),
-      );
+    Object? durationDays = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (amount != null) #amount: amount,
+      if (currency != null) #currency: currency,
+      if (type != null) #type: type,
+      if (quantity != null) #quantity: quantity,
+      if (description != null) #description: description,
+      if (durationDays != $none) #durationDays: durationDays,
+    }),
+  );
   @override
   Price $make(CopyWithData data) => Price(
-        amount: data.get(#amount, or: $value.amount),
-        currency: data.get(#currency, or: $value.currency),
-        type: data.get(#type, or: $value.type),
-        quantity: data.get(#quantity, or: $value.quantity),
-        description: data.get(#description, or: $value.description),
-      );
+    amount: data.get(#amount, or: $value.amount),
+    currency: data.get(#currency, or: $value.currency),
+    type: data.get(#type, or: $value.type),
+    quantity: data.get(#quantity, or: $value.quantity),
+    description: data.get(#description, or: $value.description),
+    durationDays: data.get(#durationDays, or: $value.durationDays),
+  );
 
   @override
   PriceCopyWith<$R2, Price, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _PriceCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

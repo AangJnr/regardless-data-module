@@ -45,7 +45,7 @@ class NewEventRequest {
   final bool isSponsored;
   final List<String>? imageBase64Data;
   final String? communityUid;
-
+  final String? teamUid;
   NewEventRequest({
     this.venue,
     this.archiveReason,
@@ -85,6 +85,7 @@ class NewEventRequest {
     this.ownerUserName,
     this.communityUid,
     this.isSponsored = false,
+    this.teamUid,
   });
 
   Map<String, dynamic> toMap() {
@@ -124,6 +125,7 @@ class NewEventRequest {
       'isSponsored': isSponsored,
       'imageData': imageBase64Data,
       'communityUid': communityUid,
+      'teamUid': teamUid,
     };
     if (uid?.isNotEmpty == true) {
       data['uid'] = uid;

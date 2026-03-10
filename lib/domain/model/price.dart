@@ -13,12 +13,17 @@ class Price with PriceMappable implements DataMapper<PriceApi> {
   final String description;
   final int quantity;
 
-  const Price(
-      {this.amount = 0,
-      this.currency = '',
-      this.type = '',
-      this.quantity = 1,
-      this.description = ''});
+  /// Subscription duration in days for this package option. When set, this price acts as a package (e.g. "Monthly" = 30).
+  final int? durationDays;
+
+  const Price({
+    this.amount = 0,
+    this.currency = '',
+    this.type = '',
+    this.quantity = 1,
+    this.description = '',
+    this.durationDays,
+  });
 
   @override
   String toString() {
@@ -53,8 +58,10 @@ class Price with PriceMappable implements DataMapper<PriceApi> {
 
   @override
   PriceApi mapToApi() => PriceApi(
-      amount: amount.toString(),
-      currency: currency,
-      type: type,
-      description: description);
+        amount: amount.toString(),
+        currency: currency,
+        type: type,
+        description: description,
+        durationDays: durationDays,
+      );
 }

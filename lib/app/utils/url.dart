@@ -9,7 +9,7 @@ class Url {
 
   static String get firebaseEmulatorHost {
     return Platform.isAndroid
-        ? '10.175.244.182' //'10.0.2.2'
+        ? '10.188.214.182' //'10.0.2.2'
         : "127.0.0.1";
   }
 

@@ -1,20 +1,33 @@
+import 'package:dart_mappable/dart_mappable.dart';
+import 'package:regardless_data_module/domain/model/price.dart';
+
 import 'appointment_details.dart';
 import 'participant_detail.dart';
 import 'package:intl/intl.dart';
+part 'appointment.mapper.dart';
 
-//@MappableEnum()
-enum AppointmentStatus { scheduled, accepted, rejected, cancelled }
+@MappableEnum()
+enum AppointmentStatus {
+  pending,
+  active,
+  rejected,
+  cancelled,
+  expired
+}
 
-class Appointment {
+@MappableClass()
+class Appointment with AppointmentMappable {
   final String uid;
   final String ownerUid;
   final String providerUid;
   final String serviceType;
-  final AppointmentDetail appointmentDetail;
-  final ParticipantDetail participantDetail;
+  final AppointmentDetail appointmentDetails;
+  final ParticipantDetail participantDetails;
   final AppointmentStatus status;
+  final ProviderDetails? provider;
   final String createdAt;
   final String updatedAt;
+  final Price? price;
   final String additionalNotes;
   final String cancellationReason;
 
@@ -23,9 +36,11 @@ class Appointment {
     this.ownerUid = '',
     this.providerUid = '',
     this.serviceType = '',
-    this.appointmentDetail = const AppointmentDetail(),
-    this.participantDetail = const ParticipantDetail(),
-    this.status = AppointmentStatus.scheduled,
+    this.provider,
+    this.price,
+    this.appointmentDetails = const AppointmentDetail(),
+    this.participantDetails = const ParticipantDetail(),
+    this.status = AppointmentStatus.pending,
     this.createdAt = '',
     this.updatedAt = '',
     this.additionalNotes = '',
@@ -34,33 +49,7 @@ class Appointment {
 
   @override
   String toString() {
-    return 'AppointmentApi(uid: $uid, ownerUid: $ownerUid, providerUid: $providerUid, serviceType: $serviceType, appointmentDetails: $appointmentDetail, participantDetails: $participantDetail, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, additionalNotes: $additionalNotes)';
-  }
-
-  Appointment copyWith(
-      {String? uid,
-      String? ownerUid,
-      String? providerUid,
-      String? serviceType,
-      AppointmentDetail? appointmentDetail,
-      ParticipantDetail? participantDetail,
-      AppointmentStatus? status,
-      String? createdAt,
-      String? updatedAt,
-      String? additionalNotes,
-      String? cancellationReason}) {
-    return Appointment(
-        uid: uid ?? this.uid,
-        ownerUid: ownerUid ?? this.ownerUid,
-        providerUid: providerUid ?? this.providerUid,
-        serviceType: serviceType ?? this.serviceType,
-        appointmentDetail: appointmentDetail ?? this.appointmentDetail,
-        participantDetail: participantDetail ?? this.participantDetail,
-        status: status ?? this.status,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        additionalNotes: additionalNotes ?? this.additionalNotes,
-        cancellationReason: cancellationReason ?? this.cancellationReason);
+    return 'AppointmentApi(uid: $uid, ownerUid: $ownerUid, providerUid: $providerUid, serviceType: $serviceType, appointmentDetails: $appointmentDetails, participantDetails: $participantDetails, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, additionalNotes: $additionalNotes)';
   }
 
   String formatMonthYear() {
@@ -73,6 +62,7 @@ class Appointment {
   }
 
   bool isInThePast() {
-    return appointmentDetail.getEndTime()?.isBefore(DateTime.now()) ?? true;
+    return status == AppointmentStatus.expired ||
+        (appointmentDetails.getEndTime()?.isBefore(DateTime.now()) ?? false);
   }
 }

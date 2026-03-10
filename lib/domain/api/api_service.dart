@@ -1,9 +1,9 @@
 import 'package:cross_file/cross_file.dart';
 import 'package:http/http.dart' show Response;
 import 'package:regardless_data_module/domain/model/team/team.dart';
+import 'package:regardless_data_module/domain/model/tournament/tournament.dart';
 import 'package:regardless_data_module/domain/model/user.dart';
 
-import '../../data/model/appointment_api/appointment_api.dart';
 import '../../data/model/new_event_api.dart';
 import '../../data/model/notification_request.dart';
 import '../../data/model/paginated_response.dart';
@@ -14,7 +14,6 @@ import '../model/appointment/appointment.dart';
 import '../model/community/comment.dart';
 import '../model/community/community.dart';
 import '../model/community/member.dart';
-import '../model/follower.dart';
 import '../model/new_user.dart';
 import '../model/preference.dart';
 import '../model/review/review.dart';
@@ -94,9 +93,10 @@ abstract class ApiService {
       {String userUid = '', PaginationRequest? request});
   Future<Response> reverseGeoLocation(double lat, double lng);
   Future<Response> logout();
-  Future<Response> followUser(Follower f);
+  Future<Response> followUser(String uid);
   Future<Response> getFollowers({PaginationRequest? request});
   Future<Response> getFollowing({PaginationRequest? request});
+  Future<Response> unfollowUser(String uid);
   Future<Response> followEvent(String eventUid);
   Future<Response> getFavorateEvents();
   Future<Response> addEventToFavorates(String eventUid);
@@ -107,7 +107,12 @@ abstract class ApiService {
     required String uid,
     required String ownerUid,
   });
-  Future<Response> addAppointment(AppointmentApi appointment);
+  Future<Response> getTeamActivities({
+    PaginationRequest? request,
+    required String uid,
+    required String ownerUid,
+  });
+  Future<Response> addAppointment(Appointment appointment);
   Future<Response> getAppointment(String uid);
   Future<Response> deleteAppointment(String uid);
   Future<Response> getAppointments({PaginationRequest? request});
@@ -163,7 +168,7 @@ abstract class ApiService {
   Future<Response> getUserAnnouncementPosts({PaginationRequest? request});
   Future<Response> getPublicAnnouncements({PaginationRequest? request});
   Future<Response> addAnnouncementPost(Map<String, dynamic> postData);
-  Future<Response> editAnnouncementPost(Map<String, dynamic> postData);
+  Future<Response> editAnnouncementPost(String uid,Map<String, dynamic> postData);
 
   Future<Response> deleteAnnouncementPost(String uid);
 
@@ -235,4 +240,23 @@ abstract class ApiService {
   Future<Response> updateCollaboratorPermissions(String uid,
       String collaboratorUid, String role, List<String> permissions);
   Future<Response> updateUserSchedule(String uid, List<TimeSlotApi> schedule);
+
+  // Tournament
+  Future<dynamic> createTournament(Tournament tournament,
+      {XFile? logo, XFile? cover});
+  Future<dynamic> updateTournament(Tournament tournament,
+      {XFile? logo, XFile? cover});
+  Future<Response> getTournaments(String ownerUid,
+      {PaginationRequest? request});
+  Future<Response> getTournament(String uid);
+  Future<Response> deleteTournament(String uid);
+  Future<Response> getTournamentMatches(
+    String tournamentUid, {
+    String? seasonUid,
+    PaginationRequest? request,
+  });
+  Future<Response> getTournamentStandings(
+    String tournamentUid, {
+    String? seasonUid,
+  });
 }

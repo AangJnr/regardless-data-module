@@ -1,26 +1,32 @@
-class ParticipantDetail {
-  final String name;
-  final String phone;
-  final String email;
-  final String profilePhotoUrl;
+import 'package:dart_mappable/dart_mappable.dart';
 
-  const ParticipantDetail(
-      {this.name = '',
+part 'participant_detail.mapper.dart';
+
+@MappableClass()
+class ParticipantDetail with ParticipantDetailMappable {
+  final String fullName;
+   final String userName;
+  final String uid;
+
+  const ParticipantDetail({
+    this.uid = '',
+    this.userName = '',
+    this.fullName = '',
+   });
+}
+
+@MappableClass()
+class ProviderDetails with ProviderDetailsMappable {
+  final String uid;
+  final String userName;
+  final String? phone;
+  final String? email;
+  final String fullName;
+
+  const ProviderDetails(
+      {this.uid = '',
+      this.userName = '',
       this.phone = '',
       this.email = '',
-      this.profilePhotoUrl = ''});
-
-  @override
-  String toString() {
-    return 'ParticipantDetails(name: $name, phone: $phone, email: $email)';
-  }
-
-  ParticipantDetail copyWith(
-      {String? name, String? phone, String? email, String? profilePhotoUrl}) {
-    return ParticipantDetail(
-        name: name ?? this.name,
-        phone: phone ?? this.phone,
-        email: email ?? this.email,
-        profilePhotoUrl: profilePhotoUrl ?? this.profilePhotoUrl);
-  }
+      this.fullName = ''});
 }

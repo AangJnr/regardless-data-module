@@ -33,7 +33,8 @@ class User extends ApiRoutes {
   String get Logout => "$url/user/logout/";
   String get Follow => "$url/user/follow/";
   String GetFollowers(String params) => '$Follow$params';
-  String get GetFollowing => '$url/user/following/';
+  String GetFollowing(String params) => '$url/user/following/$params';
+  String Unfollow(String uid) => '$url/user/follow/$uid';
   String get Message => '$url/user/send-notification';
   String NotificationRead(String uid) =>
       '$url/user/notification/mark-as-read/$uid';
@@ -182,11 +183,14 @@ class ACommunity extends ApiRoutes {
 
 class Post extends ApiRoutes {
   String get GetPosts => '$url/post';
-  String get GetUserAnnouncementPosts => '$url/post/me';
+    String LikePost(String uid) => '$url/post/like/$uid';
+    String UnlikePost(String uid) => '$url/post/unlike/$uid';
+  String get GetUserAnnouncementPosts => '$url/post/announcement/me';
   String get GetPublicAnnouncementPosts => '$url/post/announcement';
-  String get Announcement => '$url/post/announcement';
-  String Like(String uid) => '$url/post/like/$uid';
-  String Delete(String uid) => '$url/post/$uid';
+  String get Add => '$url/post/announcement';
+
+  String Announcement(String uid) => '$url/post/announcement/$uid';
+  String DeleteAnnouncement(String uid) => '$url/post/announcement/$uid';
 }
 
 class ASearch extends ApiRoutes {
@@ -235,4 +239,21 @@ class ATeam extends ApiRoutes {
       '$url/team/$teamUid/media$params';
   String SearchTeams(String params) => '$url/team/search$params';
   String DeleteMedia(String teamUid) => '$url/team/$teamUid/media';
+
+  String TeamActivities(String ownerUid, String uid) =>
+      '$url/team/$ownerUid/$uid/activities';
+}
+
+class ATournament extends ApiRoutes {
+  String get Add => '$url/tournament';
+  String Update(String uid) => '$url/tournament/$uid';
+  String get Create => '$url/tournament';
+  String Get(String uid) => '$url/tournament/$uid';
+  String Delete(String uid) => '$url/tournament/$uid';
+  String List(String ownerUid, String params) =>
+      '$url/tournament/manage/$ownerUid$params';
+  String Matches(String tournamentUid) =>
+      '$url/tournament/$tournamentUid/matches';
+  String Standings(String tournamentUid) =>
+      '$url/tournament/$tournamentUid/standings';
 }

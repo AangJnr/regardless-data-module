@@ -51,7 +51,8 @@ abstract class UserRepository {
       {PaginationRequest? request, String userUid = ''});
   Future<Result<Pagination<Follower>, Exception>> getFollowing(
       {PaginationRequest? request, String userUid = ''});
-  Future<Result<Follower, Exception>> followUser(Follower follower);
+  Future<Result<Follower, Exception>> followUser(String uid);
+  Future<Result<bool, Exception>> unfollowUser(String uid);
   Future<Result<String, Exception>> sendNotificationMessage(
       String userUid, String message);
   Future<Result<DashboardMetrics, Exception>> getDashboardMetrics(String date);

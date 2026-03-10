@@ -2,6 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:regardless_data_module/domain/media.dart';
+import 'package:regardless_data_module/domain/model/event.dart';
+import 'package:regardless_data_module/domain/model/feed.dart';
 import 'package:regardless_data_module/domain/model/new_user.dart';
 import 'package:regardless_data_module/domain/model/pagination.dart';
 import 'package:regardless_data_module/domain/model/team/team.dart';
@@ -358,5 +360,30 @@ class TeamRepositoryImpl with BaseRepository implements TeamRepository {
       return Success(data);
     }
     return Error(results.tryGetError()!);
+  }
+
+  @override
+  Future<Result<Pagination<Event>, Exception>> getTeamActivities(
+      {required String uid,
+      required String ownerUid,
+      PaginationRequest? request}) async {
+    var response = await processRequest(() => apiService.getTeamActivities(
+        uid: uid, ownerUid: ownerUid, request: request));
+    if (response.isSuccess()) {
+      final paginationResponse =
+          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      try {
+        final data = paginationResponse.data
+            ?.map((e) => EventMapper.fromMap(e) )
+            .toList();
+        return Success(Pagination<Event>(
+            data: data ?? [],
+            hasNext: paginationResponse.hasNext,
+            last: paginationResponse.last));
+      } catch (e) {
+        getLogger('EventRepositoryImpl').e(e);
+      }
+    }
+    return const Success(Pagination<Event>());
   }
 }

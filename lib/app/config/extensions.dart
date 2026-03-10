@@ -144,6 +144,18 @@ extension DoubleExtensions on double {
   }
 }
 
+extension IntExtensions on int {
+  String toDurationLabel() {
+    if (this < 60) {
+      return "$this sec";
+    } else if (this < 3600) {
+      return "${(this / 60).toStringAsFixed(1)} min";
+    } else {
+      return "${(this / 3600).toStringAsFixed(1)} hr";
+    }
+  }
+}
+
 extension XFileExtensions on XFile {
   Future<String> fileToString() async {
     List<int> imageBytes = await readAsBytes();

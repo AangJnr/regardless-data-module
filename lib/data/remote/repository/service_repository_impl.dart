@@ -1,14 +1,14 @@
 import 'package:multiple_result/multiple_result.dart';
-import 'package:regardless_data_module/domain/model/service/time_slot.dart';
+import 'package:regardless_data_module/domain/model/appointment/appointment_details.dart';
+import 'package:regardless_data_module/domain/model/appointment/participant_detail.dart';
+import 'package:regardless_data_module/domain/model/price.dart';
 import '../../../app/app.logger.dart';
 import '../../../domain/model/appointment/appointment.dart';
 import '../../../domain/model/pagination.dart';
 import '../../../domain/model/service/service.dart';
 import '../../../domain/model/user.dart';
 import '../../../domain/repositories/service_repository.dart';
-import '../../model/appointment_api/appointment_api.dart';
-import '../../model/appointment_api/appointment_details.dart';
-import '../../model/appointment_api/participant_details.dart';
+
 import '../../model/paginated_response.dart';
 import '../../model/search_filter.dart';
 import '../../model/service_api/service_api.dart';
@@ -16,33 +16,31 @@ import 'base_repository.dart';
 
 class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
   @override
-  Future<Result<Appointment, Exception>> addAppointment(
-      {required AUser user,
-      required Service service,
-      required TimeSlot timeSlot,
-      String? notes = ""}) async {
-    final appointment = AppointmentApi(
-        ownerUid: user.uid,
-        providerUid: service.ownerUid,
-        additionalNotes: notes,
-        appointmentDetails: AppointmentDetailApi(
-          title: service.name,
-          description: service.description,
-          startTime: timeSlot.slots.first.startTime?.toIso8601String(),
-          endTime: timeSlot.slots.first.endTime?.toIso8601String(),
-          location: service.location?.mapToApi(),
-        ),
-        status: AppointmentStatus.scheduled.name,
-        participantDetails: ParticipantDetailApi(
-            email: user.email,
-            name: user.fullName,
-            phone: user.phone,
-            photoUrl: user.profileUrl));
-    var data =
+  Future<Result<Appointment, Exception>> addAppointment({
+    required AUser user,
+    required Service service,
+    String notes = "",
+    String? proposedStartTime,
+    Price? selectedPrice,
+  }) async {
+    final appointment = Appointment(
+      ownerUid: user.uid,
+      providerUid: service.ownerUid,
+      additionalNotes: notes,
+      appointmentDetails: AppointmentDetail(
+        serviceUid: service.uid,
+        title: service.name,
+        description: service.description,
+        location: service.location,
+        proposedStartTime: proposedStartTime,
+      ),
+      status: AppointmentStatus.pending,
+      price: selectedPrice,
+    );
+    final data =
         await processRequest(() => apiService.addAppointment(appointment));
     if (data.isSuccess()) {
-      return Success(
-          AppointmentApi.fromMap(data.tryGetSuccess()!).mapToDomain());
+      return Success(AppointmentMapper.fromMap(data.tryGetSuccess()!));
     }
     return Error(data.tryGetError()!);
   }
@@ -93,8 +91,7 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
   Future<Result<Appointment, Exception>> getAppointment(String uid) async {
     var data = await processRequest(() => apiService.getAppointment(uid));
     if (data.isSuccess()) {
-      return Success(
-          AppointmentApi.fromMap(data.tryGetSuccess()!).mapToDomain());
+      return Success(AppointmentMapper.fromMap(data.tryGetSuccess()!));
     }
     return Error(data.tryGetError()!);
   }
@@ -105,8 +102,7 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
     var data =
         await processRequest(() => apiService.getAppointmentRequest(uid));
     if (data.isSuccess()) {
-      return Success(
-          AppointmentApi.fromMap(data.tryGetSuccess()!).mapToDomain());
+      return Success(AppointmentMapper.fromMap(data.tryGetSuccess()!));
     }
     return Error(data.tryGetError()!);
   }
@@ -121,7 +117,7 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
           PaginatedResponse.fromMap(response.tryGetSuccess()!);
       try {
         final data = paginationResponse.data
-            ?.map((e) => AppointmentApi.fromMap(e).mapToDomain())
+            ?.map((e) => AppointmentMapper.fromMap(e))
             .toList();
         return Success(Pagination<Appointment>(
             data: data ?? [],
@@ -144,7 +140,7 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
           PaginatedResponse.fromMap(response.tryGetSuccess()!);
       try {
         final data = paginationResponse.data
-            ?.map((e) => AppointmentApi.fromMap(e).mapToDomain())
+            ?.map((e) => AppointmentMapper.fromMap(e))
             .toList();
         return Success(Pagination<Appointment>(
             data: data ?? [],

@@ -9,8 +9,15 @@ class PriceApi implements DomainMapper<Price> {
   final String? currency;
   final String? type;
   final String? description;
+  final int? durationDays;
 
-  const PriceApi({this.amount, this.currency, this.type, this.description});
+  const PriceApi({
+    this.amount,
+    this.currency,
+    this.type,
+    this.description,
+    this.durationDays,
+  });
 
   @override
   String toString() {
@@ -47,8 +54,10 @@ class PriceApi implements DomainMapper<Price> {
 
   @override
   Price mapToDomain() => Price(
-      amount: double.tryParse(amount ?? '0.0') ?? 0.0,
-      currency: currency ?? '',
-      type: type ?? '',
-      description: description ?? '');
+        amount: double.tryParse(amount ?? '0.0') ?? 0.0,
+        currency: currency ?? '',
+        type: type ?? '',
+        description: description ?? '',
+        durationDays: durationDays,
+      );
 }

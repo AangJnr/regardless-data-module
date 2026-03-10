@@ -1,19 +1,29 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:intl/intl.dart';
 import '../venue.dart';
 
-class AppointmentDetail {
+part 'appointment_details.mapper.dart';
+
+@MappableClass()
+class AppointmentDetail with AppointmentDetailMappable {
   final String title;
   final String description;
   final String startTime;
   final String endTime;
   final Venue? location;
+  final String? serviceUid;
+
+  /// Optional. When user subscribes, they can propose when the subscription should start. If set, backend uses this when provider accepts; otherwise start is set at confirmation time.
+  final String? proposedStartTime;
 
   const AppointmentDetail({
     this.title = '',
     this.description = '',
     this.startTime = '',
     this.endTime = '',
-    this.location = const Venue(),
+    this.serviceUid,
+    this.location,
+    this.proposedStartTime,
   });
 
   @override
@@ -32,7 +42,10 @@ class AppointmentDetail {
 
   DateTime? getStartTime() {
     try {
-      return DateTime.parse(startTime);
+      if (proposedStartTime != null) {
+        return DateTime.parse(proposedStartTime!);
+      }
+      return null;
     } catch (e) {
       return null;
     }
@@ -44,21 +57,5 @@ class AppointmentDetail {
     } catch (e) {
       return null;
     }
-  }
-
-  AppointmentDetail copyWith({
-    String? title,
-    String? description,
-    String? startTime,
-    String? endTime,
-    Venue? location,
-  }) {
-    return AppointmentDetail(
-      title: title ?? this.title,
-      description: description ?? this.description,
-      startTime: startTime ?? this.startTime,
-      endTime: endTime ?? this.endTime,
-      location: location ?? this.location,
-    );
   }
 }

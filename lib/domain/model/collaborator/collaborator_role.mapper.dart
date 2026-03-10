@@ -26,11 +26,11 @@ class CollaboratorRoleMapper extends EnumMapper<CollaboratorRole> {
   @override
   CollaboratorRole decode(dynamic value) {
     switch (value) {
-      case r'ADMIN':
+      case r'admin':
         return CollaboratorRole.admin;
-      case r'MANAGER':
+      case r'manager':
         return CollaboratorRole.manager;
-      case r'STAFF':
+      case r'staff':
         return CollaboratorRole.staff;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -41,11 +41,11 @@ class CollaboratorRoleMapper extends EnumMapper<CollaboratorRole> {
   dynamic encode(CollaboratorRole self) {
     switch (self) {
       case CollaboratorRole.admin:
-        return r'ADMIN';
+        return r'admin';
       case CollaboratorRole.manager:
-        return r'MANAGER';
+        return r'manager';
       case CollaboratorRole.staff:
-        return r'STAFF';
+        return r'staff';
     }
   }
 }

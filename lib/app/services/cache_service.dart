@@ -55,10 +55,18 @@ class CacheServiceImpl implements CacheService {
     _memoizerMap.remove(key);
     debugPrint("CacheServiceImpl - Cache cleared for $key");
   }
+
+  @override
+  void invalidate() {
+    _memoizerMap.clear();
+    _lastFetchTime = null;
+    debugPrint("CacheServiceImpl - Cache invalidated");
+  }
 }
 
 abstract class CacheService {
   Future<T> execute<T>(FutureOr<T> Function() apiCall, String key);
 
   void clear(String s);
+  void invalidate();
 }

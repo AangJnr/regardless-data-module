@@ -155,14 +155,14 @@ class _AccountsCopyWithImpl<$R, $Out>
       );
   @override
   Accounts $make(CopyWithData data) => Accounts(
-        owned: data.get(#owned, or: $value.owned),
-        collaborated: data.get(#collaborated, or: $value.collaborated),
-        canAddMore: data.get(#canAddMore, or: $value.canAddMore),
-      );
+    owned: data.get(#owned, or: $value.owned),
+    collaborated: data.get(#collaborated, or: $value.collaborated),
+    canAddMore: data.get(#canAddMore, or: $value.canAddMore),
+  );
 
   @override
   AccountsCopyWith<$R2, Accounts, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) =>
-      _AccountsCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _AccountsCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

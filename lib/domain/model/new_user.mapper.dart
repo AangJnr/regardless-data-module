@@ -214,11 +214,11 @@ extension NewUserValueCopy<$R, $Out> on ObjectCopyWith<$R, NewUser, $Out> {
 abstract class NewUserCopyWith<$R, $In extends NewUser, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-      get privateCommunities;
+  get privateCommunities;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-      get publicCommunities;
+  get publicCommunities;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-      get subCategoryUids;
+  get subCategoryUids;
   $R call({
     String? email,
     String? fullName,
@@ -248,25 +248,25 @@ class _NewUserCopyWithImpl<$R, $Out>
       NewUserMapper.ensureInitialized();
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-      get privateCommunities => ListCopyWith(
-            $value.privateCommunities,
-            (v, t) => ObjectCopyWith(v, $identity, t),
-            (v) => call(privateCommunities: v),
-          );
+  get privateCommunities => ListCopyWith(
+    $value.privateCommunities,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(privateCommunities: v),
+  );
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-      get publicCommunities => ListCopyWith(
-            $value.publicCommunities,
-            (v, t) => ObjectCopyWith(v, $identity, t),
-            (v) => call(publicCommunities: v),
-          );
+  get publicCommunities => ListCopyWith(
+    $value.publicCommunities,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(publicCommunities: v),
+  );
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-      get subCategoryUids => ListCopyWith(
-            $value.subCategoryUids,
-            (v, t) => ObjectCopyWith(v, $identity, t),
-            (v) => call(subCategoryUids: v),
-          );
+  get subCategoryUids => ListCopyWith(
+    $value.subCategoryUids,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(subCategoryUids: v),
+  );
   @override
   $R call({
     String? email,
@@ -283,54 +283,53 @@ class _NewUserCopyWithImpl<$R, $Out>
     List<String>? privateCommunities,
     List<String>? publicCommunities,
     List<String>? subCategoryUids,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (email != null) #email: email,
-          if (fullName != null) #fullName: fullName,
-          if (phone != null) #phone: phone,
-          if (bio != null) #bio: bio,
-          if (picture != null) #picture: picture,
-          if (userName != null) #userName: userName,
-          if (categoryUid != $none) #categoryUid: categoryUid,
-          if (categoryName != $none) #categoryName: categoryName,
-          if (isProvider != null) #isProvider: isProvider,
-          if (defaultProfileUid != null) #defaultProfileUid: defaultProfileUid,
-          if (gender != null) #gender: gender,
-          if (privateCommunities != null)
-            #privateCommunities: privateCommunities,
-          if (publicCommunities != null) #publicCommunities: publicCommunities,
-          if (subCategoryUids != null) #subCategoryUids: subCategoryUids,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (email != null) #email: email,
+      if (fullName != null) #fullName: fullName,
+      if (phone != null) #phone: phone,
+      if (bio != null) #bio: bio,
+      if (picture != null) #picture: picture,
+      if (userName != null) #userName: userName,
+      if (categoryUid != $none) #categoryUid: categoryUid,
+      if (categoryName != $none) #categoryName: categoryName,
+      if (isProvider != null) #isProvider: isProvider,
+      if (defaultProfileUid != null) #defaultProfileUid: defaultProfileUid,
+      if (gender != null) #gender: gender,
+      if (privateCommunities != null) #privateCommunities: privateCommunities,
+      if (publicCommunities != null) #publicCommunities: publicCommunities,
+      if (subCategoryUids != null) #subCategoryUids: subCategoryUids,
+    }),
+  );
   @override
   NewUser $make(CopyWithData data) => NewUser(
-        email: data.get(#email, or: $value.email),
-        fullName: data.get(#fullName, or: $value.fullName),
-        phone: data.get(#phone, or: $value.phone),
-        bio: data.get(#bio, or: $value.bio),
-        picture: data.get(#picture, or: $value.picture),
-        userName: data.get(#userName, or: $value.userName),
-        categoryUid: data.get(#categoryUid, or: $value.categoryUid),
-        categoryName: data.get(#categoryName, or: $value.categoryName),
-        isProvider: data.get(#isProvider, or: $value.isProvider),
-        defaultProfileUid: data.get(
-          #defaultProfileUid,
-          or: $value.defaultProfileUid,
-        ),
-        gender: data.get(#gender, or: $value.gender),
-        privateCommunities: data.get(
-          #privateCommunities,
-          or: $value.privateCommunities,
-        ),
-        publicCommunities: data.get(
-          #publicCommunities,
-          or: $value.publicCommunities,
-        ),
-        subCategoryUids: data.get(#subCategoryUids, or: $value.subCategoryUids),
-      );
+    email: data.get(#email, or: $value.email),
+    fullName: data.get(#fullName, or: $value.fullName),
+    phone: data.get(#phone, or: $value.phone),
+    bio: data.get(#bio, or: $value.bio),
+    picture: data.get(#picture, or: $value.picture),
+    userName: data.get(#userName, or: $value.userName),
+    categoryUid: data.get(#categoryUid, or: $value.categoryUid),
+    categoryName: data.get(#categoryName, or: $value.categoryName),
+    isProvider: data.get(#isProvider, or: $value.isProvider),
+    defaultProfileUid: data.get(
+      #defaultProfileUid,
+      or: $value.defaultProfileUid,
+    ),
+    gender: data.get(#gender, or: $value.gender),
+    privateCommunities: data.get(
+      #privateCommunities,
+      or: $value.privateCommunities,
+    ),
+    publicCommunities: data.get(
+      #publicCommunities,
+      or: $value.publicCommunities,
+    ),
+    subCategoryUids: data.get(#subCategoryUids, or: $value.subCategoryUids),
+  );
 
   @override
   NewUserCopyWith<$R2, NewUser, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _NewUserCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

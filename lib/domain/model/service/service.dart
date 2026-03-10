@@ -23,20 +23,25 @@ class Service with ServiceMappable {
   final bool isActive;
   final AUser? provider;
 
-  const Service(
-      {this.createdAt,
-      this.uid = '',
-      this.keywords = const [],
-      this.prices = const [],
-      this.name = '',
-      this.description = '',
-      this.timeSlots = const [],
-      this.location = const Venue(),
-      this.ownerUid = '',
-      this.updatedAt,
-      this.isActive = false,
-      this.categoryUid = '',
-      this.provider});
+  /// Subscription duration in days. Used when provider accepts to set subscription end = start + this.
+  final int? subscriptionDurationDays;
+
+  const Service({
+    this.createdAt,
+    this.uid = '',
+    this.keywords = const [],
+    this.prices = const [],
+    this.name = '',
+    this.description = '',
+    this.timeSlots = const [],
+    this.location = const Venue(),
+    this.ownerUid = '',
+    this.updatedAt,
+    this.isActive = false,
+    this.categoryUid = '',
+    this.provider,
+    this.subscriptionDurationDays,
+  });
 
   @override
   String toString() {
@@ -102,6 +107,17 @@ class Service with ServiceMappable {
         (previousValue, element) =>
             '$previousValue${element.slots.fold('', (previousValue, element) => '$previousValue${element.toString()} | ')}');
     return '${getShortDay(timeSlots.first.day)} - Slots($value)';
+  }
+
+  String durationLabel() {
+    if (subscriptionDurationDays == null) return '';
+    if (subscriptionDurationDays == 1) return '1 day';
+    if (subscriptionDurationDays == 7) return '1 week';
+    if (subscriptionDurationDays == 14) return '2 weeks';
+    if (subscriptionDurationDays == 365) return '1 year';
+
+    int remainder = (subscriptionDurationDays! / 30).toInt();
+    return '$remainder month${remainder > 1 ? 's' : ''}';
   }
 
   String getShortDay(String day) {

@@ -1,6 +1,8 @@
 import 'package:cross_file/cross_file.dart';
 import 'package:multiple_result/multiple_result.dart';
+import 'package:regardless_data_module/domain/model/event.dart';
 import 'package:regardless_data_module/domain/model/new_user.dart';
+import 'package:regardless_data_module/domain/model/feed.dart';
 import '../media.dart';
 import '../model/pagination.dart';
 import '../../data/model/paginated_response.dart';
@@ -87,4 +89,9 @@ abstract class TeamRepository {
       String uid, List<String> uids);
   Future<Result<Pagination<Team>, Exception>> searchTeams(String teamUid,
       {PaginationRequest? request});
+
+    Future<Result<Pagination<Event>, Exception>> getTeamActivities(
+      {required String uid,
+      required String ownerUid,
+      PaginationRequest? request});
 }

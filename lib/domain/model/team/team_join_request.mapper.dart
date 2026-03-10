@@ -135,12 +135,12 @@ mixin TeamJoinRequestMappable {
   }
 
   TeamJoinRequestCopyWith<TeamJoinRequest, TeamJoinRequest, TeamJoinRequest>
-      get copyWith =>
-          _TeamJoinRequestCopyWithImpl<TeamJoinRequest, TeamJoinRequest>(
-            this as TeamJoinRequest,
-            $identity,
-            $identity,
-          );
+  get copyWith =>
+      _TeamJoinRequestCopyWithImpl<TeamJoinRequest, TeamJoinRequest>(
+        this as TeamJoinRequest,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return TeamJoinRequestMapper.ensureInitialized().stringifyValue(
@@ -199,24 +199,23 @@ class _TeamJoinRequestCopyWithImpl<$R, $Out>
     AUser? requester,
     Object? requestedAt = $none,
     TeamJoinRequestStatus? status,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (requester != null) #requester: requester,
-          if (requestedAt != $none) #requestedAt: requestedAt,
-          if (status != null) #status: status,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (requester != null) #requester: requester,
+      if (requestedAt != $none) #requestedAt: requestedAt,
+      if (status != null) #status: status,
+    }),
+  );
   @override
   TeamJoinRequest $make(CopyWithData data) => TeamJoinRequest(
-        requester: data.get(#requester, or: $value.requester),
-        requestedAt: data.get(#requestedAt, or: $value.requestedAt),
-        status: data.get(#status, or: $value.status),
-      );
+    requester: data.get(#requester, or: $value.requester),
+    requestedAt: data.get(#requestedAt, or: $value.requestedAt),
+    status: data.get(#status, or: $value.status),
+  );
 
   @override
   TeamJoinRequestCopyWith<$R2, TeamJoinRequest, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) =>
-      _TeamJoinRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _TeamJoinRequestCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

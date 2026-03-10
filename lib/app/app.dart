@@ -5,12 +5,14 @@ import '../data/remote/repository/auth_repository_impl.dart';
 import '../data/remote/repository/event_repository_imp.dart';
 import '../data/remote/repository/service_repository_impl.dart';
 import '../data/remote/repository/team_repository_impl.dart';
+import '../data/remote/repository/tournament_repository_impl.dart';
 import '../data/remote/repository/user_repository_impl.dart';
 import '../domain/model/session_manager.dart';
 import '../domain/repositories/auth_repository.dart';
 import '../domain/repositories/event_repository.dart';
 import '../domain/repositories/service_repository.dart';
 import '../domain/repositories/team_repository.dart';
+import '../domain/repositories/tournament_repository.dart';
 import '../domain/repositories/user_repository.dart';
 import 'services/access_service.dart';
 import 'services/cache_service.dart';
@@ -29,6 +31,8 @@ import 'services/places_service_impl.dart';
     LazySingleton(classType: EventRepositoryImpl, asType: EventRepository),
     LazySingleton(classType: ServiceRepositoryImpl, asType: ServiceRepository),
     LazySingleton(classType: TeamRepositoryImpl, asType: TeamRepository),
+    LazySingleton(
+        classType: TournamentRepositoryImpl, asType: TournamentRepository),
     LazySingleton(classType: GeocoderImpl, asType: TGeocoder),
     LazySingleton(classType: CacheServiceImpl, asType: CacheService),
     LazySingleton(classType: AccessService),

@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' show Response;
 import 'package:multiple_result/multiple_result.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.logger.dart';

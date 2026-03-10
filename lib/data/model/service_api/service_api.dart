@@ -20,21 +20,24 @@ class CreateService {
   final String? categoryUid;
   final bool? isActive;
   final AUser? provider;
+  final int? subscriptionDurationDays;
 
-  const CreateService(
-      {this.createdAt,
-      this.uid,
-      this.keywords,
-      this.prices,
-      this.name,
-      this.description,
-      this.timeSlots,
-      this.location,
-      this.ownerUid,
-      this.updatedAt,
-      this.isActive,
-      this.categoryUid,
-      this.provider});
+  const CreateService({
+    this.createdAt,
+    this.uid,
+    this.keywords,
+    this.prices,
+    this.name,
+    this.description,
+    this.timeSlots,
+    this.location,
+    this.ownerUid,
+    this.updatedAt,
+    this.isActive,
+    this.categoryUid,
+    this.provider,
+    this.subscriptionDurationDays,
+  });
 
   @override
   String toString() {
@@ -53,7 +56,8 @@ class CreateService {
         'ownerUid': ownerUid,
         'updatedAt': updatedAt?.toIso8601String(),
         'categoryUid': categoryUid,
-        'isActive': isActive
+        'isActive': isActive,
+        'subscriptionDurationDays': subscriptionDurationDays,
       };
 
   /// `dart:convert`
@@ -61,29 +65,38 @@ class CreateService {
   /// Converts [CreateService] to a JSON string.
   String toJson() => json.encode(toMap());
 
-  CreateService copyWith(
-      {DateTime? createdAt,
-      String? uid,
-      List<String>? keywords,
-      PriceApi? price,
-      String? name,
-      String? description,
-      List<TimeSlotApi>? timeSlots,
-      VenueApi? location,
-      String? ownerUid,
-      DateTime? updatedAt,
-      String? categoryUid}) {
+  CreateService copyWith({
+    DateTime? createdAt,
+    String? uid,
+    List<String>? keywords,
+    List<PriceApi>? prices,
+    String? name,
+    String? description,
+    List<TimeSlotApi>? timeSlots,
+    VenueApi? location,
+    String? ownerUid,
+    DateTime? updatedAt,
+    bool? isActive,
+    String? categoryUid,
+    AUser? provider,
+    int? subscriptionDurationDays,
+  }) {
     return CreateService(
-        createdAt: createdAt ?? this.createdAt,
-        uid: uid ?? this.uid,
-        keywords: keywords ?? this.keywords,
-        prices: prices ?? const [],
-        name: name ?? this.name,
-        description: description ?? this.description,
-        timeSlots: timeSlots ?? this.timeSlots,
-        location: location ?? this.location,
-        ownerUid: ownerUid ?? this.ownerUid,
-        updatedAt: updatedAt ?? this.updatedAt,
-        categoryUid: categoryUid ?? this.categoryUid);
+      createdAt: createdAt ?? this.createdAt,
+      uid: uid ?? this.uid,
+      keywords: keywords ?? this.keywords,
+      prices: prices ?? this.prices,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      timeSlots: timeSlots ?? this.timeSlots,
+      location: location ?? this.location,
+      ownerUid: ownerUid ?? this.ownerUid,
+      updatedAt: updatedAt ?? this.updatedAt,
+      isActive: isActive ?? this.isActive,
+      categoryUid: categoryUid ?? this.categoryUid,
+      provider: provider ?? this.provider,
+      subscriptionDurationDays:
+          subscriptionDurationDays ?? this.subscriptionDurationDays,
+    );
   }
 }

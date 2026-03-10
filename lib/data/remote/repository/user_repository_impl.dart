@@ -68,17 +68,19 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
     if (refresh) {
       cache.clear('user_accounts');
     }
-    final accounts = await cache.execute<Accounts?>(() async {
-      var data = await processRequest(() => apiService.getUserAccounts());
-      if (data.isSuccess()) {
-        return AccountsMapper.fromMap(data.tryGetSuccess()!);
-      }
-      return null;
-    }, 'user_accounts');
-    if (accounts != null) {
-      return Success(accounts);
+    try {
+      final accounts = await cache.execute<Accounts?>(() async {
+        var data = await processRequest(() => apiService.getUserAccounts());
+        if (data.isSuccess()) {
+          return AccountsMapper.fromMap(data.tryGetSuccess()!);
+        }
+        return null;
+      }, 'user_accounts');
+      if (accounts != null) return Success(accounts);
+      return Future.value(Error(Exception("Unable to fetch accounts")));
+    } catch (e) {
+      return Future.value(Error(Exception(e)));
     }
-    return Future.value(Error(Exception("Unable to fetch accounts")));
   }
 
   @override
@@ -298,14 +300,23 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   }
 
   @override
-  Future<Result<Follower, Exception>> followUser(Follower follower) async {
-    var response = await processRequest(() => apiService.followUser(follower));
+  Future<Result<Follower, Exception>> followUser(String uid) async {
+    final response = await processRequest(() => apiService.followUser(uid));
     if (response.isSuccess()) {
       final data =
           FollowerResponse.fromMap(response.tryGetSuccess()!).mapToDomain();
       return Success(data);
     }
-    return Future.value(Error(response.tryGetError()!));
+    return Error(response.tryGetError()!);
+  }
+
+  @override
+  Future<Result<bool, Exception>> unfollowUser(String uid) async {
+    final response = await processRequest(() => apiService.unfollowUser(uid));
+    if (response.isSuccess()) {
+      return const Success(true);
+    }
+    return Error(response.tryGetError()!);
   }
 
   @override

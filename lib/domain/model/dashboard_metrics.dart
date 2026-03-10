@@ -13,7 +13,7 @@ class DashboardMetrics with DashboardMetricsMappable {
   final int collaboratorsCount;
   final int mediaCount;
   final int leaguesCount;
-  final int postsCount;
+  final int announcementsCount;
 
   const DashboardMetrics(
       {this.eventsCount = 0,
@@ -25,10 +25,10 @@ class DashboardMetrics with DashboardMetricsMappable {
       this.collaboratorsCount = 0,
       this.mediaCount = 0,
       this.leaguesCount = 0,
-      this.postsCount = 0});
+      this.announcementsCount = 0});
 
   @override
   String toString() {
-    return 'DashboardMetricsApi(eventsCount: $eventsCount, appointmentsCount: $appointmentsCount, notificationsCount: $notificationsCount, communitiesCount: $communitiesCount, postsCount: $postsCount )';
+    return 'DashboardMetricsApi(eventsCount: $eventsCount, appointmentsCount: $appointmentsCount, notificationsCount: $notificationsCount, communitiesCount: $communitiesCount, postsCount: $announcementsCount )';
   }
 }

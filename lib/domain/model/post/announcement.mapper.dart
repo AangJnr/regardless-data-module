@@ -175,7 +175,7 @@ extension AnnouncementValueCopy<$R, $Out>
 abstract class AnnouncementCopyWith<$R, $In extends Announcement, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, HashImage, HashImageCopyWith<$R, HashImage, HashImage>>
-      get imageUrls;
+  get imageUrls;
   OwnerCopyWith<$R, Owner, Owner> get owner;
   $R call({
     String? uid,
@@ -201,11 +201,11 @@ class _AnnouncementCopyWithImpl<$R, $Out>
       AnnouncementMapper.ensureInitialized();
   @override
   ListCopyWith<$R, HashImage, HashImageCopyWith<$R, HashImage, HashImage>>
-      get imageUrls => ListCopyWith(
-            $value.imageUrls,
-            (v, t) => v.copyWith.$chain(t),
-            (v) => call(imageUrls: v),
-          );
+  get imageUrls => ListCopyWith(
+    $value.imageUrls,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(imageUrls: v),
+  );
   @override
   OwnerCopyWith<$R, Owner, Owner> get owner =>
       $value.owner.copyWith.$chain((v) => call(owner: v));
@@ -220,36 +220,35 @@ class _AnnouncementCopyWithImpl<$R, $Out>
     Object? updatedAt = $none,
     Owner? owner,
     int? timestamp,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (uid != null) #uid: uid,
-          if (description != null) #description: description,
-          if (imageUrls != null) #imageUrls: imageUrls,
-          if (createdAt != $none) #createdAt: createdAt,
-          if (likesCount != null) #likesCount: likesCount,
-          if (commentsCount != null) #commentsCount: commentsCount,
-          if (updatedAt != $none) #updatedAt: updatedAt,
-          if (owner != null) #owner: owner,
-          if (timestamp != null) #timestamp: timestamp,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (uid != null) #uid: uid,
+      if (description != null) #description: description,
+      if (imageUrls != null) #imageUrls: imageUrls,
+      if (createdAt != $none) #createdAt: createdAt,
+      if (likesCount != null) #likesCount: likesCount,
+      if (commentsCount != null) #commentsCount: commentsCount,
+      if (updatedAt != $none) #updatedAt: updatedAt,
+      if (owner != null) #owner: owner,
+      if (timestamp != null) #timestamp: timestamp,
+    }),
+  );
   @override
   Announcement $make(CopyWithData data) => Announcement(
-        uid: data.get(#uid, or: $value.uid),
-        description: data.get(#description, or: $value.description),
-        imageUrls: data.get(#imageUrls, or: $value.imageUrls),
-        createdAt: data.get(#createdAt, or: $value.createdAt),
-        likesCount: data.get(#likesCount, or: $value.likesCount),
-        commentsCount: data.get(#commentsCount, or: $value.commentsCount),
-        updatedAt: data.get(#updatedAt, or: $value.updatedAt),
-        owner: data.get(#owner, or: $value.owner),
-        timestamp: data.get(#timestamp, or: $value.timestamp),
-      );
+    uid: data.get(#uid, or: $value.uid),
+    description: data.get(#description, or: $value.description),
+    imageUrls: data.get(#imageUrls, or: $value.imageUrls),
+    createdAt: data.get(#createdAt, or: $value.createdAt),
+    likesCount: data.get(#likesCount, or: $value.likesCount),
+    commentsCount: data.get(#commentsCount, or: $value.commentsCount),
+    updatedAt: data.get(#updatedAt, or: $value.updatedAt),
+    owner: data.get(#owner, or: $value.owner),
+    timestamp: data.get(#timestamp, or: $value.timestamp),
+  );
 
   @override
   AnnouncementCopyWith<$R2, Announcement, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) =>
-      _AnnouncementCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _AnnouncementCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

@@ -263,15 +263,15 @@ extension CommunityValueCopy<$R, $Out> on ObjectCopyWith<$R, Community, $Out> {
 abstract class CommunityCopyWith<$R, $In extends Community, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   CommunitySettingsCopyWith<$R, CommunitySettings, CommunitySettings>
-      get communitySettings;
+  get communitySettings;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get tags;
   ListCopyWith<$R, HashImage, HashImageCopyWith<$R, HashImage, HashImage>>
-      get imageUrls;
+  get imageUrls;
   ListCopyWith<$R, Member, MemberCopyWith<$R, Member, Member>> get members;
   AUserCopyWith<$R, AUser, AUser> get organizer;
   VenueCopyWith<$R, Venue, Venue>? get venue;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>?
-      get imageBase64Data;
+  get imageBase64Data;
   $R call({
     String? name,
     String? description,
@@ -306,9 +306,9 @@ class _CommunityCopyWithImpl<$R, $Out>
       CommunityMapper.ensureInitialized();
   @override
   CommunitySettingsCopyWith<$R, CommunitySettings, CommunitySettings>
-      get communitySettings => $value.communitySettings.copyWith.$chain(
-            (v) => call(communitySettings: v),
-          );
+  get communitySettings => $value.communitySettings.copyWith.$chain(
+    (v) => call(communitySettings: v),
+  );
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get tags =>
       ListCopyWith(
@@ -318,11 +318,11 @@ class _CommunityCopyWithImpl<$R, $Out>
       );
   @override
   ListCopyWith<$R, HashImage, HashImageCopyWith<$R, HashImage, HashImage>>
-      get imageUrls => ListCopyWith(
-            $value.imageUrls,
-            (v, t) => v.copyWith.$chain(t),
-            (v) => call(imageUrls: v),
-          );
+  get imageUrls => ListCopyWith(
+    $value.imageUrls,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(imageUrls: v),
+  );
   @override
   ListCopyWith<$R, Member, MemberCopyWith<$R, Member, Member>> get members =>
       ListCopyWith(
@@ -338,13 +338,13 @@ class _CommunityCopyWithImpl<$R, $Out>
       $value.venue?.copyWith.$chain((v) => call(venue: v));
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>?
-      get imageBase64Data => $value.imageBase64Data != null
-          ? ListCopyWith(
-              $value.imageBase64Data!,
-              (v, t) => ObjectCopyWith(v, $identity, t),
-              (v) => call(imageBase64Data: v),
-            )
-          : null;
+  get imageBase64Data => $value.imageBase64Data != null
+      ? ListCopyWith(
+          $value.imageBase64Data!,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(imageBase64Data: v),
+        )
+      : null;
   @override
   $R call({
     String? name,
@@ -366,59 +366,58 @@ class _CommunityCopyWithImpl<$R, $Out>
     AUser? organizer,
     Object? venue = $none,
     Object? imageBase64Data = $none,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (name != null) #name: name,
-          if (description != null) #description: description,
-          if (ownerUid != null) #ownerUid: ownerUid,
-          if (communitySettings != null) #communitySettings: communitySettings,
-          if (membersCount != null) #membersCount: membersCount,
-          if (createdAt != $none) #createdAt: createdAt,
-          if (updatedAt != $none) #updatedAt: updatedAt,
-          if (joinedAt != $none) #joinedAt: joinedAt,
-          if (tags != null) #tags: tags,
-          if (imageUrls != null) #imageUrls: imageUrls,
-          if (isArchived != null) #isArchived: isArchived,
-          if (commentsCount != null) #commentsCount: commentsCount,
-          if (eventsCount != null) #eventsCount: eventsCount,
-          if (uid != null) #uid: uid,
-          if (distance != null) #distance: distance,
-          if (members != null) #members: members,
-          if (organizer != null) #organizer: organizer,
-          if (venue != $none) #venue: venue,
-          if (imageBase64Data != $none) #imageBase64Data: imageBase64Data,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != null) #name: name,
+      if (description != null) #description: description,
+      if (ownerUid != null) #ownerUid: ownerUid,
+      if (communitySettings != null) #communitySettings: communitySettings,
+      if (membersCount != null) #membersCount: membersCount,
+      if (createdAt != $none) #createdAt: createdAt,
+      if (updatedAt != $none) #updatedAt: updatedAt,
+      if (joinedAt != $none) #joinedAt: joinedAt,
+      if (tags != null) #tags: tags,
+      if (imageUrls != null) #imageUrls: imageUrls,
+      if (isArchived != null) #isArchived: isArchived,
+      if (commentsCount != null) #commentsCount: commentsCount,
+      if (eventsCount != null) #eventsCount: eventsCount,
+      if (uid != null) #uid: uid,
+      if (distance != null) #distance: distance,
+      if (members != null) #members: members,
+      if (organizer != null) #organizer: organizer,
+      if (venue != $none) #venue: venue,
+      if (imageBase64Data != $none) #imageBase64Data: imageBase64Data,
+    }),
+  );
   @override
   Community $make(CopyWithData data) => Community(
-        name: data.get(#name, or: $value.name),
-        description: data.get(#description, or: $value.description),
-        ownerUid: data.get(#ownerUid, or: $value.ownerUid),
-        communitySettings: data.get(
-          #communitySettings,
-          or: $value.communitySettings,
-        ),
-        membersCount: data.get(#membersCount, or: $value.membersCount),
-        createdAt: data.get(#createdAt, or: $value.createdAt),
-        updatedAt: data.get(#updatedAt, or: $value.updatedAt),
-        joinedAt: data.get(#joinedAt, or: $value.joinedAt),
-        tags: data.get(#tags, or: $value.tags),
-        imageUrls: data.get(#imageUrls, or: $value.imageUrls),
-        isArchived: data.get(#isArchived, or: $value.isArchived),
-        commentsCount: data.get(#commentsCount, or: $value.commentsCount),
-        eventsCount: data.get(#eventsCount, or: $value.eventsCount),
-        uid: data.get(#uid, or: $value.uid),
-        distance: data.get(#distance, or: $value.distance),
-        members: data.get(#members, or: $value.members),
-        organizer: data.get(#organizer, or: $value.organizer),
-        venue: data.get(#venue, or: $value.venue),
-        imageBase64Data: data.get(#imageBase64Data, or: $value.imageBase64Data),
-      );
+    name: data.get(#name, or: $value.name),
+    description: data.get(#description, or: $value.description),
+    ownerUid: data.get(#ownerUid, or: $value.ownerUid),
+    communitySettings: data.get(
+      #communitySettings,
+      or: $value.communitySettings,
+    ),
+    membersCount: data.get(#membersCount, or: $value.membersCount),
+    createdAt: data.get(#createdAt, or: $value.createdAt),
+    updatedAt: data.get(#updatedAt, or: $value.updatedAt),
+    joinedAt: data.get(#joinedAt, or: $value.joinedAt),
+    tags: data.get(#tags, or: $value.tags),
+    imageUrls: data.get(#imageUrls, or: $value.imageUrls),
+    isArchived: data.get(#isArchived, or: $value.isArchived),
+    commentsCount: data.get(#commentsCount, or: $value.commentsCount),
+    eventsCount: data.get(#eventsCount, or: $value.eventsCount),
+    uid: data.get(#uid, or: $value.uid),
+    distance: data.get(#distance, or: $value.distance),
+    members: data.get(#members, or: $value.members),
+    organizer: data.get(#organizer, or: $value.organizer),
+    venue: data.get(#venue, or: $value.venue),
+    imageBase64Data: data.get(#imageBase64Data, or: $value.imageBase64Data),
+  );
 
   @override
   CommunityCopyWith<$R2, Community, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) =>
-      _CommunityCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _CommunityCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

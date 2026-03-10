@@ -84,10 +84,10 @@ class DashboardMetricsMapper extends ClassMapperBase<DashboardMetrics> {
     opt: true,
     def: 0,
   );
-  static int _$postsCount(DashboardMetrics v) => v.postsCount;
-  static const Field<DashboardMetrics, int> _f$postsCount = Field(
-    'postsCount',
-    _$postsCount,
+  static int _$announcementsCount(DashboardMetrics v) => v.announcementsCount;
+  static const Field<DashboardMetrics, int> _f$announcementsCount = Field(
+    'announcementsCount',
+    _$announcementsCount,
     opt: true,
     def: 0,
   );
@@ -103,7 +103,7 @@ class DashboardMetricsMapper extends ClassMapperBase<DashboardMetrics> {
     #collaboratorsCount: _f$collaboratorsCount,
     #mediaCount: _f$mediaCount,
     #leaguesCount: _f$leaguesCount,
-    #postsCount: _f$postsCount,
+    #announcementsCount: _f$announcementsCount,
   };
 
   static DashboardMetrics _instantiate(DecodingData data) {
@@ -117,7 +117,7 @@ class DashboardMetricsMapper extends ClassMapperBase<DashboardMetrics> {
       collaboratorsCount: data.dec(_f$collaboratorsCount),
       mediaCount: data.dec(_f$mediaCount),
       leaguesCount: data.dec(_f$leaguesCount),
-      postsCount: data.dec(_f$postsCount),
+      announcementsCount: data.dec(_f$announcementsCount),
     );
   }
 
@@ -193,7 +193,7 @@ abstract class DashboardMetricsCopyWith<$R, $In extends DashboardMetrics, $Out>
     int? collaboratorsCount,
     int? mediaCount,
     int? leaguesCount,
-    int? postsCount,
+    int? announcementsCount,
   });
   DashboardMetricsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -219,7 +219,7 @@ class _DashboardMetricsCopyWithImpl<$R, $Out>
     int? collaboratorsCount,
     int? mediaCount,
     int? leaguesCount,
-    int? postsCount,
+    int? announcementsCount,
   }) =>
       $apply(
         FieldCopyWithData({
@@ -234,7 +234,7 @@ class _DashboardMetricsCopyWithImpl<$R, $Out>
             #collaboratorsCount: collaboratorsCount,
           if (mediaCount != null) #mediaCount: mediaCount,
           if (leaguesCount != null) #leaguesCount: leaguesCount,
-          if (postsCount != null) #postsCount: postsCount,
+          if (announcementsCount != null) #announcementsCount: announcementsCount,
         }),
       );
   @override
@@ -258,7 +258,8 @@ class _DashboardMetricsCopyWithImpl<$R, $Out>
         ),
         mediaCount: data.get(#mediaCount, or: $value.mediaCount),
         leaguesCount: data.get(#leaguesCount, or: $value.leaguesCount),
-        postsCount: data.get(#postsCount, or: $value.postsCount),
+        announcementsCount:
+            data.get(#announcementsCount, or: $value.announcementsCount),
       );
 
   @override

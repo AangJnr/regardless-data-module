@@ -110,7 +110,7 @@ class PostRepositoryImpl with BaseRepository implements PostRepository {
   Future<Result<Announcement, Exception>> editAnnouncementPost(
       Announcement postData) async {
     var data = await processRequest(
-        () => apiService.editAnnouncementPost(postData.toMap()));
+        () => apiService.editAnnouncementPost(postData.uid, postData.toMap()));
     if (data.isSuccess()) {
       return Success(AnnouncementMapper.fromMap(data.tryGetSuccess()!));
     }

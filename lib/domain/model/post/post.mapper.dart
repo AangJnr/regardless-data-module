@@ -252,7 +252,7 @@ abstract class PostCopyWith<$R, $In extends Post, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   VenueCopyWith<$R, Venue, Venue> get venue;
   ListCopyWith<$R, HashImage, HashImageCopyWith<$R, HashImage, HashImage>>
-      get imageUrls;
+  get imageUrls;
   ListCopyWith<$R, Price, PriceCopyWith<$R, Price, Price>> get prices;
   OwnerCopyWith<$R, Owner, Owner> get owner;
   CommunityCopyWith<$R, Community, Community>? get community;
@@ -291,11 +291,11 @@ class _PostCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Post, $Out>
       $value.venue.copyWith.$chain((v) => call(venue: v));
   @override
   ListCopyWith<$R, HashImage, HashImageCopyWith<$R, HashImage, HashImage>>
-      get imageUrls => ListCopyWith(
-            $value.imageUrls,
-            (v, t) => v.copyWith.$chain(t),
-            (v) => call(imageUrls: v),
-          );
+  get imageUrls => ListCopyWith(
+    $value.imageUrls,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(imageUrls: v),
+  );
   @override
   ListCopyWith<$R, Price, PriceCopyWith<$R, Price, Price>> get prices =>
       ListCopyWith(
@@ -330,55 +330,54 @@ class _PostCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Post, $Out>
     int? timestamp,
     String? communityUid,
     Object? community = $none,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (uid != null) #uid: uid,
-          if (eventUid != null) #eventUid: eventUid,
-          if (recurrenceUid != null) #recurrenceUid: recurrenceUid,
-          if (description != null) #description: description,
-          if (venue != null) #venue: venue,
-          if (imageUrls != null) #imageUrls: imageUrls,
-          if (createdAt != $none) #createdAt: createdAt,
-          if (likesCount != null) #likesCount: likesCount,
-          if (commentsCount != null) #commentsCount: commentsCount,
-          if (updatedAt != $none) #updatedAt: updatedAt,
-          if (isVerified != null) #isVerified: isVerified,
-          if (prices != null) #prices: prices,
-          if (availableTickets != null) #availableTickets: availableTickets,
-          if (owner != null) #owner: owner,
-          if (localTimestamp != null) #localTimestamp: localTimestamp,
-          if (name != null) #name: name,
-          if (timestamp != null) #timestamp: timestamp,
-          if (communityUid != null) #communityUid: communityUid,
-          if (community != $none) #community: community,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (uid != null) #uid: uid,
+      if (eventUid != null) #eventUid: eventUid,
+      if (recurrenceUid != null) #recurrenceUid: recurrenceUid,
+      if (description != null) #description: description,
+      if (venue != null) #venue: venue,
+      if (imageUrls != null) #imageUrls: imageUrls,
+      if (createdAt != $none) #createdAt: createdAt,
+      if (likesCount != null) #likesCount: likesCount,
+      if (commentsCount != null) #commentsCount: commentsCount,
+      if (updatedAt != $none) #updatedAt: updatedAt,
+      if (isVerified != null) #isVerified: isVerified,
+      if (prices != null) #prices: prices,
+      if (availableTickets != null) #availableTickets: availableTickets,
+      if (owner != null) #owner: owner,
+      if (localTimestamp != null) #localTimestamp: localTimestamp,
+      if (name != null) #name: name,
+      if (timestamp != null) #timestamp: timestamp,
+      if (communityUid != null) #communityUid: communityUid,
+      if (community != $none) #community: community,
+    }),
+  );
   @override
   Post $make(CopyWithData data) => Post(
-        uid: data.get(#uid, or: $value.uid),
-        eventUid: data.get(#eventUid, or: $value.eventUid),
-        recurrenceUid: data.get(#recurrenceUid, or: $value.recurrenceUid),
-        description: data.get(#description, or: $value.description),
-        venue: data.get(#venue, or: $value.venue),
-        imageUrls: data.get(#imageUrls, or: $value.imageUrls),
-        createdAt: data.get(#createdAt, or: $value.createdAt),
-        likesCount: data.get(#likesCount, or: $value.likesCount),
-        commentsCount: data.get(#commentsCount, or: $value.commentsCount),
-        updatedAt: data.get(#updatedAt, or: $value.updatedAt),
-        isVerified: data.get(#isVerified, or: $value.isVerified),
-        prices: data.get(#prices, or: $value.prices),
-        availableTickets:
-            data.get(#availableTickets, or: $value.availableTickets),
-        owner: data.get(#owner, or: $value.owner),
-        localTimestamp: data.get(#localTimestamp, or: $value.localTimestamp),
-        name: data.get(#name, or: $value.name),
-        timestamp: data.get(#timestamp, or: $value.timestamp),
-        communityUid: data.get(#communityUid, or: $value.communityUid),
-        community: data.get(#community, or: $value.community),
-      );
+    uid: data.get(#uid, or: $value.uid),
+    eventUid: data.get(#eventUid, or: $value.eventUid),
+    recurrenceUid: data.get(#recurrenceUid, or: $value.recurrenceUid),
+    description: data.get(#description, or: $value.description),
+    venue: data.get(#venue, or: $value.venue),
+    imageUrls: data.get(#imageUrls, or: $value.imageUrls),
+    createdAt: data.get(#createdAt, or: $value.createdAt),
+    likesCount: data.get(#likesCount, or: $value.likesCount),
+    commentsCount: data.get(#commentsCount, or: $value.commentsCount),
+    updatedAt: data.get(#updatedAt, or: $value.updatedAt),
+    isVerified: data.get(#isVerified, or: $value.isVerified),
+    prices: data.get(#prices, or: $value.prices),
+    availableTickets: data.get(#availableTickets, or: $value.availableTickets),
+    owner: data.get(#owner, or: $value.owner),
+    localTimestamp: data.get(#localTimestamp, or: $value.localTimestamp),
+    name: data.get(#name, or: $value.name),
+    timestamp: data.get(#timestamp, or: $value.timestamp),
+    communityUid: data.get(#communityUid, or: $value.communityUid),
+    community: data.get(#community, or: $value.community),
+  );
 
   @override
   PostCopyWith<$R2, Post, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _PostCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

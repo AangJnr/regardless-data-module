@@ -1,5 +1,4 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:regardless_data_module/domain/model/collaborator/collaborator_permission.dart';
 import 'package:regardless_data_module/domain/model/service/time_slot.dart';
 import 'package:regardless_data_module/extensions/extensions.dart';
 

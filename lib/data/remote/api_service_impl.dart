@@ -10,16 +10,15 @@ import 'package:regardless_data_module/domain/model/community/community.dart';
 import 'package:regardless_data_module/domain/model/community/member.dart';
 import 'package:regardless_data_module/domain/model/review/review.dart';
 import 'package:regardless_data_module/domain/model/team/team.dart';
+import 'package:regardless_data_module/domain/model/tournament/tournament.dart';
 import '../../domain/api/api_service.dart';
 import '../../domain/model/appointment/appointment.dart';
 import '../../domain/model/community/comment.dart';
-import '../../domain/model/follower.dart';
 import '../../domain/model/new_user.dart';
 import '../../domain/model/preference.dart';
 import '../../domain/model/update_user.dart';
 import '../../domain/model/user.dart';
 import '../../domain/repositories/event_repository.dart';
-import '../model/appointment_api/appointment_api.dart';
 import '../model/new_event_api.dart';
 import '../model/notification_request.dart';
 import '../model/paginated_response.dart';
@@ -351,10 +350,12 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
-  Future<http.Response> followUser(Follower f) async {
-    var response = post(User().Follow,
-        headers: await getHeaders(), body: f.toApi().toJson());
-    return response;
+  Future<http.Response> followUser(String uid) async {
+    return post(
+      User().Follow,
+      headers: await getHeaders(),
+      body: jsonEncode({'uid': uid}),
+    );
   }
 
   @override
@@ -369,10 +370,18 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   @override
   Future<http.Response> getFollowing({PaginationRequest? request}) async {
     var response = get(
-      User().GetFollowing,
+      User().GetFollowing(request?.toQueryParams() ?? ''),
       headers: await getHeaders(),
     );
     return response;
+  }
+
+  @override
+  Future<http.Response> unfollowUser(String uid) async {
+    return delete(
+      User().Unfollow(uid),
+      headers: await getHeaders(),
+    );
   }
 
   @override
@@ -467,7 +476,7 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
-  Future<http.Response> addAppointment(AppointmentApi appointment) async {
+  Future<http.Response> addAppointment(Appointment appointment) async {
     var response = post(AppointmentRoutes().Add,
         headers: await getHeaders(), body: appointment.toJson());
     return response;
@@ -805,15 +814,15 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   @override
   Future<http.Response> addAnnouncementPost(
       Map<String, dynamic> postData) async {
-    var response = post(Post().Announcement,
+    var response = post(Post().Add,
         headers: await getHeaders(), body: jsonEncode(postData));
     return response;
   }
 
   @override
   Future<http.Response> editAnnouncementPost(
-      Map<String, dynamic> postData) async {
-    var response = patch(Post().Announcement,
+      String uid, Map<String, dynamic> postData) async {
+    var response = patch(Post().Announcement(uid),
         headers: await getHeaders(), body: jsonEncode(postData));
     return response;
   }
@@ -830,7 +839,7 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   @override
   Future<http.Response> likePost(String uid) async {
     var response = get(
-      Post().Like(uid),
+      Post().LikePost(uid),
       headers: await getHeaders(),
     );
     return response;
@@ -839,7 +848,7 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   @override
   Future<http.Response> unlikePost(String uid) async {
     var response = delete(
-      Post().Like(uid),
+      Post().LikePost(uid),
       headers: await getHeaders(),
     );
     return response;
@@ -848,7 +857,7 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   @override
   Future<http.Response> deleteAnnouncementPost(String uid) async {
     var response = delete(
-      Post().Delete(uid),
+      Post().DeleteAnnouncement(uid),
       headers: await getHeaders(),
     );
     return response;
@@ -1278,5 +1287,108 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
         body: jsonEncode({
           "schedule": schedule.map((e) => e.toMap()).toList(),
         }));
+  }
+
+  Future<dynamic> _uploadFiles(
+      String url, String body, String field1, XFile? file1,
+      {XFile? file2, String? field2, bool isPut = false}) async {
+    final request =
+        http.MultipartRequest(isPut ? "PUT" : "POST", Uri.parse(url));
+    request.headers.addAll(await getHeaders());
+    request.fields['data'] = body;
+
+    if (file1 != null) {
+      request.files.add(await http.MultipartFile.fromPath(field1, file1.path));
+    }
+    if (file2 != null && field2 != null) {
+      request.files.add(await http.MultipartFile.fromPath(field2, file2.path));
+    }
+    return request.send();
+  }
+
+  @override
+  Future<dynamic> createTournament(Tournament tournament,
+      {XFile? logo, XFile? cover}) async {
+    return _uploadFiles(ATournament().Create, tournament.toJson(), 'logo', logo,
+        file2: cover, field2: 'cover');
+  }
+
+  @override
+  Future<dynamic> updateTournament(Tournament tournament,
+      {XFile? logo, XFile? cover}) async {
+    return _uploadFiles(
+        ATournament().Update(tournament.uid), tournament.toJson(), 'logo', logo,
+        file2: cover, field2: 'cover', isPut: true);
+  }
+
+  @override
+  Future<http.Response> getTournaments(String ownerUid,
+      {PaginationRequest? request}) async {
+    return get(
+      ATournament().List(ownerUid, request?.toQueryParams() ?? ''),
+      headers: await getHeaders(),
+    );
+  }
+
+  @override
+  Future<http.Response> getTournament(String uid) async {
+    return get(
+      ATournament().Get(uid),
+      headers: await getHeaders(),
+    );
+  }
+
+  @override
+  Future<http.Response> deleteTournament(String uid) async {
+    return delete(ATournament().Delete(uid), headers: await getHeaders());
+  }
+
+  @override
+  Future<http.Response> getTournamentMatches(
+    String tournamentUid, {
+    String? seasonUid,
+    PaginationRequest? request,
+  }) async {
+    final base = ATournament().Matches(tournamentUid);
+    final pagination = request?.toQueryParams() ?? '';
+    final seasonParam =
+        seasonUid != null && seasonUid.isNotEmpty ? 'seasonUid=$seasonUid' : '';
+
+    String query = '';
+    if (seasonParam.isNotEmpty && pagination.isNotEmpty) {
+      // pagination already includes a leading '?'
+      query = '$pagination&$seasonParam';
+    } else if (seasonParam.isNotEmpty) {
+      query = '?$seasonParam';
+    } else if (pagination.isNotEmpty) {
+      query = pagination;
+    }
+
+    return get('$base$query', headers: await getHeaders());
+  }
+
+  @override
+  Future<http.Response> getTournamentStandings(
+    String tournamentUid, {
+    String? seasonUid,
+  }) async {
+    final base = ATournament().Standings(tournamentUid);
+    final query = seasonUid != null && seasonUid.isNotEmpty
+        ? '?seasonUid=$seasonUid'
+        : '';
+    final url = '$base$query';
+    return get(url, headers: await getHeaders());
+  }
+
+  @override
+  Future<http.Response> getTeamActivities(
+      {PaginationRequest? request,
+      required String uid,
+      required String ownerUid}) async {
+    var response = get(
+      "${ATeam().TeamActivities(ownerUid, uid)}${request?.toQueryParams() ?? ''}",
+      headers: await getHeaders(),
+    );
+    return response;
   }
 }
