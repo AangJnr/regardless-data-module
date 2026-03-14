@@ -26,6 +26,12 @@ abstract class TeamRepository {
     XFile? logo,
     XFile? headerImage,
   });
+    Future<Result<Team, Exception>> addTeam(
+    Team team,
+    {
+    XFile? logo,
+    XFile? headerImage,
+  });
   Future<Result<Pagination<Team>, Exception>> getUsersTeams(String ownerUid,
       {PaginationRequest? request});
   Future<Result<Team, Exception>> getTeam(String ownerUid, String uid);

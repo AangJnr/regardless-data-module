@@ -3,7 +3,6 @@ import 'package:cross_file/cross_file.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:regardless_data_module/domain/media.dart';
 import 'package:regardless_data_module/domain/model/event.dart';
-import 'package:regardless_data_module/domain/model/feed.dart';
 import 'package:regardless_data_module/domain/model/new_user.dart';
 import 'package:regardless_data_module/domain/model/pagination.dart';
 import 'package:regardless_data_module/domain/model/team/team.dart';
@@ -45,6 +44,23 @@ class TeamRepositoryImpl with BaseRepository implements TeamRepository {
   }) async {
     final res = await processMultiPartRequest(() => apiService
         .createTeamAccount(team, user, logo: logo, headerImage: headerImage));
+    if (res.isSuccess()) {
+      final data = res.tryGetSuccess()! as Map<String, dynamic>;
+      return Success(TeamMapper.fromMap(data));
+    }
+    return Error(res.tryGetError()!);
+  }
+
+
+  @override
+  Future<Result<Team, Exception>> addTeam(
+    Team team,
+    {
+    XFile? logo,
+    XFile? headerImage,
+  }) async {
+    final res = await processMultiPartRequest(() => apiService
+        .addTeam(team, logo: logo, headerImage: headerImage));
     if (res.isSuccess()) {
       final data = res.tryGetSuccess()! as Map<String, dynamic>;
       return Success(TeamMapper.fromMap(data));

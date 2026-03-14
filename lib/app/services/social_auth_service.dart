@@ -18,7 +18,7 @@ class SocialAuthService {
 
       GoogleAuthProvider googleProvider = GoogleAuthProvider();
       googleProvider
-          .addScope('https://www.googleapis.com/auth/contacts.readonly');
+          .addScope('https://www.googleapis.com/auth/userinfo.profile');
       if (isPlatformWeb) {
         userRequest =
             await FirebaseAuth.instance.signInWithPopup(googleProvider);

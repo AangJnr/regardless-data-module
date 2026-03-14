@@ -98,15 +98,19 @@ class LocationService {
     permission = await Geolocator.requestPermission();
     debugPrint("LocationPermission => ${permission.toString()}");
 
-    if (permission == LocationPermission.deniedForever) {
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.unableToDetermine ||
+        permission == LocationPermission.deniedForever) {
+      // Just notify — no forced redirect, no "OK goes to Settings"
       await DialogService()
           .showConfirmationDialog(
-              title: 'Permission denied',
-              description:
-                  'Location permissions are permantly denied. Please provide location permission in the settings app.',
-              barrierDismissible: false,
-              cancelTitle: 'Cancel',
-              confirmationTitle: 'OK')
+        title: 'Location required',
+        description: 'This feature requires location access. '
+            'You can enable it in Settings if you change your mind.',
+        barrierDismissible: true,
+        cancelTitle: 'Dismiss',
+        confirmationTitle: 'Open Settings', // Optional, user-initiated
+      )
           .then((value) async {
         if (value?.confirmed == true) {
           await Geolocator.openLocationSettings();
@@ -114,24 +118,6 @@ class LocationService {
       });
 
       onDenied?.call();
-      return;
-    }
-
-    if (permission == LocationPermission.denied ||
-        permission == LocationPermission.unableToDetermine) {
-      await DialogService()
-          .showConfirmationDialog(
-              title: 'Location services required',
-              description:
-                  'LocationPermission is required to be able to provide access to events and communities around you. Please provide location permissions.',
-              barrierDismissible: false,
-              cancelTitle: 'Cancel',
-              confirmationTitle: 'OK')
-          .then((value) {
-        if (value?.confirmed == true) {
-          requestLocationPermission();
-        }
-      });
       return;
     }
 

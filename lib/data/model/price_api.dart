@@ -30,6 +30,7 @@ class PriceApi implements DomainMapper<Price> {
       currency: data['currency'] as String?,
       type: data['type'] as String?,
       description: data['description'] as String?,
+      durationDays: data['durationDays'] as int?,
     );
   }
 
@@ -37,7 +38,8 @@ class PriceApi implements DomainMapper<Price> {
         'amount': amount,
         'currency': currency,
         'type': type,
-        'description': description
+        'description': description,
+        'durationDays': durationDays
       };
 
   /// `dart:convert`

@@ -44,6 +44,6 @@ class NewUser with NewUserMappable {
       phone: user.phoneNumber ?? "",
       picture: user.photoURL ?? '',
       fullName:
-          user.displayName ?? user.providerData.firstOrNull?.displayName ?? "",
+          user.displayName ?? user.providerData.map((e) => e.displayName).toSet().first ?? "",
       userName: (user.email?.split('@').firstOrNull ?? ''));
 }

@@ -17,7 +17,7 @@ class Price with PriceMappable implements DataMapper<PriceApi> {
   final int? durationDays;
 
   const Price({
-    this.amount = 0,
+    this.amount = 0.0,
     this.currency = '',
     this.type = '',
     this.quantity = 1,
@@ -27,7 +27,7 @@ class Price with PriceMappable implements DataMapper<PriceApi> {
 
   @override
   String toString() {
-    return 'Price(price: $amount, currency: $currency, type: $type)';
+    return 'Price(price: $amount, currency: $currency, type: $type, durationDays: $durationDays)';
   }
 
   String total() => "${amount * quantity}";

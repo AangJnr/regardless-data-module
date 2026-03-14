@@ -76,9 +76,15 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
         }
         return null;
       }, 'user_accounts');
-      if (accounts != null) return Success(accounts);
-      return Future.value(Error(Exception("Unable to fetch accounts")));
+      if (accounts != null) {
+        return Success(accounts);
+      } else {
+        cache.clear('user_accounts');
+        return Future.value(Error(Exception("Unable to fetch accounts")));
+      }
     } catch (e) {
+      cache.clear('user_accounts');
+
       return Future.value(Error(Exception(e)));
     }
   }
@@ -108,6 +114,7 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
     var data = await processRequest(
         () => apiService.deleteAccount(uid, title: title, reason: reason));
     if (data.isSuccess()) {
+
       return Future.value(const Success(true));
     }
     return Future.value(Error(data.tryGetError()!));
