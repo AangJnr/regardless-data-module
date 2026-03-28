@@ -247,18 +247,9 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
-  Future<http.Response> searchTrainersViaQuery(SearchEventParams params) async {
+  Future<http.Response> searchProvider(SearchEventParams params) async {
     var response = get(
-      ASearch().SearchTrainers(toQueryParams(params.toMap())),
-      headers: await getHeaders(isSecure: true),
-    );
-    return response;
-  }
-
-  @override
-  Future<http.Response> searchUsers(SearchEventParams params) async {
-    var response = get(
-      ASearch().SearchUsers(toQueryParams(params.toMap())),
+      ASearch().SearchProviders(toQueryParams(params.toMap())),
       headers: await getHeaders(isSecure: true),
     );
     return response;

@@ -161,6 +161,8 @@ class Event with EventMappable {
   String formatDistance() {
     if (distance >= 1000) {
       return '${(distance / 1000).toStringAsFixed(0)}K km';
+    } else if (distance < 1) {
+      return '${(distance * 1000).toStringAsFixed(0)} m';
     } else {
       return '${distance.toStringAsFixed(0)} km';
     }

@@ -32,6 +32,7 @@ List<String> getPermissionsForAccountType(AUser user) =>
             kManageMedia,
             kManageCollaborators,
             kManageConversations,
+            kManagePosts,
           ]
         : user.isLeagueManagerAccount
             ? [
@@ -49,7 +50,8 @@ List<String> getPermissionsForAccountType(AUser user) =>
                     kManageActivities,
                     kManageMedia,
                     kManageCollaborators,
-                    kManageConversations,
+                    kManageConversations,                kManagePosts,
+
                   ]
                 : [
                     kManageActivities,
@@ -57,7 +59,8 @@ List<String> getPermissionsForAccountType(AUser user) =>
                     kManageMedia,
                     kManageCollaborators,
                     kManageConversations,
-                    kManageCommunities,
+                    kManageCommunities,                kManagePosts,
+
                   ];
 
 // Default permissions per role

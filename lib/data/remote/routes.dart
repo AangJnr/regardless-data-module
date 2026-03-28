@@ -4,6 +4,8 @@ import '../../app/utils/url.dart';
 
 abstract class ApiRoutes {
   final url = Url.shared.base;
+    final url_v2 = Url.shared.base2;
+
 }
 
 class Media extends ApiRoutes {
@@ -200,8 +202,7 @@ class ASearch extends ApiRoutes {
       '$url/search/nearby-community-event$params';
   String SearchNearbyCommunity(String params) =>
       '$url/search/nearby-community$params';
-  String SearchTrainers(String params) => '$url/search/personal-trainer$params';
-  String SearchUsers(String params) => '$url/search-users$params';
+  String SearchProviders(String params) => '$url/search/providers$params';
 }
 
 class ATeam extends ApiRoutes {

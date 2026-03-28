@@ -52,7 +52,7 @@ abstract class ApiService {
   Future<Response> searchNearbyCommunitiesAndEvents(SearchEventParams params);
   Future<Response> searchNearbyCommunities(SearchEventParams params);
   Future<Response> searchCommunitiesViaQuery(SearchEventParams params);
-  Future<Response> searchUsers(SearchEventParams params);
+  Future<Response> searchProvider(SearchEventParams params);
   Future<Response> getProviderEvents(String providerUid,
       {PaginationRequest? request});
   Future<Response> linkToCommunity(String eventUid, Community community);
@@ -142,9 +142,6 @@ abstract class ApiService {
   Future<Response> getUserJoinedCommunities(
       {required String userUid, PaginationRequest? request});
   Future<Response> joinCommunities(List<String> private, List<String> public);
-
-  Future<Response> searchTrainersViaQuery(SearchEventParams params);
-
   Future<Response> getUserCommunities(String ownerUid,
       {PaginationRequest? request});
   Future<Response> getCommunityComments(String uid,
@@ -168,7 +165,8 @@ abstract class ApiService {
   Future<Response> getUserAnnouncementPosts({PaginationRequest? request});
   Future<Response> getPublicAnnouncements({PaginationRequest? request});
   Future<Response> addAnnouncementPost(Map<String, dynamic> postData);
-  Future<Response> editAnnouncementPost(String uid,Map<String, dynamic> postData);
+  Future<Response> editAnnouncementPost(
+      String uid, Map<String, dynamic> postData);
 
   Future<Response> deleteAnnouncementPost(String uid);
 

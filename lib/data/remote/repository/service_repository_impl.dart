@@ -201,8 +201,7 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
   @override
   Future<Result<List<AUser>, Exception>> searchPersonalTrainers(
       SearchEventParams params) async {
-    var data =
-        await processRequest(() => apiService.searchTrainersViaQuery(params));
+    var data = await processRequest(() => apiService.searchProvider(params));
     if (data.isSuccess()) {
       final results = (data.tryGetSuccess()! as List<dynamic>)
           .map((data) => AUserMapper.fromMap(data))

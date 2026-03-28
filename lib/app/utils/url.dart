@@ -9,7 +9,7 @@ class Url {
 
   static String get firebaseEmulatorHost {
     return Platform.isAndroid
-        ? '10.188.214.182' //'10.0.2.2'
+        ? '10.147.102.182' //'10.0.2.2'
         : "127.0.0.1";
   }
 
@@ -25,22 +25,27 @@ class Url {
 
   static Flavor _flavor = Flavor.local;
 
-  static String _url() {
+  static String _url({String version = 'v1'}) {
     switch (_flavor) {
       case Flavor.local:
-        return "http://$firebaseEmulatorHost:8080/api/v1";
+        return "http://$firebaseEmulatorHost:8080/api/$version";
       case Flavor.dev:
-        return "https://regardless-api-dev-duzwdhkz6a-ew.a.run.app/api/v1";
+        return "https://regardless-api-dev-duzwdhkz6a-ew.a.run.app/api/$version";
       case Flavor.prod:
-        return "https://regardless-api-dev-duzwdhkz6a-ew.a.run.app/api/v1";
+        return "https://regardless-api-dev-duzwdhkz6a-ew.a.run.app/api/$version";
     }
   }
+
+    String get v1 => 'v1';
+    String get v2 => 'v2';
 
   static void setDebugMode(bool isDebugMode) {
     _flavor = isDebugMode ? Flavor.local : Flavor.dev;
   }
 
   String get base => _url();
+  String get base2 => _url(version: v2);
+
   String get productImagesBaseUrl => '$base/product_images/';
   String get blogImagesBaseUrl => '$base/blog_images/';
   String get adsBaseUrl => base;

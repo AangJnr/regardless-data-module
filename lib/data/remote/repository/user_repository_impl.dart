@@ -114,7 +114,6 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
     var data = await processRequest(
         () => apiService.deleteAccount(uid, title: title, reason: reason));
     if (data.isSuccess()) {
-
       return Future.value(const Success(true));
     }
     return Future.value(Error(data.tryGetError()!));
@@ -452,7 +451,7 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   @override
   Future<Result<List<AUser>, Exception>> searchUsers(
       SearchEventParams params) async {
-    var data = await processRequest(() => apiService.searchUsers(params));
+    var data = await processRequest(() => apiService.searchProvider(params));
     if (data.isSuccess()) {
       final results = (data.tryGetSuccess()! as List<dynamic>)
           .map((data) => AUserMapper.fromMap(data))
@@ -576,9 +575,11 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
       {required String token, required String providerUid}) async {
     final response = await processRequest(
         () => apiService.finalizeCollaboratorInvite(token, providerUid));
-    return response.isSuccess()
-        ? Success(true)
-        : Error(response.tryGetError()!);
+    if (response.isSuccess()) {
+      await getUserAccounts(true);
+      return Success(true);
+    }
+    return Error(response.tryGetError()!);
   }
 
   @override

@@ -139,6 +139,6 @@ class FeedApi implements DomainMapper<Feed> {
       isRepeating: isRepeating ?? false,
       recurrenceUid: recurrenceUid ?? '',
       tags: tags ?? [],
-      distance: double.tryParse(distance ?? '0.0') ?? 0.0,
+      distance: double.tryParse('$distance') ?? 0.0,
       communityUid: communityUid ?? '');
 }

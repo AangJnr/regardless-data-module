@@ -24,8 +24,7 @@ mixin ApiHelpers {
     if (isSecure) {
       final token = await module<SocialAuthService>().getToken();
       headersMap.putIfAbsent('Authorization', () => 'Token $token');
-
-      // headersMap.putIfAbsent('Authorization', () => 'Iamnotahumanbeing@2');
+       getLogger('ApiHelpers').v(token);
     }
     return headersMap;
   }
@@ -154,3 +153,5 @@ class ImageProperties {
   XFile file;
   ImageProperties(this.key, this.file, {this.uuid = ''});
 }
+
+
