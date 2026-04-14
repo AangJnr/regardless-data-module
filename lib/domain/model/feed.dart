@@ -57,11 +57,14 @@ class Feed with FeedMappable {
 
   HashImage getImage() => imageUrls.firstOrNull ?? const HashImage();
 
+
   String formatDistance() {
     if (distance >= 1000) {
-      return '${(distance / 1000).toStringAsFixed(1)}K km';
+      return '${(distance / 1000).toStringAsFixed(0)}K km';
+    } else if (distance < 1) {
+      return '${(distance * 1000).toStringAsFixed(0)} m';
     } else {
-      return '${distance.toStringAsFixed(2)} km';
+      return '${distance.toStringAsFixed(0)} km';
     }
   }
 

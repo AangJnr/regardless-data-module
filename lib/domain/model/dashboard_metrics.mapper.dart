@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -145,12 +146,12 @@ mixin DashboardMetricsMappable {
   }
 
   DashboardMetricsCopyWith<DashboardMetrics, DashboardMetrics, DashboardMetrics>
-      get copyWith =>
-          _DashboardMetricsCopyWithImpl<DashboardMetrics, DashboardMetrics>(
-            this as DashboardMetrics,
-            $identity,
-            $identity,
-          );
+  get copyWith =>
+      _DashboardMetricsCopyWithImpl<DashboardMetrics, DashboardMetrics>(
+        this as DashboardMetrics,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return DashboardMetricsMapper.ensureInitialized().stringifyValue(
@@ -177,8 +178,8 @@ mixin DashboardMetricsMappable {
 extension DashboardMetricsValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DashboardMetrics, $Out> {
   DashboardMetricsCopyWith<$R, DashboardMetrics, $Out>
-      get $asDashboardMetrics => $base
-          .as((v, t, t2) => _DashboardMetricsCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asDashboardMetrics =>
+      $base.as((v, t, t2) => _DashboardMetricsCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class DashboardMetricsCopyWith<$R, $In extends DashboardMetrics, $Out>
@@ -220,51 +221,49 @@ class _DashboardMetricsCopyWithImpl<$R, $Out>
     int? mediaCount,
     int? leaguesCount,
     int? announcementsCount,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (eventsCount != null) #eventsCount: eventsCount,
-          if (appointmentsCount != null) #appointmentsCount: appointmentsCount,
-          if (notificationsCount != null)
-            #notificationsCount: notificationsCount,
-          if (communitiesCount != null) #communitiesCount: communitiesCount,
-          if (servicesCount != null) #servicesCount: servicesCount,
-          if (teamsCount != null) #teamsCount: teamsCount,
-          if (collaboratorsCount != null)
-            #collaboratorsCount: collaboratorsCount,
-          if (mediaCount != null) #mediaCount: mediaCount,
-          if (leaguesCount != null) #leaguesCount: leaguesCount,
-          if (announcementsCount != null) #announcementsCount: announcementsCount,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (eventsCount != null) #eventsCount: eventsCount,
+      if (appointmentsCount != null) #appointmentsCount: appointmentsCount,
+      if (notificationsCount != null) #notificationsCount: notificationsCount,
+      if (communitiesCount != null) #communitiesCount: communitiesCount,
+      if (servicesCount != null) #servicesCount: servicesCount,
+      if (teamsCount != null) #teamsCount: teamsCount,
+      if (collaboratorsCount != null) #collaboratorsCount: collaboratorsCount,
+      if (mediaCount != null) #mediaCount: mediaCount,
+      if (leaguesCount != null) #leaguesCount: leaguesCount,
+      if (announcementsCount != null) #announcementsCount: announcementsCount,
+    }),
+  );
   @override
   DashboardMetrics $make(CopyWithData data) => DashboardMetrics(
-        eventsCount: data.get(#eventsCount, or: $value.eventsCount),
-        appointmentsCount: data.get(
-          #appointmentsCount,
-          or: $value.appointmentsCount,
-        ),
-        notificationsCount: data.get(
-          #notificationsCount,
-          or: $value.notificationsCount,
-        ),
-        communitiesCount:
-            data.get(#communitiesCount, or: $value.communitiesCount),
-        servicesCount: data.get(#servicesCount, or: $value.servicesCount),
-        teamsCount: data.get(#teamsCount, or: $value.teamsCount),
-        collaboratorsCount: data.get(
-          #collaboratorsCount,
-          or: $value.collaboratorsCount,
-        ),
-        mediaCount: data.get(#mediaCount, or: $value.mediaCount),
-        leaguesCount: data.get(#leaguesCount, or: $value.leaguesCount),
-        announcementsCount:
-            data.get(#announcementsCount, or: $value.announcementsCount),
-      );
+    eventsCount: data.get(#eventsCount, or: $value.eventsCount),
+    appointmentsCount: data.get(
+      #appointmentsCount,
+      or: $value.appointmentsCount,
+    ),
+    notificationsCount: data.get(
+      #notificationsCount,
+      or: $value.notificationsCount,
+    ),
+    communitiesCount: data.get(#communitiesCount, or: $value.communitiesCount),
+    servicesCount: data.get(#servicesCount, or: $value.servicesCount),
+    teamsCount: data.get(#teamsCount, or: $value.teamsCount),
+    collaboratorsCount: data.get(
+      #collaboratorsCount,
+      or: $value.collaboratorsCount,
+    ),
+    mediaCount: data.get(#mediaCount, or: $value.mediaCount),
+    leaguesCount: data.get(#leaguesCount, or: $value.leaguesCount),
+    announcementsCount: data.get(
+      #announcementsCount,
+      or: $value.announcementsCount,
+    ),
+  );
 
   @override
   DashboardMetricsCopyWith<$R2, DashboardMetrics, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) =>
-      _DashboardMetricsCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _DashboardMetricsCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

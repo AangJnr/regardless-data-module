@@ -5,14 +5,14 @@ part 'participant_detail.mapper.dart';
 @MappableClass()
 class ParticipantDetail with ParticipantDetailMappable {
   final String fullName;
-   final String userName;
+  final String userName;
   final String uid;
 
   const ParticipantDetail({
     this.uid = '',
     this.userName = '',
     this.fullName = '',
-   });
+  });
 }
 
 @MappableClass()

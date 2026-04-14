@@ -2,8 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:regardless_data_module/domain/model/team/team_invite.dart';
 import 'package:regardless_data_module/extensions/extensions.dart';
-import '../collaborator/collaborator_role.dart';
-
+ 
 part 'team_member.mapper.dart';
 
 @MappableEnum()

@@ -1,4 +1,5 @@
 import 'package:multiple_result/multiple_result.dart';
+import 'package:regardless_data_module/domain/model/activity_alert.dart';
 import 'package:regardless_data_module/domain/model/post/announcement.dart';
 import '../../data/model/paginated_response.dart';
 import '../model/pagination.dart';
@@ -18,4 +19,9 @@ abstract class PostRepository {
   Future<Result<Pagination<Announcement>, Exception>>
       getPublicAnnouncementPosts(PaginationRequest request);
   Future<bool> deleteAnnouncementPost(String uid);
+
+  Future<Result<ActivityAlert, Exception>> createActivityAlert(
+      ActivityAlert draft);
+  Future<Result<List<ActivityAlert>, Exception>> getActivityAlerts();
+  Future<Result<bool, Exception>> deleteActivityAlert(String alertId);
 }

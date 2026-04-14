@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
 enum Flavor { local, dev, prod }
 
 class Url {
@@ -8,8 +10,9 @@ class Url {
   }
 
   static String get firebaseEmulatorHost {
+    if(kIsWeb) return '127.0.0.1';
     return Platform.isAndroid
-        ? '10.147.102.182' //'10.0.2.2'
+        ? '10.102.54.182' //'10.0.2.2'
         : "127.0.0.1";
   }
 
@@ -36,8 +39,8 @@ class Url {
     }
   }
 
-    String get v1 => 'v1';
-    String get v2 => 'v2';
+  String get v1 => 'v1';
+  String get v2 => 'v2';
 
   static void setDebugMode(bool isDebugMode) {
     _flavor = isDebugMode ? Flavor.local : Flavor.dev;
@@ -51,5 +54,5 @@ class Url {
   String get adsBaseUrl => base;
   String get webAddress => (_flavor == Flavor.prod)
       ? "https://app.regardlessmode.com"
-      : "http://localhost:61921";
+      : "http://localhost:50100";
 }

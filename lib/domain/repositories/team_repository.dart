@@ -3,6 +3,8 @@ import 'package:multiple_result/multiple_result.dart';
 import 'package:regardless_data_module/domain/model/event.dart';
 import 'package:regardless_data_module/domain/model/new_user.dart';
 import 'package:regardless_data_module/domain/model/feed.dart';
+import 'package:regardless_data_module/domain/model/media_upload/direct_media_upload_finalize_payload.dart';
+import 'package:regardless_data_module/domain/model/media_upload/direct_media_upload_init.dart';
 import '../media.dart';
 import '../model/pagination.dart';
 import '../../data/model/paginated_response.dart';
@@ -26,9 +28,8 @@ abstract class TeamRepository {
     XFile? logo,
     XFile? headerImage,
   });
-    Future<Result<Team, Exception>> addTeam(
-    Team team,
-    {
+  Future<Result<Team, Exception>> addTeam(
+    Team team, {
     XFile? logo,
     XFile? headerImage,
   });
@@ -90,13 +91,17 @@ abstract class TeamRepository {
       {PaginationRequest? request});
   Future<Result<List<Media>, Exception>> uploadTeamMedia(
       String uid, List<XFile> files);
+  Future<Result<List<DirectMediaUploadInit>, Exception>> initTeamMedia(
+      String uid, List<XFile> files);
+  Future<Result<List<Media>, Exception>> finalizeTeamMedia(
+      String uid, List<DirectMediaUploadFinalizePayload> uploads);
 
   Future<Result<bool, Exception>> deleteTeamMedia(
       String uid, List<String> uids);
   Future<Result<Pagination<Team>, Exception>> searchTeams(String teamUid,
       {PaginationRequest? request});
 
-    Future<Result<Pagination<Event>, Exception>> getTeamActivities(
+  Future<Result<Pagination<Event>, Exception>> getTeamActivities(
       {required String uid,
       required String ownerUid,
       PaginationRequest? request});

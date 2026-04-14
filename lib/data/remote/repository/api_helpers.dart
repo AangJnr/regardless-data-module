@@ -3,6 +3,7 @@
 // ignore_for_file: strict_top_level_inference
 
 import 'package:cross_file/cross_file.dart';
+import 'package:flutter/foundation.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import '../../../app/app.locator.dart';
@@ -24,7 +25,7 @@ mixin ApiHelpers {
     if (isSecure) {
       final token = await module<SocialAuthService>().getToken();
       headersMap.putIfAbsent('Authorization', () => 'Token $token');
-       getLogger('ApiHelpers').v(token);
+      // getLogger('ApiHelpers').v(token);
     }
     return headersMap;
   }
@@ -33,7 +34,7 @@ mixin ApiHelpers {
     return {
       'Authorization': 'Token ${sessionManager.getAccessToken()}',
       'Content-type': 'multipart/form-data',
-      'Accept': '*/*'
+      'Accept': '*/*',
     };
   }
 
@@ -105,8 +106,12 @@ mixin ApiHelpers {
     request.headers.addAll(headers);
     log.i("headers: ${request.headers}");
 
-    request.files.add(await http.MultipartFile.fromPath(
-        dataList.first.key, dataList.first.file.path));
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        dataList.first.key,
+        dataList.first.file.path,
+      ),
+    );
 
     return request.send();
   }
@@ -120,18 +125,30 @@ mixin ApiHelpers {
     log.i("url: $url");
     request.headers.addAll(headers);
     for (ImageProperties imageProp in dataList) {
-      request.files.add(await http.MultipartFile.fromPath(
-        "images",
-        imageProp.file.path,
-      ));
+      if (kIsWeb) {
+        final bytes = await imageProp.file.readAsBytes();
+        request.files.add(
+          http.MultipartFile.fromBytes(
+            "images",
+            bytes,
+            filename: imageProp.file.name,
+          ),
+        );
+      } else {
+        request.files.add(
+          await http.MultipartFile.fromPath("images", imageProp.file.path),
+        );
+      }
     }
     return request.send();
   }
 
-  postWithFiles(url,
-      {required Map<String, String> headers,
-      body,
-      List<ImageProperties> dataList = const []}) async {
+  postWithFiles(
+    url, {
+    required Map<String, String> headers,
+    body,
+    List<ImageProperties> dataList = const [],
+  }) async {
     final request = http.MultipartRequest("POST", Uri.parse(url));
     log.i("url: $url");
     request.headers.addAll(headers);
@@ -153,5 +170,3 @@ class ImageProperties {
   XFile file;
   ImageProperties(this.key, this.file, {this.uuid = ''});
 }
-
-

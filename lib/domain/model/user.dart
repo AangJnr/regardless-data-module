@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:regardless_data_module/domain/model/service/time_slot.dart';
+import 'package:regardless_data_module/domain/model/venue.dart';
 import 'package:regardless_data_module/extensions/extensions.dart';
 
 import 'category.dart';
@@ -42,33 +43,34 @@ class AUser with AUserMappable {
   final bool userNameAlreadyUpdated;
   final String userName;
   final List<TimeSlot> schedule;
+  final Venue? businessLocation;
 
-  const AUser({
-    this.uid = '',
-    this.email = '',
-    this.fullName = '',
-    this.phone = '',
-    this.createdAt,
-    this.updatedAt,
-    this.isProvider = false,
-    this.gender = Gender.Unsure,
-    this.bio = '',
-    this.userName = '',
-    this.authUid = '',
-    this.isVerified = false,
-    this.categoryUid = '',
-    this.userNameAlreadyUpdated = false,
-    this.category,
-    this.subCategories,
-    this.unreadNotificationCount = 0,
-    this.reviewsCount = 0,
-    this.rating = 5.0,
-    this.likedPostUids = const [],
-    this.favoratesUids = const [],
-    this.subCategoryUids = const [],
-    this.joinedCommunityUids = const [],
-    this.schedule = const [],
-  });
+  const AUser(
+      {this.uid = '',
+      this.email = '',
+      this.fullName = '',
+      this.phone = '',
+      this.createdAt,
+      this.updatedAt,
+      this.isProvider = false,
+      this.gender = Gender.Unsure,
+      this.bio = '',
+      this.userName = '',
+      this.authUid = '',
+      this.isVerified = false,
+      this.categoryUid = '',
+      this.userNameAlreadyUpdated = false,
+      this.category,
+      this.subCategories,
+      this.unreadNotificationCount = 0,
+      this.reviewsCount = 0,
+      this.rating = 5.0,
+      this.likedPostUids = const [],
+      this.favoratesUids = const [],
+      this.subCategoryUids = const [],
+      this.joinedCommunityUids = const [],
+      this.schedule = const [],
+      this.businessLocation});
 
   @override
   String toString() {

@@ -40,7 +40,7 @@ class PlacesServiceImpl implements PlacesService {
 
       debugPrint("PlacesService - result?.addressComponents?.toString()");
       final a = Venue(
-        address: place?.address ?? '',
+        address:predictedLocation.address,
         city: getData(3, place?.addressComponents),
         country: getData(6, place?.addressComponents),
         state: getData(5, place?.addressComponents),

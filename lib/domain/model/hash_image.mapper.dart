@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -116,20 +117,20 @@ class _HashImageCopyWithImpl<$R, $Out>
       HashImageMapper.ensureInitialized();
   @override
   $R call({String? url, String? hash}) => $apply(
-        FieldCopyWithData({
-          if (url != null) #url: url,
-          if (hash != null) #hash: hash,
-        }),
-      );
+    FieldCopyWithData({
+      if (url != null) #url: url,
+      if (hash != null) #hash: hash,
+    }),
+  );
   @override
   HashImage $make(CopyWithData data) => HashImage(
-        url: data.get(#url, or: $value.url),
-        hash: data.get(#hash, or: $value.hash),
-      );
+    url: data.get(#url, or: $value.url),
+    hash: data.get(#hash, or: $value.hash),
+  );
 
   @override
   HashImageCopyWith<$R2, HashImage, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) =>
-      _HashImageCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _HashImageCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

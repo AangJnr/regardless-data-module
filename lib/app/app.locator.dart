@@ -8,7 +8,8 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart' show debugPrint;
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:regardless_data_module/app/app.logger.dart';
 import 'package:regardless_data_module/app/services/access_service.dart';
@@ -19,6 +20,7 @@ import 'package:stacked_shared/stacked_shared.dart';
 
 import '../data/local/session_manager_service.dart';
 import '../data/remote/api_service_impl.dart';
+import '../data/remote/media_upload/direct_media_upload_service.dart';
 import '../data/remote/repository/auth_repository_impl.dart';
 import '../data/remote/repository/community_repository_impl.dart';
 import '../data/remote/repository/event_repository_imp.dart';
@@ -42,7 +44,6 @@ import 'services/geocoder_service_impl.dart';
 import 'services/location_service.dart';
 import 'services/places_service_impl.dart';
 import 'services/toast_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 final module = StackedLocator.instance;
 
@@ -99,4 +100,5 @@ Future<void> initDataModule(
   module.registerLazySingleton<TGeocoder>(() => GeocoderImpl());
   module.registerLazySingleton<CacheService>(() => CacheServiceImpl());
   module.registerLazySingleton(() => AccessService());
+  module.registerLazySingleton(() => DirectMediaUploadService());
 }

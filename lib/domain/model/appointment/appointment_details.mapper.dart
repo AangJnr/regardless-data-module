@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -116,14 +117,17 @@ mixin AppointmentDetailMappable {
         .encodeMap<AppointmentDetail>(this as AppointmentDetail);
   }
 
-  AppointmentDetailCopyWith<AppointmentDetail, AppointmentDetail,
-          AppointmentDetail>
-      get copyWith =>
-          _AppointmentDetailCopyWithImpl<AppointmentDetail, AppointmentDetail>(
-            this as AppointmentDetail,
-            $identity,
-            $identity,
-          );
+  AppointmentDetailCopyWith<
+    AppointmentDetail,
+    AppointmentDetail,
+    AppointmentDetail
+  >
+  get copyWith =>
+      _AppointmentDetailCopyWithImpl<AppointmentDetail, AppointmentDetail>(
+        this as AppointmentDetail,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return AppointmentDetailMapper.ensureInitialized().stringifyValue(
@@ -150,13 +154,17 @@ mixin AppointmentDetailMappable {
 extension AppointmentDetailValueCopy<$R, $Out>
     on ObjectCopyWith<$R, AppointmentDetail, $Out> {
   AppointmentDetailCopyWith<$R, AppointmentDetail, $Out>
-      get $asAppointmentDetail => $base.as(
-            (v, t, t2) => _AppointmentDetailCopyWithImpl<$R, $Out>(v, t, t2),
-          );
+  get $asAppointmentDetail => $base.as(
+    (v, t, t2) => _AppointmentDetailCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class AppointmentDetailCopyWith<$R, $In extends AppointmentDetail,
-    $Out> implements ClassCopyWith<$R, $In, $Out> {
+abstract class AppointmentDetailCopyWith<
+  $R,
+  $In extends AppointmentDetail,
+  $Out
+>
+    implements ClassCopyWith<$R, $In, $Out> {
   VenueCopyWith<$R, Venue, Venue>? get location;
   $R call({
     String? title,
@@ -192,35 +200,34 @@ class _AppointmentDetailCopyWithImpl<$R, $Out>
     Object? serviceUid = $none,
     Object? location = $none,
     Object? proposedStartTime = $none,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (title != null) #title: title,
-          if (description != null) #description: description,
-          if (startTime != null) #startTime: startTime,
-          if (endTime != null) #endTime: endTime,
-          if (serviceUid != $none) #serviceUid: serviceUid,
-          if (location != $none) #location: location,
-          if (proposedStartTime != $none) #proposedStartTime: proposedStartTime,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (title != null) #title: title,
+      if (description != null) #description: description,
+      if (startTime != null) #startTime: startTime,
+      if (endTime != null) #endTime: endTime,
+      if (serviceUid != $none) #serviceUid: serviceUid,
+      if (location != $none) #location: location,
+      if (proposedStartTime != $none) #proposedStartTime: proposedStartTime,
+    }),
+  );
   @override
   AppointmentDetail $make(CopyWithData data) => AppointmentDetail(
-        title: data.get(#title, or: $value.title),
-        description: data.get(#description, or: $value.description),
-        startTime: data.get(#startTime, or: $value.startTime),
-        endTime: data.get(#endTime, or: $value.endTime),
-        serviceUid: data.get(#serviceUid, or: $value.serviceUid),
-        location: data.get(#location, or: $value.location),
-        proposedStartTime: data.get(
-          #proposedStartTime,
-          or: $value.proposedStartTime,
-        ),
-      );
+    title: data.get(#title, or: $value.title),
+    description: data.get(#description, or: $value.description),
+    startTime: data.get(#startTime, or: $value.startTime),
+    endTime: data.get(#endTime, or: $value.endTime),
+    serviceUid: data.get(#serviceUid, or: $value.serviceUid),
+    location: data.get(#location, or: $value.location),
+    proposedStartTime: data.get(
+      #proposedStartTime,
+      or: $value.proposedStartTime,
+    ),
+  );
 
   @override
   AppointmentDetailCopyWith<$R2, AppointmentDetail, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) =>
-      _AppointmentDetailCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _AppointmentDetailCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

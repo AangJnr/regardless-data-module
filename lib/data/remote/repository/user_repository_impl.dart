@@ -13,11 +13,11 @@ import 'package:regardless_data_module/domain/model/collaborator/collaborator_in
 import 'package:regardless_data_module/domain/model/collaborator/staff_member.dart';
 import 'package:regardless_data_module/domain/model/dashboard_metrics.dart';
 import 'package:regardless_data_module/domain/model/service/time_slot.dart';
-import '../../../domain/media.dart';
+import 'package:regardless_data_module/domain/model/timeline/timeline_item.dart';
 import '../../../domain/model/collaborator/collaborator_role.dart';
 
 import '../../../app/app.logger.dart';
-import '../../../domain/model/follower.dart';
+ import '../../../domain/model/follower.dart';
 import '../../../domain/model/hash_image.dart';
 import '../../../domain/model/membership.dart';
 import '../../../domain/model/new_user.dart';
@@ -106,6 +106,27 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
       return Success(AUserMapper.fromMap(data.tryGetSuccess()!));
     }
     return Future.value(Error(data.tryGetError()!));
+  }
+
+  @override
+  Future<Result<Pagination<TimelineItem>, Exception>> getProviderTimeline(
+    String uid, {
+    PaginationRequest? request,
+  }) async {
+    final response = await processRequest(
+        () => apiService.getProviderTimeline(uid, request: request));
+    if (response.isSuccess()) {
+      final paginationResponse =
+          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final parsed =
+          paginationResponse.data?.map((e) => TimelineItem.fromMap(e)).toList();
+      return Success(Pagination<TimelineItem>(
+        data: parsed ?? [],
+        hasNext: paginationResponse.hasNext,
+        last: paginationResponse.last,
+      ));
+    }
+    return Error(response.tryGetError()!);
   }
 
   @override
@@ -462,47 +483,6 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   }
 
   @override
-  Future<Result<List<Media>, Exception>> uploadProviderMedia(
-      String uid, List<XFile> files) async {
-    final response = await processMultiPartRequest(
-        () => apiService.uploadProviderMedia(uid, files));
-    if (response.isSuccess()) {
-      return Success((response.tryGetSuccess()! as List)
-          .map((data) => MediaMapper.fromMap(data))
-          .toList());
-    }
-    return Error(response.tryGetError()!);
-  }
-
-  @override
-  Future<Result<Pagination<Media>, Exception>> getProviderMedia(String uid,
-      {PaginationRequest? request}) async {
-    final response = await processRequest(
-        () => apiService.getProviderMedia(uid, request: request));
-    if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
-      final parsed =
-          paginationResponse.data?.map((e) => MediaMapper.fromMap(e)).toList();
-      return Success(Pagination<Media>(
-          data: parsed ?? [],
-          hasNext: paginationResponse.hasNext,
-          last: paginationResponse.last));
-    }
-    return Error(response.tryGetError()!);
-  }
-
-  @override
-  Future<Result<bool, Exception>> deleteProviderMedia(
-      String uid, List<String> uids) async {
-    final response =
-        await processRequest(() => apiService.deleteProviderMedia(uid, uids));
-    return response.isSuccess()
-        ? Success(true)
-        : Error(response.tryGetError()!);
-  }
-
-  @override
   Future<Result<bool, Exception>> inviteCollaborators(List<AUser> users,
       String uid, CollaboratorRole role, List<String> permissions) async {
     final response = await processRequest(() => apiService.inviteCollaborators(
@@ -634,4 +614,5 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
     }
     return Error(response.tryGetError()!);
   }
+
 }

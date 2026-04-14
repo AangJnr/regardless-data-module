@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -75,6 +76,7 @@ class AUserMapper extends ClassMapperBase<AUser> {
       GenderMapper.ensureInitialized();
       CategoryMapper.ensureInitialized();
       TimeSlotMapper.ensureInitialized();
+      VenueMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -246,6 +248,12 @@ class AUserMapper extends ClassMapperBase<AUser> {
     opt: true,
     def: const [],
   );
+  static Venue? _$businessLocation(AUser v) => v.businessLocation;
+  static const Field<AUser, Venue> _f$businessLocation = Field(
+    'businessLocation',
+    _$businessLocation,
+    opt: true,
+  );
 
   @override
   final MappableFields<AUser> fields = const {
@@ -273,6 +281,7 @@ class AUserMapper extends ClassMapperBase<AUser> {
     #subCategoryUids: _f$subCategoryUids,
     #joinedCommunityUids: _f$joinedCommunityUids,
     #schedule: _f$schedule,
+    #businessLocation: _f$businessLocation,
   };
 
   static AUser _instantiate(DecodingData data) {
@@ -301,6 +310,7 @@ class AUserMapper extends ClassMapperBase<AUser> {
       subCategoryUids: data.dec(_f$subCategoryUids),
       joinedCommunityUids: data.dec(_f$joinedCommunityUids),
       schedule: data.dec(_f$schedule),
+      businessLocation: data.dec(_f$businessLocation),
     );
   }
 
@@ -363,6 +373,7 @@ abstract class AUserCopyWith<$R, $In extends AUser, $Out>
   get joinedCommunityUids;
   ListCopyWith<$R, TimeSlot, TimeSlotCopyWith<$R, TimeSlot, TimeSlot>>
   get schedule;
+  VenueCopyWith<$R, Venue, Venue>? get businessLocation;
   $R call({
     String? uid,
     String? email,
@@ -388,6 +399,7 @@ abstract class AUserCopyWith<$R, $In extends AUser, $Out>
     List<String>? subCategoryUids,
     List<String>? joinedCommunityUids,
     List<TimeSlot>? schedule,
+    Venue? businessLocation,
   });
   AUserCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -446,6 +458,11 @@ class _AUserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, AUser, $Out>
     (v) => call(schedule: v),
   );
   @override
+  VenueCopyWith<$R, Venue, Venue>? get businessLocation => $value
+      .businessLocation
+      ?.copyWith
+      .$chain((v) => call(businessLocation: v));
+  @override
   $R call({
     String? uid,
     String? email,
@@ -471,6 +488,7 @@ class _AUserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, AUser, $Out>
     List<String>? subCategoryUids,
     List<String>? joinedCommunityUids,
     List<TimeSlot>? schedule,
+    Object? businessLocation = $none,
   }) => $apply(
     FieldCopyWithData({
       if (uid != null) #uid: uid,
@@ -500,6 +518,7 @@ class _AUserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, AUser, $Out>
       if (joinedCommunityUids != null)
         #joinedCommunityUids: joinedCommunityUids,
       if (schedule != null) #schedule: schedule,
+      if (businessLocation != $none) #businessLocation: businessLocation,
     }),
   );
   @override
@@ -537,6 +556,7 @@ class _AUserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, AUser, $Out>
       or: $value.joinedCommunityUids,
     ),
     schedule: data.get(#schedule, or: $value.schedule),
+    businessLocation: data.get(#businessLocation, or: $value.businessLocation),
   );
 
   @override

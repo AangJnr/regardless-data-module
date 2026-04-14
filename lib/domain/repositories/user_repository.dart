@@ -1,15 +1,12 @@
 import 'package:cross_file/cross_file.dart' show XFile;
 import 'package:multiple_result/multiple_result.dart';
-import 'package:regardless_data_module/data/model/service_api/time_slot_api.dart';
 import 'package:regardless_data_module/domain/model/accounts.dart';
 import 'package:regardless_data_module/domain/model/collaborator/collaborator_invite.dart';
 import 'package:regardless_data_module/domain/model/collaborator/staff_member.dart';
 import 'package:regardless_data_module/domain/model/dashboard_metrics.dart';
-import '../media.dart';
+import 'package:regardless_data_module/domain/model/timeline/timeline_item.dart';
 import '../model/service/time_slot.dart';
 import '../model/collaborator/collaborator_role.dart';
-import '../model/team/team_invite.dart';
-import '../model/team/team_member.dart';
 import '../../data/model/notification_request.dart';
 import '../../data/model/paginated_response.dart';
 import '../../data/model/search_filter.dart';
@@ -21,6 +18,7 @@ import '../model/notification.dart';
 import '../model/pagination.dart';
 import '../model/preference.dart';
 import '../model/review/review.dart';
+import '../model/activity_alert.dart';
 import '../model/update_user.dart';
 import '../model/user.dart';
 
@@ -28,6 +26,9 @@ abstract class UserRepository {
   Future<Result<AUser, Exception>> getUser();
   Future<Result<Accounts, Exception>> getUserAccounts([bool refresh = false]);
   Future<Result<AUser, Exception>> getPublicUser(String uid);
+  Future<Result<Pagination<TimelineItem>, Exception>> getProviderTimeline(
+      String uid,
+      {PaginationRequest? request});
   Future<Result<AUser, Exception>> createUserAccount(NewUser user);
   Future<Result<AUser, Exception>> updateUserProfile(UpdateUser profile);
   Future<Result<bool, Exception>> setDefaultUserAccount(String profileUid);
@@ -65,13 +66,6 @@ abstract class UserRepository {
       {required Review review, String uid = ''});
   Future<Result<List<AUser>, Exception>> searchUsers(SearchEventParams params);
 
-  Future<Result<List<Media>, Exception>> uploadProviderMedia(
-      String uid, List<XFile> files);
-  Future<Result<Pagination<Media>, Exception>> getProviderMedia(String uid,
-      {PaginationRequest? request});
-  Future<Result<bool, Exception>> deleteProviderMedia(
-      String uid, List<String> uids);
-
   Future<Result<bool, Exception>> inviteCollaborators(List<AUser> users,
       String uid, CollaboratorRole role, List<String> permissions);
   Future<Result<bool, Exception>> updateCollaboratorPermissions(String uid,
@@ -96,4 +90,5 @@ abstract class UserRepository {
       String uid, String collaboratorUid);
   Future<Result<bool, Exception>> updateUserSchedule(
       String uid, List<TimeSlot> schedule);
+
 }

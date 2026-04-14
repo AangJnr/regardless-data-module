@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -251,76 +252,73 @@ class _PreferenceCopyWithImpl<$R, $Out>
     bool? pushNotifications,
     bool? emailNotifications,
     bool? smsNotifications,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (id != null) #id: id,
-          if (createdAt != null) #createdAt: createdAt,
-          if (updatedAt != null) #updatedAt: updatedAt,
-          if (isActive != null) #isActive: isActive,
-          if (emailNewFeatureAnnouncement != null)
-            #emailNewFeatureAnnouncement: emailNewFeatureAnnouncement,
-          if (emailNewsletterWeekly != null)
-            #emailNewsletterWeekly: emailNewsletterWeekly,
-          if (emailRecommendations != null)
-            #emailRecommendations: emailRecommendations,
-          if (pushNewFeatureAnnouncement != null)
-            #pushNewFeatureAnnouncement: pushNewFeatureAnnouncement,
-          if (pushNewsletterWeekly != null)
-            #pushNewsletterWeekly: pushNewsletterWeekly,
-          if (pushRecommendations != null)
-            #pushRecommendations: pushRecommendations,
-          if (pushNotifications != null) #pushNotifications: pushNotifications,
-          if (emailNotifications != null)
-            #emailNotifications: emailNotifications,
-          if (smsNotifications != null) #smsNotifications: smsNotifications,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (id != null) #id: id,
+      if (createdAt != null) #createdAt: createdAt,
+      if (updatedAt != null) #updatedAt: updatedAt,
+      if (isActive != null) #isActive: isActive,
+      if (emailNewFeatureAnnouncement != null)
+        #emailNewFeatureAnnouncement: emailNewFeatureAnnouncement,
+      if (emailNewsletterWeekly != null)
+        #emailNewsletterWeekly: emailNewsletterWeekly,
+      if (emailRecommendations != null)
+        #emailRecommendations: emailRecommendations,
+      if (pushNewFeatureAnnouncement != null)
+        #pushNewFeatureAnnouncement: pushNewFeatureAnnouncement,
+      if (pushNewsletterWeekly != null)
+        #pushNewsletterWeekly: pushNewsletterWeekly,
+      if (pushRecommendations != null)
+        #pushRecommendations: pushRecommendations,
+      if (pushNotifications != null) #pushNotifications: pushNotifications,
+      if (emailNotifications != null) #emailNotifications: emailNotifications,
+      if (smsNotifications != null) #smsNotifications: smsNotifications,
+    }),
+  );
   @override
   Preference $make(CopyWithData data) => Preference(
-        id: data.get(#id, or: $value.id),
-        createdAt: data.get(#createdAt, or: $value.createdAt),
-        updatedAt: data.get(#updatedAt, or: $value.updatedAt),
-        isActive: data.get(#isActive, or: $value.isActive),
-        emailNewFeatureAnnouncement: data.get(
-          #emailNewFeatureAnnouncement,
-          or: $value.emailNewFeatureAnnouncement,
-        ),
-        emailNewsletterWeekly: data.get(
-          #emailNewsletterWeekly,
-          or: $value.emailNewsletterWeekly,
-        ),
-        emailRecommendations: data.get(
-          #emailRecommendations,
-          or: $value.emailRecommendations,
-        ),
-        pushNewFeatureAnnouncement: data.get(
-          #pushNewFeatureAnnouncement,
-          or: $value.pushNewFeatureAnnouncement,
-        ),
-        pushNewsletterWeekly: data.get(
-          #pushNewsletterWeekly,
-          or: $value.pushNewsletterWeekly,
-        ),
-        pushRecommendations: data.get(
-          #pushRecommendations,
-          or: $value.pushRecommendations,
-        ),
-        pushNotifications: data.get(
-          #pushNotifications,
-          or: $value.pushNotifications,
-        ),
-        emailNotifications: data.get(
-          #emailNotifications,
-          or: $value.emailNotifications,
-        ),
-        smsNotifications:
-            data.get(#smsNotifications, or: $value.smsNotifications),
-      );
+    id: data.get(#id, or: $value.id),
+    createdAt: data.get(#createdAt, or: $value.createdAt),
+    updatedAt: data.get(#updatedAt, or: $value.updatedAt),
+    isActive: data.get(#isActive, or: $value.isActive),
+    emailNewFeatureAnnouncement: data.get(
+      #emailNewFeatureAnnouncement,
+      or: $value.emailNewFeatureAnnouncement,
+    ),
+    emailNewsletterWeekly: data.get(
+      #emailNewsletterWeekly,
+      or: $value.emailNewsletterWeekly,
+    ),
+    emailRecommendations: data.get(
+      #emailRecommendations,
+      or: $value.emailRecommendations,
+    ),
+    pushNewFeatureAnnouncement: data.get(
+      #pushNewFeatureAnnouncement,
+      or: $value.pushNewFeatureAnnouncement,
+    ),
+    pushNewsletterWeekly: data.get(
+      #pushNewsletterWeekly,
+      or: $value.pushNewsletterWeekly,
+    ),
+    pushRecommendations: data.get(
+      #pushRecommendations,
+      or: $value.pushRecommendations,
+    ),
+    pushNotifications: data.get(
+      #pushNotifications,
+      or: $value.pushNotifications,
+    ),
+    emailNotifications: data.get(
+      #emailNotifications,
+      or: $value.emailNotifications,
+    ),
+    smsNotifications: data.get(#smsNotifications, or: $value.smsNotifications),
+  );
 
   @override
   PreferenceCopyWith<$R2, Preference, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) =>
-      _PreferenceCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _PreferenceCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

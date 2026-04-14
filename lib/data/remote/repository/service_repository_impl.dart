@@ -1,7 +1,6 @@
 import 'package:multiple_result/multiple_result.dart';
 import 'package:regardless_data_module/domain/model/appointment/appointment_details.dart';
-import 'package:regardless_data_module/domain/model/appointment/participant_detail.dart';
-import 'package:regardless_data_module/domain/model/price.dart';
+ import 'package:regardless_data_module/domain/model/price.dart';
 import '../../../app/app.logger.dart';
 import '../../../domain/model/appointment/appointment.dart';
 import '../../../domain/model/pagination.dart';

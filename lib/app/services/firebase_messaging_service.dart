@@ -428,19 +428,18 @@ class FirebaseMessageService {
   }
 
   Future<void> _configureLocalTimeZone() async {
-    if (kIsWeb || Platform.isLinux) {
+    if (kIsWeb) {
       return;
     }
     tz.initializeTimeZones();
-    if (Platform.isWindows) {
-      return;
-    }
     final timeZone = await FlutterTimezone.getLocalTimezone();
     tz.setLocalLocation(tz.getLocation(timeZone.identifier));
   }
 
   Future<bool> requestPermissions() async {
     var result = false;
+    if (kIsWeb) return false;
+ 
     if (Platform.isIOS || Platform.isMacOS) {
       result = await _checkIOSPermission();
     } else if (Platform.isAndroid) {
@@ -451,6 +450,8 @@ class FirebaseMessageService {
   }
 
   Future<bool> arePermissionsGranted() async {
+    if (kIsWeb) return false;
+
     if (Platform.isIOS || Platform.isMacOS) {
       return (await flutterLocalNotificationsPlugin
                   .resolvePlatformSpecificImplementation<

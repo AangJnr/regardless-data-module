@@ -5,6 +5,8 @@ import 'package:regardless_data_module/domain/media.dart';
 import 'package:regardless_data_module/domain/model/event.dart';
 import 'package:regardless_data_module/domain/model/new_user.dart';
 import 'package:regardless_data_module/domain/model/pagination.dart';
+import 'package:regardless_data_module/domain/model/media_upload/direct_media_upload_finalize_payload.dart';
+import 'package:regardless_data_module/domain/model/media_upload/direct_media_upload_init.dart';
 import 'package:regardless_data_module/domain/model/team/team.dart';
 import 'package:regardless_data_module/domain/model/team/team_invite.dart';
 import 'package:regardless_data_module/domain/model/team/team_join_request.dart';
@@ -51,16 +53,14 @@ class TeamRepositoryImpl with BaseRepository implements TeamRepository {
     return Error(res.tryGetError()!);
   }
 
-
   @override
   Future<Result<Team, Exception>> addTeam(
-    Team team,
-    {
+    Team team, {
     XFile? logo,
     XFile? headerImage,
   }) async {
-    final res = await processMultiPartRequest(() => apiService
-        .addTeam(team, logo: logo, headerImage: headerImage));
+    final res = await processMultiPartRequest(
+        () => apiService.addTeam(team, logo: logo, headerImage: headerImage));
     if (res.isSuccess()) {
       final data = res.tryGetSuccess()! as Map<String, dynamic>;
       return Success(TeamMapper.fromMap(data));
@@ -379,6 +379,34 @@ class TeamRepositoryImpl with BaseRepository implements TeamRepository {
   }
 
   @override
+  Future<Result<List<DirectMediaUploadInit>, Exception>> initTeamMedia(
+      String uid, List<XFile> files) async {
+    final results =
+        await processRequest(() => apiService.initTeamMedia(uid, files));
+    if (results.isSuccess()) {
+      final data = (results.tryGetSuccess()! as List<dynamic>)
+          .map((e) => DirectMediaUploadInitMapper.fromMap(e))
+          .toList();
+      return Success(data);
+    }
+    return Error(results.tryGetError()!);
+  }
+
+  @override
+  Future<Result<List<Media>, Exception>> finalizeTeamMedia(
+      String uid, List<DirectMediaUploadFinalizePayload> uploads) async {
+    final results =
+        await processRequest(() => apiService.finalizeTeamMedia(uid, uploads));
+    if (results.isSuccess()) {
+      final data = (results.tryGetSuccess()! as List<dynamic>)
+          .map((e) => MediaMapper.fromMap(e as Map<String, dynamic>))
+          .toList();
+      return Success(data);
+    }
+    return Error(results.tryGetError()!);
+  }
+
+  @override
   Future<Result<Pagination<Event>, Exception>> getTeamActivities(
       {required String uid,
       required String ownerUid,
@@ -390,7 +418,7 @@ class TeamRepositoryImpl with BaseRepository implements TeamRepository {
           PaginatedResponse.fromMap(response.tryGetSuccess()!);
       try {
         final data = paginationResponse.data
-            ?.map((e) => EventMapper.fromMap(e) )
+            ?.map((e) => EventMapper.fromMap(e))
             .toList();
         return Success(Pagination<Event>(
             data: data ?? [],

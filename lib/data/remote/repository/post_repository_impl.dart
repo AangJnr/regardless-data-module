@@ -1,5 +1,6 @@
 import 'package:multiple_result/multiple_result.dart';
 import 'package:regardless_data_module/data/model/paginated_response.dart';
+import 'package:regardless_data_module/domain/model/activity_alert.dart';
 import 'package:regardless_data_module/domain/model/pagination.dart';
 import 'package:regardless_data_module/domain/model/post/announcement.dart';
 import '../../../app/app.logger.dart';
@@ -115,5 +116,50 @@ class PostRepositoryImpl with BaseRepository implements PostRepository {
       return Success(AnnouncementMapper.fromMap(data.tryGetSuccess()!));
     }
     return Error(Exception('Failed to edit announcement'));
+  }
+
+  @override
+  Future<Result<ActivityAlert, Exception>> createActivityAlert(
+      ActivityAlert draft) async {
+    final response = await processRequest(
+        () => apiService.createActivityAlert(draft.toCreateBody()));
+    if (response.isSuccess()) {
+      try {
+        final map = response.tryGetSuccess()! as Map<String, dynamic>;
+        return Success(ActivityAlert.fromMap(map));
+      } catch (e) {
+        return Error(Exception('$e'));
+      }
+    }
+    return Error(response.tryGetError()!);
+  }
+
+  @override
+  Future<Result<List<ActivityAlert>, Exception>> getActivityAlerts() async {
+    final response = await processRequest(() => apiService.getActivityAlerts());
+    if (response.isSuccess()) {
+      try {
+        final map = response.tryGetSuccess()! as Map<String, dynamic>;
+        final raw = map['alerts'] as List<dynamic>? ?? [];
+        final list = raw
+            .map((e) =>
+                ActivityAlert.fromMap(Map<String, dynamic>.from(e as Map)))
+            .toList();
+        return Success(list);
+      } catch (e) {
+        return Error(Exception('$e'));
+      }
+    }
+    return Error(response.tryGetError()!);
+  }
+
+  @override
+  Future<Result<bool, Exception>> deleteActivityAlert(String alertId) async {
+    final response =
+        await processRequest(() => apiService.deleteActivityAlert(alertId));
+    if (response.isSuccess()) {
+      return const Success(true);
+    }
+    return Error(response.tryGetError()!);
   }
 }

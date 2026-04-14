@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -147,24 +148,24 @@ class _TimeSlotCopyWithImpl<$R, $Out>
       );
   @override
   $R call({String? day, List<Slot>? slots, String? date, int? order}) => $apply(
-        FieldCopyWithData({
-          if (day != null) #day: day,
-          if (slots != null) #slots: slots,
-          if (date != null) #date: date,
-          if (order != null) #order: order,
-        }),
-      );
+    FieldCopyWithData({
+      if (day != null) #day: day,
+      if (slots != null) #slots: slots,
+      if (date != null) #date: date,
+      if (order != null) #order: order,
+    }),
+  );
   @override
   TimeSlot $make(CopyWithData data) => TimeSlot(
-        day: data.get(#day, or: $value.day),
-        slots: data.get(#slots, or: $value.slots),
-        date: data.get(#date, or: $value.date),
-        order: data.get(#order, or: $value.order),
-      );
+    day: data.get(#day, or: $value.day),
+    slots: data.get(#slots, or: $value.slots),
+    date: data.get(#date, or: $value.date),
+    order: data.get(#order, or: $value.order),
+  );
 
   @override
   TimeSlotCopyWith<$R2, TimeSlot, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) =>
-      _TimeSlotCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _TimeSlotCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

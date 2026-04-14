@@ -4,8 +4,7 @@ import '../../app/utils/url.dart';
 
 abstract class ApiRoutes {
   final url = Url.shared.base;
-    final url_v2 = Url.shared.base2;
-
+  final url_v2 = Url.shared.base2;
 }
 
 class Media extends ApiRoutes {
@@ -13,6 +12,7 @@ class Media extends ApiRoutes {
 }
 
 class Auth extends ApiRoutes {
+    String get Health => "$url/health/";
   String get LogoutPath => "$url/auth/logout/";
   String get NameCheck => "$url/user/check-username/";
   String get DeleteAccount => "$url/user/delete";
@@ -51,10 +51,18 @@ class User extends ApiRoutes {
   String Fcm(String registrationId) => "$url/fcm/$registrationId";
   String get UpdateFcm => "$url/fcm";
   String Review(String uid) => '$url/user/$uid/review';
+  String GetTimeline(String uid, {String params = ''}) =>
+      '$url/user/$uid/timeline$params';
   String get DeleteUserData => "$url/user/delete-user-data";
+
+  String get ActivityAlerts => "$url/user/me/activity-alerts";
+  String ActivityAlertById(String alertId) =>
+      "$url/user/me/activity-alerts/$alertId";
 
   // Provider Media
   String UploadMedia(String uid) => '$url/user/$uid/media';
+  String InitMediaUploads(String uid) => '$url/user/$uid/media/uploads:init';
+  String FinalizeMediaUploads(String uid) => '$url/user/$uid/media:finalize';
   String GetMedia(String uid, {String params = ''}) =>
       '$url/user/$uid/media$params';
   String DeleteMedia(String uid) => '$url/user/$uid/media';
@@ -91,6 +99,7 @@ class Admin extends ApiRoutes {
   String Metrics(String date) => '$url/provider/dashboard/?date=$date';
   String GetDescriptionSuggessions(String query) =>
       '$url/generate-description?query=$query';
+  String get GenerateActivityFromImage => '$url/generate-activity-from-image/';
   String get SportsCategories => '$url/admin/sports-category';
 }
 
@@ -185,8 +194,8 @@ class ACommunity extends ApiRoutes {
 
 class Post extends ApiRoutes {
   String get GetPosts => '$url/post';
-    String LikePost(String uid) => '$url/post/like/$uid';
-    String UnlikePost(String uid) => '$url/post/unlike/$uid';
+  String LikePost(String uid) => '$url/post/like/$uid';
+  String UnlikePost(String uid) => '$url/post/unlike/$uid';
   String get GetUserAnnouncementPosts => '$url/post/announcement/me';
   String get GetPublicAnnouncementPosts => '$url/post/announcement';
   String get Add => '$url/post/announcement';
@@ -236,6 +245,10 @@ class ATeam extends ApiRoutes {
   String AddManager(String uid) => '$url/team/$uid/manager/add';
   String RemoveManager(String uid) => '$url/team/$uid/manager/remove';
   String UploadMedia(String teamUid) => '$url/team/$teamUid/uploads';
+  String InitMediaUploads(String teamUid) =>
+      '$url/team/$teamUid/media/uploads:init';
+  String FinalizeMediaUploads(String teamUid) =>
+      '$url/team/$teamUid/media:finalize';
   String GetTeamMedia(String teamUid, {String params = ''}) =>
       '$url/team/$teamUid/media$params';
   String SearchTeams(String params) => '$url/team/search$params';

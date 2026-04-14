@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -129,24 +130,24 @@ class _OwnerCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Owner, $Out>
     String? userName,
     String? imageUrl,
     bool? isVerified,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (uid != null) #uid: uid,
-          if (userName != null) #userName: userName,
-          if (imageUrl != null) #imageUrl: imageUrl,
-          if (isVerified != null) #isVerified: isVerified,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (uid != null) #uid: uid,
+      if (userName != null) #userName: userName,
+      if (imageUrl != null) #imageUrl: imageUrl,
+      if (isVerified != null) #isVerified: isVerified,
+    }),
+  );
   @override
   Owner $make(CopyWithData data) => Owner(
-        uid: data.get(#uid, or: $value.uid),
-        userName: data.get(#userName, or: $value.userName),
-        imageUrl: data.get(#imageUrl, or: $value.imageUrl),
-        isVerified: data.get(#isVerified, or: $value.isVerified),
-      );
+    uid: data.get(#uid, or: $value.uid),
+    userName: data.get(#userName, or: $value.userName),
+    imageUrl: data.get(#imageUrl, or: $value.imageUrl),
+    isVerified: data.get(#isVerified, or: $value.isVerified),
+  );
 
   @override
   OwnerCopyWith<$R2, Owner, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _OwnerCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

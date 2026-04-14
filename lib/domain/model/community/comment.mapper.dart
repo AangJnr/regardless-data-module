@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -151,7 +152,7 @@ extension CommentValueCopy<$R, $Out> on ObjectCopyWith<$R, Comment, $Out> {
 abstract class CommentCopyWith<$R, $In extends Comment, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, HashImage, HashImageCopyWith<$R, HashImage, HashImage>>
-      get imageUrls;
+  get imageUrls;
   $R call({
     String? userUid,
     String? userName,
@@ -174,11 +175,11 @@ class _CommentCopyWithImpl<$R, $Out>
       CommentMapper.ensureInitialized();
   @override
   ListCopyWith<$R, HashImage, HashImageCopyWith<$R, HashImage, HashImage>>
-      get imageUrls => ListCopyWith(
-            $value.imageUrls,
-            (v, t) => v.copyWith.$chain(t),
-            (v) => call(imageUrls: v),
-          );
+  get imageUrls => ListCopyWith(
+    $value.imageUrls,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(imageUrls: v),
+  );
   @override
   $R call({
     String? userUid,
@@ -188,30 +189,30 @@ class _CommentCopyWithImpl<$R, $Out>
     Object? createdAt = $none,
     Object? updatedAt = $none,
     List<HashImage>? imageUrls,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (userUid != null) #userUid: userUid,
-          if (userName != null) #userName: userName,
-          if (comment != null) #comment: comment,
-          if (uid != null) #uid: uid,
-          if (createdAt != $none) #createdAt: createdAt,
-          if (updatedAt != $none) #updatedAt: updatedAt,
-          if (imageUrls != null) #imageUrls: imageUrls,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (userUid != null) #userUid: userUid,
+      if (userName != null) #userName: userName,
+      if (comment != null) #comment: comment,
+      if (uid != null) #uid: uid,
+      if (createdAt != $none) #createdAt: createdAt,
+      if (updatedAt != $none) #updatedAt: updatedAt,
+      if (imageUrls != null) #imageUrls: imageUrls,
+    }),
+  );
   @override
   Comment $make(CopyWithData data) => Comment(
-        userUid: data.get(#userUid, or: $value.userUid),
-        userName: data.get(#userName, or: $value.userName),
-        comment: data.get(#comment, or: $value.comment),
-        uid: data.get(#uid, or: $value.uid),
-        createdAt: data.get(#createdAt, or: $value.createdAt),
-        updatedAt: data.get(#updatedAt, or: $value.updatedAt),
-        imageUrls: data.get(#imageUrls, or: $value.imageUrls),
-      );
+    userUid: data.get(#userUid, or: $value.userUid),
+    userName: data.get(#userName, or: $value.userName),
+    comment: data.get(#comment, or: $value.comment),
+    uid: data.get(#uid, or: $value.uid),
+    createdAt: data.get(#createdAt, or: $value.createdAt),
+    updatedAt: data.get(#updatedAt, or: $value.updatedAt),
+    imageUrls: data.get(#imageUrls, or: $value.imageUrls),
+  );
 
   @override
   CommentCopyWith<$R2, Comment, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _CommentCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

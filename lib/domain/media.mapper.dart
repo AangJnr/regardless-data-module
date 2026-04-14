@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -166,30 +167,30 @@ class _MediaCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Media, $Out>
     String? fileName,
     Object? createdAt = $none,
     Object? mimeType = $none,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (thumbnailUrl != null) #thumbnailUrl: thumbnailUrl,
-          if (uid != null) #uid: uid,
-          if (url != null) #url: url,
-          if (hash != null) #hash: hash,
-          if (fileName != null) #fileName: fileName,
-          if (createdAt != $none) #createdAt: createdAt,
-          if (mimeType != $none) #mimeType: mimeType,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (thumbnailUrl != null) #thumbnailUrl: thumbnailUrl,
+      if (uid != null) #uid: uid,
+      if (url != null) #url: url,
+      if (hash != null) #hash: hash,
+      if (fileName != null) #fileName: fileName,
+      if (createdAt != $none) #createdAt: createdAt,
+      if (mimeType != $none) #mimeType: mimeType,
+    }),
+  );
   @override
   Media $make(CopyWithData data) => Media(
-        thumbnailUrl: data.get(#thumbnailUrl, or: $value.thumbnailUrl),
-        uid: data.get(#uid, or: $value.uid),
-        url: data.get(#url, or: $value.url),
-        hash: data.get(#hash, or: $value.hash),
-        fileName: data.get(#fileName, or: $value.fileName),
-        createdAt: data.get(#createdAt, or: $value.createdAt),
-        mimeType: data.get(#mimeType, or: $value.mimeType),
-      );
+    thumbnailUrl: data.get(#thumbnailUrl, or: $value.thumbnailUrl),
+    uid: data.get(#uid, or: $value.uid),
+    url: data.get(#url, or: $value.url),
+    hash: data.get(#hash, or: $value.hash),
+    fileName: data.get(#fileName, or: $value.fileName),
+    createdAt: data.get(#createdAt, or: $value.createdAt),
+    mimeType: data.get(#mimeType, or: $value.mimeType),
+  );
 
   @override
   MediaCopyWith<$R2, Media, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _MediaCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

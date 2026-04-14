@@ -4,6 +4,15 @@ import '../../../domain/repositories/auth_repository.dart';
 import 'base_repository.dart';
 
 class AuthRepositoryImpl with BaseRepository implements AuthRepository {
+
+  @override
+  Future<Result<bool, Exception>> healthCheck() async {
+    final response = await processRequest(() => apiService.health());
+    if(response.isSuccess()){
+      return Future.value(const Success(true));
+    }
+    return Future.value(Error(response.tryGetError()!));
+  }
   @override
   Future<Result<bool, Exception>> attemptLogout() async {
     await processRequest(() => apiService.attemptLogout());

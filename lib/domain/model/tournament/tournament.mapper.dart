@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -412,7 +413,7 @@ extension TournamentValueCopy<$R, $Out>
 abstract class TournamentCopyWith<$R, $In extends Tournament, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-      get participantTeamUids;
+  get participantTeamUids;
   $R call({
     String? uid,
     String? ownerUid,
@@ -447,11 +448,11 @@ class _TournamentCopyWithImpl<$R, $Out>
       TournamentMapper.ensureInitialized();
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-      get participantTeamUids => ListCopyWith(
-            $value.participantTeamUids,
-            (v, t) => ObjectCopyWith(v, $identity, t),
-            (v) => call(participantTeamUids: v),
-          );
+  get participantTeamUids => ListCopyWith(
+    $value.participantTeamUids,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(participantTeamUids: v),
+  );
   @override
   $R call({
     String? uid,
@@ -473,61 +474,59 @@ class _TournamentCopyWithImpl<$R, $Out>
     Object? currentSeasonUid = $none,
     Object? createdAt = $none,
     Object? updatedAt = $none,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (uid != null) #uid: uid,
-          if (ownerUid != null) #ownerUid: ownerUid,
-          if (name != null) #name: name,
-          if (description != null) #description: description,
-          if (logoUrl != $none) #logoUrl: logoUrl,
-          if (coverUrl != $none) #coverUrl: coverUrl,
-          if (status != null) #status: status,
-          if (format != null) #format: format,
-          if (rankingSystem != null) #rankingSystem: rankingSystem,
-          if (winPoints != null) #winPoints: winPoints,
-          if (drawPoints != null) #drawPoints: drawPoints,
-          if (lossPoints != null) #lossPoints: lossPoints,
-          if (roundRobinCount != null) #roundRobinCount: roundRobinCount,
-          if (minTeams != null) #minTeams: minTeams,
-          if (maxTeams != null) #maxTeams: maxTeams,
-          if (participantTeamUids != null)
-            #participantTeamUids: participantTeamUids,
-          if (currentSeasonUid != $none) #currentSeasonUid: currentSeasonUid,
-          if (createdAt != $none) #createdAt: createdAt,
-          if (updatedAt != $none) #updatedAt: updatedAt,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (uid != null) #uid: uid,
+      if (ownerUid != null) #ownerUid: ownerUid,
+      if (name != null) #name: name,
+      if (description != null) #description: description,
+      if (logoUrl != $none) #logoUrl: logoUrl,
+      if (coverUrl != $none) #coverUrl: coverUrl,
+      if (status != null) #status: status,
+      if (format != null) #format: format,
+      if (rankingSystem != null) #rankingSystem: rankingSystem,
+      if (winPoints != null) #winPoints: winPoints,
+      if (drawPoints != null) #drawPoints: drawPoints,
+      if (lossPoints != null) #lossPoints: lossPoints,
+      if (roundRobinCount != null) #roundRobinCount: roundRobinCount,
+      if (minTeams != null) #minTeams: minTeams,
+      if (maxTeams != null) #maxTeams: maxTeams,
+      if (participantTeamUids != null)
+        #participantTeamUids: participantTeamUids,
+      if (currentSeasonUid != $none) #currentSeasonUid: currentSeasonUid,
+      if (createdAt != $none) #createdAt: createdAt,
+      if (updatedAt != $none) #updatedAt: updatedAt,
+    }),
+  );
   @override
   Tournament $make(CopyWithData data) => Tournament(
-        uid: data.get(#uid, or: $value.uid),
-        ownerUid: data.get(#ownerUid, or: $value.ownerUid),
-        name: data.get(#name, or: $value.name),
-        description: data.get(#description, or: $value.description),
-        logoUrl: data.get(#logoUrl, or: $value.logoUrl),
-        coverUrl: data.get(#coverUrl, or: $value.coverUrl),
-        status: data.get(#status, or: $value.status),
-        format: data.get(#format, or: $value.format),
-        rankingSystem: data.get(#rankingSystem, or: $value.rankingSystem),
-        winPoints: data.get(#winPoints, or: $value.winPoints),
-        drawPoints: data.get(#drawPoints, or: $value.drawPoints),
-        lossPoints: data.get(#lossPoints, or: $value.lossPoints),
-        roundRobinCount: data.get(#roundRobinCount, or: $value.roundRobinCount),
-        minTeams: data.get(#minTeams, or: $value.minTeams),
-        maxTeams: data.get(#maxTeams, or: $value.maxTeams),
-        participantTeamUids: data.get(
-          #participantTeamUids,
-          or: $value.participantTeamUids,
-        ),
-        currentSeasonUid:
-            data.get(#currentSeasonUid, or: $value.currentSeasonUid),
-        createdAt: data.get(#createdAt, or: $value.createdAt),
-        updatedAt: data.get(#updatedAt, or: $value.updatedAt),
-      );
+    uid: data.get(#uid, or: $value.uid),
+    ownerUid: data.get(#ownerUid, or: $value.ownerUid),
+    name: data.get(#name, or: $value.name),
+    description: data.get(#description, or: $value.description),
+    logoUrl: data.get(#logoUrl, or: $value.logoUrl),
+    coverUrl: data.get(#coverUrl, or: $value.coverUrl),
+    status: data.get(#status, or: $value.status),
+    format: data.get(#format, or: $value.format),
+    rankingSystem: data.get(#rankingSystem, or: $value.rankingSystem),
+    winPoints: data.get(#winPoints, or: $value.winPoints),
+    drawPoints: data.get(#drawPoints, or: $value.drawPoints),
+    lossPoints: data.get(#lossPoints, or: $value.lossPoints),
+    roundRobinCount: data.get(#roundRobinCount, or: $value.roundRobinCount),
+    minTeams: data.get(#minTeams, or: $value.minTeams),
+    maxTeams: data.get(#maxTeams, or: $value.maxTeams),
+    participantTeamUids: data.get(
+      #participantTeamUids,
+      or: $value.participantTeamUids,
+    ),
+    currentSeasonUid: data.get(#currentSeasonUid, or: $value.currentSeasonUid),
+    createdAt: data.get(#createdAt, or: $value.createdAt),
+    updatedAt: data.get(#updatedAt, or: $value.updatedAt),
+  );
 
   @override
   TournamentCopyWith<$R2, Tournament, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) =>
-      _TournamentCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _TournamentCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

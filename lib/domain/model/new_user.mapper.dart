@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -15,6 +16,7 @@ class NewUserMapper extends ClassMapperBase<NewUser> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = NewUserMapper._());
       GenderMapper.ensureInitialized();
+      VenueMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -118,6 +120,12 @@ class NewUserMapper extends ClassMapperBase<NewUser> {
     opt: true,
     def: const [],
   );
+  static Venue? _$location(NewUser v) => v.location;
+  static const Field<NewUser, Venue> _f$location = Field(
+    'location',
+    _$location,
+    opt: true,
+  );
 
   @override
   final MappableFields<NewUser> fields = const {
@@ -135,6 +143,7 @@ class NewUserMapper extends ClassMapperBase<NewUser> {
     #privateCommunities: _f$privateCommunities,
     #publicCommunities: _f$publicCommunities,
     #subCategoryUids: _f$subCategoryUids,
+    #location: _f$location,
   };
 
   static NewUser _instantiate(DecodingData data) {
@@ -153,6 +162,7 @@ class NewUserMapper extends ClassMapperBase<NewUser> {
       privateCommunities: data.dec(_f$privateCommunities),
       publicCommunities: data.dec(_f$publicCommunities),
       subCategoryUids: data.dec(_f$subCategoryUids),
+      location: data.dec(_f$location),
     );
   }
 
@@ -219,6 +229,7 @@ abstract class NewUserCopyWith<$R, $In extends NewUser, $Out>
   get publicCommunities;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
   get subCategoryUids;
+  VenueCopyWith<$R, Venue, Venue>? get location;
   $R call({
     String? email,
     String? fullName,
@@ -234,6 +245,7 @@ abstract class NewUserCopyWith<$R, $In extends NewUser, $Out>
     List<String>? privateCommunities,
     List<String>? publicCommunities,
     List<String>? subCategoryUids,
+    Venue? location,
   });
   NewUserCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -268,6 +280,9 @@ class _NewUserCopyWithImpl<$R, $Out>
     (v) => call(subCategoryUids: v),
   );
   @override
+  VenueCopyWith<$R, Venue, Venue>? get location =>
+      $value.location?.copyWith.$chain((v) => call(location: v));
+  @override
   $R call({
     String? email,
     String? fullName,
@@ -283,6 +298,7 @@ class _NewUserCopyWithImpl<$R, $Out>
     List<String>? privateCommunities,
     List<String>? publicCommunities,
     List<String>? subCategoryUids,
+    Object? location = $none,
   }) => $apply(
     FieldCopyWithData({
       if (email != null) #email: email,
@@ -299,6 +315,7 @@ class _NewUserCopyWithImpl<$R, $Out>
       if (privateCommunities != null) #privateCommunities: privateCommunities,
       if (publicCommunities != null) #publicCommunities: publicCommunities,
       if (subCategoryUids != null) #subCategoryUids: subCategoryUids,
+      if (location != $none) #location: location,
     }),
   );
   @override
@@ -326,6 +343,7 @@ class _NewUserCopyWithImpl<$R, $Out>
       or: $value.publicCommunities,
     ),
     subCategoryUids: data.get(#subCategoryUids, or: $value.subCategoryUids),
+    location: data.get(#location, or: $value.location),
   );
 
   @override

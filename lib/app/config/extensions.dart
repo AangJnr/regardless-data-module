@@ -270,4 +270,22 @@ extension DateTimeExtension on DateTime? {
       return false;
     }
   }
+  String formatMonthYear() {
+    if (this == null) return '';
+    try {
+      if (isToday()) {
+        return "Today";
+      }
+
+      if (isThisWeek()) {
+        return 'This Week';
+      }
+      if (isWithinThisMonth()) {
+        return 'This Month';
+      }
+      return DateFormat.yMMMM().format(this!).toString();
+    } catch (e) {
+      return '$this';
+    }
+  }
 }

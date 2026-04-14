@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -170,30 +171,30 @@ class _ReviewCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Review, $Out>
     Object? createdAt = $none,
     Object? updatedAt = $none,
     String? uid,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (reviewer != null) #reviewer: reviewer,
-          if (rating != null) #rating: rating,
-          if (title != null) #title: title,
-          if (comment != null) #comment: comment,
-          if (createdAt != $none) #createdAt: createdAt,
-          if (updatedAt != $none) #updatedAt: updatedAt,
-          if (uid != null) #uid: uid,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (reviewer != null) #reviewer: reviewer,
+      if (rating != null) #rating: rating,
+      if (title != null) #title: title,
+      if (comment != null) #comment: comment,
+      if (createdAt != $none) #createdAt: createdAt,
+      if (updatedAt != $none) #updatedAt: updatedAt,
+      if (uid != null) #uid: uid,
+    }),
+  );
   @override
   Review $make(CopyWithData data) => Review(
-        reviewer: data.get(#reviewer, or: $value.reviewer),
-        rating: data.get(#rating, or: $value.rating),
-        title: data.get(#title, or: $value.title),
-        comment: data.get(#comment, or: $value.comment),
-        createdAt: data.get(#createdAt, or: $value.createdAt),
-        updatedAt: data.get(#updatedAt, or: $value.updatedAt),
-        uid: data.get(#uid, or: $value.uid),
-      );
+    reviewer: data.get(#reviewer, or: $value.reviewer),
+    rating: data.get(#rating, or: $value.rating),
+    title: data.get(#title, or: $value.title),
+    comment: data.get(#comment, or: $value.comment),
+    createdAt: data.get(#createdAt, or: $value.createdAt),
+    updatedAt: data.get(#updatedAt, or: $value.updatedAt),
+    uid: data.get(#uid, or: $value.uid),
+  );
 
   @override
   ReviewCopyWith<$R2, Review, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _ReviewCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

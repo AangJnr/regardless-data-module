@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -55,11 +56,11 @@ class CollaboratorInviteMapper extends ClassMapperBase<CollaboratorInvite> {
       v.collaboratorRole;
   static const Field<CollaboratorInvite, CollaboratorRole> _f$collaboratorRole =
       Field(
-    'collaboratorRole',
-    _$collaboratorRole,
-    opt: true,
-    def: CollaboratorRole.staff,
-  );
+        'collaboratorRole',
+        _$collaboratorRole,
+        opt: true,
+        def: CollaboratorRole.staff,
+      );
   static List<String> _$permissions(CollaboratorInvite v) => v.permissions;
   static const Field<CollaboratorInvite, List<String>> _f$permissions = Field(
     'permissions',
@@ -138,9 +139,13 @@ mixin CollaboratorInviteMappable {
         .encodeMap<CollaboratorInvite>(this as CollaboratorInvite);
   }
 
-  CollaboratorInviteCopyWith<CollaboratorInvite, CollaboratorInvite,
-      CollaboratorInvite> get copyWith => _CollaboratorInviteCopyWithImpl<
-          CollaboratorInvite, CollaboratorInvite>(
+  CollaboratorInviteCopyWith<
+    CollaboratorInvite,
+    CollaboratorInvite,
+    CollaboratorInvite
+  >
+  get copyWith =>
+      _CollaboratorInviteCopyWithImpl<CollaboratorInvite, CollaboratorInvite>(
         this as CollaboratorInvite,
         $identity,
         $identity,
@@ -171,13 +176,17 @@ mixin CollaboratorInviteMappable {
 extension CollaboratorInviteValueCopy<$R, $Out>
     on ObjectCopyWith<$R, CollaboratorInvite, $Out> {
   CollaboratorInviteCopyWith<$R, CollaboratorInvite, $Out>
-      get $asCollaboratorInvite => $base.as(
-            (v, t, t2) => _CollaboratorInviteCopyWithImpl<$R, $Out>(v, t, t2),
-          );
+  get $asCollaboratorInvite => $base.as(
+    (v, t, t2) => _CollaboratorInviteCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class CollaboratorInviteCopyWith<$R, $In extends CollaboratorInvite,
-    $Out> implements ClassCopyWith<$R, $In, $Out> {
+abstract class CollaboratorInviteCopyWith<
+  $R,
+  $In extends CollaboratorInvite,
+  $Out
+>
+    implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get permissions;
   $R call({
     String? uid,
@@ -205,11 +214,11 @@ class _CollaboratorInviteCopyWithImpl<$R, $Out>
       CollaboratorInviteMapper.ensureInitialized();
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-      get permissions => ListCopyWith(
-            $value.permissions,
-            (v, t) => ObjectCopyWith(v, $identity, t),
-            (v) => call(permissions: v),
-          );
+  get permissions => ListCopyWith(
+    $value.permissions,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(permissions: v),
+  );
   @override
   $R call({
     String? uid,
@@ -221,37 +230,35 @@ class _CollaboratorInviteCopyWithImpl<$R, $Out>
     String? invitedByUid,
     Object? invitedAt = $none,
     InviteStatus? status,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (uid != null) #uid: uid,
-          if (email != null) #email: email,
-          if (userName != null) #userName: userName,
-          if (name != null) #name: name,
-          if (collaboratorRole != null) #collaboratorRole: collaboratorRole,
-          if (permissions != null) #permissions: permissions,
-          if (invitedByUid != null) #invitedByUid: invitedByUid,
-          if (invitedAt != $none) #invitedAt: invitedAt,
-          if (status != null) #status: status,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (uid != null) #uid: uid,
+      if (email != null) #email: email,
+      if (userName != null) #userName: userName,
+      if (name != null) #name: name,
+      if (collaboratorRole != null) #collaboratorRole: collaboratorRole,
+      if (permissions != null) #permissions: permissions,
+      if (invitedByUid != null) #invitedByUid: invitedByUid,
+      if (invitedAt != $none) #invitedAt: invitedAt,
+      if (status != null) #status: status,
+    }),
+  );
   @override
   CollaboratorInvite $make(CopyWithData data) => CollaboratorInvite(
-        uid: data.get(#uid, or: $value.uid),
-        email: data.get(#email, or: $value.email),
-        userName: data.get(#userName, or: $value.userName),
-        name: data.get(#name, or: $value.name),
-        collaboratorRole:
-            data.get(#collaboratorRole, or: $value.collaboratorRole),
-        permissions: data.get(#permissions, or: $value.permissions),
-        invitedByUid: data.get(#invitedByUid, or: $value.invitedByUid),
-        invitedAt: data.get(#invitedAt, or: $value.invitedAt),
-        status: data.get(#status, or: $value.status),
-      );
+    uid: data.get(#uid, or: $value.uid),
+    email: data.get(#email, or: $value.email),
+    userName: data.get(#userName, or: $value.userName),
+    name: data.get(#name, or: $value.name),
+    collaboratorRole: data.get(#collaboratorRole, or: $value.collaboratorRole),
+    permissions: data.get(#permissions, or: $value.permissions),
+    invitedByUid: data.get(#invitedByUid, or: $value.invitedByUid),
+    invitedAt: data.get(#invitedAt, or: $value.invitedAt),
+    status: data.get(#status, or: $value.status),
+  );
 
   @override
   CollaboratorInviteCopyWith<$R2, CollaboratorInvite, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) =>
-      _CollaboratorInviteCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _CollaboratorInviteCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

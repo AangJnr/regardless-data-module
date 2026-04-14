@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -219,45 +220,43 @@ class _CategoryCopyWithImpl<$R, $Out>
     Object? hexColor = $none,
     bool? isActive,
     bool? serviceSupported,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (name != null) #name: name,
-          if (description != null) #description: description,
-          if (imageUrl != null) #imageUrl: imageUrl,
-          if (uid != null) #uid: uid,
-          if (descriptionForProvider != null)
-            #descriptionForProvider: descriptionForProvider,
-          if (nameForProvider != null) #nameForProvider: nameForProvider,
-          if (iconUrl != null) #iconUrl: iconUrl,
-          if (tag != $none) #tag: tag,
-          if (hexColor != $none) #hexColor: hexColor,
-          if (isActive != null) #isActive: isActive,
-          if (serviceSupported != null) #serviceSupported: serviceSupported,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != null) #name: name,
+      if (description != null) #description: description,
+      if (imageUrl != null) #imageUrl: imageUrl,
+      if (uid != null) #uid: uid,
+      if (descriptionForProvider != null)
+        #descriptionForProvider: descriptionForProvider,
+      if (nameForProvider != null) #nameForProvider: nameForProvider,
+      if (iconUrl != null) #iconUrl: iconUrl,
+      if (tag != $none) #tag: tag,
+      if (hexColor != $none) #hexColor: hexColor,
+      if (isActive != null) #isActive: isActive,
+      if (serviceSupported != null) #serviceSupported: serviceSupported,
+    }),
+  );
   @override
   Category $make(CopyWithData data) => Category(
-        name: data.get(#name, or: $value.name),
-        description: data.get(#description, or: $value.description),
-        imageUrl: data.get(#imageUrl, or: $value.imageUrl),
-        uid: data.get(#uid, or: $value.uid),
-        descriptionForProvider: data.get(
-          #descriptionForProvider,
-          or: $value.descriptionForProvider,
-        ),
-        nameForProvider: data.get(#nameForProvider, or: $value.nameForProvider),
-        iconUrl: data.get(#iconUrl, or: $value.iconUrl),
-        tag: data.get(#tag, or: $value.tag),
-        hexColor: data.get(#hexColor, or: $value.hexColor),
-        isActive: data.get(#isActive, or: $value.isActive),
-        serviceSupported:
-            data.get(#serviceSupported, or: $value.serviceSupported),
-      );
+    name: data.get(#name, or: $value.name),
+    description: data.get(#description, or: $value.description),
+    imageUrl: data.get(#imageUrl, or: $value.imageUrl),
+    uid: data.get(#uid, or: $value.uid),
+    descriptionForProvider: data.get(
+      #descriptionForProvider,
+      or: $value.descriptionForProvider,
+    ),
+    nameForProvider: data.get(#nameForProvider, or: $value.nameForProvider),
+    iconUrl: data.get(#iconUrl, or: $value.iconUrl),
+    tag: data.get(#tag, or: $value.tag),
+    hexColor: data.get(#hexColor, or: $value.hexColor),
+    isActive: data.get(#isActive, or: $value.isActive),
+    serviceSupported: data.get(#serviceSupported, or: $value.serviceSupported),
+  );
 
   @override
   CategoryCopyWith<$R2, Category, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) =>
-      _CategoryCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _CategoryCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

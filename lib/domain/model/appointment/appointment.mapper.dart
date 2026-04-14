@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -28,7 +29,6 @@ class AppointmentStatusMapper extends EnumMapper<AppointmentStatus> {
     switch (value) {
       case r'pending':
         return AppointmentStatus.pending;
-
       case r'active':
         return AppointmentStatus.active;
       case r'rejected':
@@ -37,6 +37,8 @@ class AppointmentStatusMapper extends EnumMapper<AppointmentStatus> {
         return AppointmentStatus.cancelled;
       case r'expired':
         return AppointmentStatus.expired;
+      case r'scheduled':
+        return AppointmentStatus.scheduled;
       default:
         throw MapperException.unknownEnumValue(value);
     }
@@ -47,7 +49,6 @@ class AppointmentStatusMapper extends EnumMapper<AppointmentStatus> {
     switch (self) {
       case AppointmentStatus.pending:
         return r'pending';
-
       case AppointmentStatus.active:
         return r'active';
       case AppointmentStatus.rejected:
@@ -56,6 +57,8 @@ class AppointmentStatusMapper extends EnumMapper<AppointmentStatus> {
         return r'cancelled';
       case AppointmentStatus.expired:
         return r'expired';
+      case AppointmentStatus.scheduled:
+        return r'scheduled';
     }
   }
 }
@@ -130,20 +133,20 @@ class AppointmentMapper extends ClassMapperBase<Appointment> {
       v.appointmentDetails;
   static const Field<Appointment, AppointmentDetail> _f$appointmentDetails =
       Field(
-    'appointmentDetails',
-    _$appointmentDetails,
-    opt: true,
-    def: const AppointmentDetail(),
-  );
+        'appointmentDetails',
+        _$appointmentDetails,
+        opt: true,
+        def: const AppointmentDetail(),
+      );
   static ParticipantDetail _$participantDetails(Appointment v) =>
       v.participantDetails;
   static const Field<Appointment, ParticipantDetail> _f$participantDetails =
       Field(
-    'participantDetails',
-    _$participantDetails,
-    opt: true,
-    def: const ParticipantDetail(),
-  );
+        'participantDetails',
+        _$participantDetails,
+        opt: true,
+        def: const ParticipantDetail(),
+      );
   static AppointmentStatus _$status(Appointment v) => v.status;
   static const Field<Appointment, AppointmentStatus> _f$status = Field(
     'status',
@@ -278,9 +281,9 @@ abstract class AppointmentCopyWith<$R, $In extends Appointment, $Out>
   ProviderDetailsCopyWith<$R, ProviderDetails, ProviderDetails>? get provider;
   PriceCopyWith<$R, Price, Price>? get price;
   AppointmentDetailCopyWith<$R, AppointmentDetail, AppointmentDetail>
-      get appointmentDetails;
+  get appointmentDetails;
   ParticipantDetailCopyWith<$R, ParticipantDetail, ParticipantDetail>
-      get participantDetails;
+  get participantDetails;
   $R call({
     String? uid,
     String? ownerUid,
@@ -315,14 +318,14 @@ class _AppointmentCopyWithImpl<$R, $Out>
       $value.price?.copyWith.$chain((v) => call(price: v));
   @override
   AppointmentDetailCopyWith<$R, AppointmentDetail, AppointmentDetail>
-      get appointmentDetails => $value.appointmentDetails.copyWith.$chain(
-            (v) => call(appointmentDetails: v),
-          );
+  get appointmentDetails => $value.appointmentDetails.copyWith.$chain(
+    (v) => call(appointmentDetails: v),
+  );
   @override
   ParticipantDetailCopyWith<$R, ParticipantDetail, ParticipantDetail>
-      get participantDetails => $value.participantDetails.copyWith.$chain(
-            (v) => call(participantDetails: v),
-          );
+  get participantDetails => $value.participantDetails.copyWith.$chain(
+    (v) => call(participantDetails: v),
+  );
   @override
   $R call({
     String? uid,
@@ -338,56 +341,52 @@ class _AppointmentCopyWithImpl<$R, $Out>
     String? updatedAt,
     String? additionalNotes,
     String? cancellationReason,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (uid != null) #uid: uid,
-          if (ownerUid != null) #ownerUid: ownerUid,
-          if (providerUid != null) #providerUid: providerUid,
-          if (serviceType != null) #serviceType: serviceType,
-          if (provider != $none) #provider: provider,
-          if (price != $none) #price: price,
-          if (appointmentDetails != null)
-            #appointmentDetails: appointmentDetails,
-          if (participantDetails != null)
-            #participantDetails: participantDetails,
-          if (status != null) #status: status,
-          if (createdAt != null) #createdAt: createdAt,
-          if (updatedAt != null) #updatedAt: updatedAt,
-          if (additionalNotes != null) #additionalNotes: additionalNotes,
-          if (cancellationReason != null)
-            #cancellationReason: cancellationReason,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (uid != null) #uid: uid,
+      if (ownerUid != null) #ownerUid: ownerUid,
+      if (providerUid != null) #providerUid: providerUid,
+      if (serviceType != null) #serviceType: serviceType,
+      if (provider != $none) #provider: provider,
+      if (price != $none) #price: price,
+      if (appointmentDetails != null) #appointmentDetails: appointmentDetails,
+      if (participantDetails != null) #participantDetails: participantDetails,
+      if (status != null) #status: status,
+      if (createdAt != null) #createdAt: createdAt,
+      if (updatedAt != null) #updatedAt: updatedAt,
+      if (additionalNotes != null) #additionalNotes: additionalNotes,
+      if (cancellationReason != null) #cancellationReason: cancellationReason,
+    }),
+  );
   @override
   Appointment $make(CopyWithData data) => Appointment(
-        uid: data.get(#uid, or: $value.uid),
-        ownerUid: data.get(#ownerUid, or: $value.ownerUid),
-        providerUid: data.get(#providerUid, or: $value.providerUid),
-        serviceType: data.get(#serviceType, or: $value.serviceType),
-        provider: data.get(#provider, or: $value.provider),
-        price: data.get(#price, or: $value.price),
-        appointmentDetails: data.get(
-          #appointmentDetails,
-          or: $value.appointmentDetails,
-        ),
-        participantDetails: data.get(
-          #participantDetails,
-          or: $value.participantDetails,
-        ),
-        status: data.get(#status, or: $value.status),
-        createdAt: data.get(#createdAt, or: $value.createdAt),
-        updatedAt: data.get(#updatedAt, or: $value.updatedAt),
-        additionalNotes: data.get(#additionalNotes, or: $value.additionalNotes),
-        cancellationReason: data.get(
-          #cancellationReason,
-          or: $value.cancellationReason,
-        ),
-      );
+    uid: data.get(#uid, or: $value.uid),
+    ownerUid: data.get(#ownerUid, or: $value.ownerUid),
+    providerUid: data.get(#providerUid, or: $value.providerUid),
+    serviceType: data.get(#serviceType, or: $value.serviceType),
+    provider: data.get(#provider, or: $value.provider),
+    price: data.get(#price, or: $value.price),
+    appointmentDetails: data.get(
+      #appointmentDetails,
+      or: $value.appointmentDetails,
+    ),
+    participantDetails: data.get(
+      #participantDetails,
+      or: $value.participantDetails,
+    ),
+    status: data.get(#status, or: $value.status),
+    createdAt: data.get(#createdAt, or: $value.createdAt),
+    updatedAt: data.get(#updatedAt, or: $value.updatedAt),
+    additionalNotes: data.get(#additionalNotes, or: $value.additionalNotes),
+    cancellationReason: data.get(
+      #cancellationReason,
+      or: $value.cancellationReason,
+    ),
+  );
 
   @override
   AppointmentCopyWith<$R2, Appointment, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) =>
-      _AppointmentCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _AppointmentCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

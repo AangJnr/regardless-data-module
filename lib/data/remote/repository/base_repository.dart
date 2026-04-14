@@ -21,10 +21,19 @@ mixin BaseRepository {
   SessionManager get sessionManager => _sessionManager;
   ApiService get apiService => _apiService;
 
+  final _kRequestTimeout = Duration(seconds: 15);
+  Future<dynamic> _withTimeout(Function request) {
+    return (request() as Future).timeout(
+      _kRequestTimeout,
+      onTimeout: () => throw Exception(
+          'Connection to our servers timed out.\nPlease try at a later time while we resolve the issue'),
+    );
+  }
+
   Future<Result<dynamic, Exception>> processRequest(Function request) async {
     if (await InternetUtil.isConnected()) {
       try {
-        var response = (await request()) as Response;
+        var response = (await _withTimeout(request)) as Response;
 
         final dynamic r = jsonDecode(response.body);
         getLogger("BaseRepository")

@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -310,11 +311,11 @@ class _TeamInviteCopyWithImpl<$R, $Out>
       TeamInviteMapper.ensureInitialized();
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-      get permissions => ListCopyWith(
-            $value.permissions,
-            (v, t) => ObjectCopyWith(v, $identity, t),
-            (v) => call(permissions: v),
-          );
+  get permissions => ListCopyWith(
+    $value.permissions,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(permissions: v),
+  );
   @override
   $R call({
     String? uid,
@@ -326,36 +327,35 @@ class _TeamInviteCopyWithImpl<$R, $Out>
     String? invitedByUid,
     Object? invitedAt = $none,
     InviteStatus? status,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (uid != null) #uid: uid,
-          if (email != null) #email: email,
-          if (userName != null) #userName: userName,
-          if (name != null) #name: name,
-          if (role != null) #role: role,
-          if (permissions != null) #permissions: permissions,
-          if (invitedByUid != null) #invitedByUid: invitedByUid,
-          if (invitedAt != $none) #invitedAt: invitedAt,
-          if (status != null) #status: status,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (uid != null) #uid: uid,
+      if (email != null) #email: email,
+      if (userName != null) #userName: userName,
+      if (name != null) #name: name,
+      if (role != null) #role: role,
+      if (permissions != null) #permissions: permissions,
+      if (invitedByUid != null) #invitedByUid: invitedByUid,
+      if (invitedAt != $none) #invitedAt: invitedAt,
+      if (status != null) #status: status,
+    }),
+  );
   @override
   TeamInvite $make(CopyWithData data) => TeamInvite(
-        uid: data.get(#uid, or: $value.uid),
-        email: data.get(#email, or: $value.email),
-        userName: data.get(#userName, or: $value.userName),
-        name: data.get(#name, or: $value.name),
-        role: data.get(#role, or: $value.role),
-        permissions: data.get(#permissions, or: $value.permissions),
-        invitedByUid: data.get(#invitedByUid, or: $value.invitedByUid),
-        invitedAt: data.get(#invitedAt, or: $value.invitedAt),
-        status: data.get(#status, or: $value.status),
-      );
+    uid: data.get(#uid, or: $value.uid),
+    email: data.get(#email, or: $value.email),
+    userName: data.get(#userName, or: $value.userName),
+    name: data.get(#name, or: $value.name),
+    role: data.get(#role, or: $value.role),
+    permissions: data.get(#permissions, or: $value.permissions),
+    invitedByUid: data.get(#invitedByUid, or: $value.invitedByUid),
+    invitedAt: data.get(#invitedAt, or: $value.invitedAt),
+    status: data.get(#status, or: $value.status),
+  );
 
   @override
   TeamInviteCopyWith<$R2, TeamInvite, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) =>
-      _TeamInviteCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _TeamInviteCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

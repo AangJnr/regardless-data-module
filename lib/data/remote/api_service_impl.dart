@@ -5,7 +5,7 @@ import 'dart:convert';
 // ignore: depend_on_referenced_packages
 import 'package:cross_file/cross_file.dart';
 import 'package:http/http.dart' as http;
-import 'package:regardless_data_module/data/model/service_api/time_slot_api.dart';
+ import 'package:regardless_data_module/data/model/service_api/time_slot_api.dart';
 import 'package:regardless_data_module/domain/model/community/community.dart';
 import 'package:regardless_data_module/domain/model/community/member.dart';
 import 'package:regardless_data_module/domain/model/review/review.dart';
@@ -16,6 +16,7 @@ import '../../domain/model/appointment/appointment.dart';
 import '../../domain/model/community/comment.dart';
 import '../../domain/model/new_user.dart';
 import '../../domain/model/preference.dart';
+import '../../domain/model/media_upload/direct_media_upload_finalize_payload.dart';
 import '../../domain/model/update_user.dart';
 import '../../domain/model/user.dart';
 import '../../domain/repositories/event_repository.dart';
@@ -28,6 +29,38 @@ import 'repository/api_helpers.dart';
 import 'routes.dart';
 
 class ApiServiceImpl with ApiHelpers implements ApiService {
+  List<Map<String, String>> _buildDirectUploadFilesPayload(List<XFile> files) {
+    return files
+        .map((f) => {
+              'fileName': f.name,
+              'contentType': _guessContentType(f.path,
+                  fallback: 'application/octet-stream')
+            })
+        .toList();
+  }
+
+  String _guessContentType(String path, {required String fallback}) {
+    final lower = path.toLowerCase();
+    if (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) return 'image/jpeg';
+    if (lower.endsWith('.png')) return 'image/png';
+    if (lower.endsWith('.webp')) return 'image/webp';
+    if (lower.endsWith('.gif')) return 'image/gif';
+    if (lower.endsWith('.heic')) return 'image/heic';
+    if (lower.endsWith('.mp4')) return 'video/mp4';
+    if (lower.endsWith('.mov')) return 'video/quicktime';
+    if (lower.endsWith('.m4v')) return 'video/x-m4v';
+    if (lower.endsWith('.webm')) return 'video/webm';
+    return fallback;
+  }
+
+  @override
+  Future<http.Response> health() async {
+    var response = get(Auth().Health,
+        headers: await getHeaders(isSecure: false));
+    return response;
+  }
+
+
   @override
   Future<http.Response> attemptLogout() async {
     var response = post(Auth().LogoutPath,
@@ -101,6 +134,15 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
+  Future<http.Response> getProviderTimeline(String uid,
+      {PaginationRequest? request}) async {
+    return get(
+      User().GetTimeline(uid, params: request?.toQueryParams() ?? ''),
+      headers: await getHeaders(),
+    );
+  }
+
+  @override
   Future<http.Response> deleteUser(String id) async {
     var response = delete(
       Auth().DeleteAccount,
@@ -123,7 +165,6 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
     var response = postMultipart(User().ImageUpload(profileUid),
         headers: await getHeaders(),
         dataList: [ImageProperties("images", file)]);
-
     return response;
   }
 
@@ -280,6 +321,31 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
       headers: await getHeaders(isSecure: true),
     );
     return response;
+  }
+
+  @override
+  Future<http.Response> createActivityAlert(Map<String, dynamic> body) async {
+    return post(
+      User().ActivityAlerts,
+      headers: await getHeaders(isSecure: true),
+      body: jsonEncode(body),
+    );
+  }
+
+  @override
+  Future<http.Response> getActivityAlerts() async {
+    return get(
+      User().ActivityAlerts,
+      headers: await getHeaders(isSecure: true),
+    );
+  }
+
+  @override
+  Future<http.Response> deleteActivityAlert(String alertId) async {
+    return delete(
+      User().ActivityAlertById(alertId),
+      headers: await getHeaders(isSecure: true),
+    );
   }
 
   @override
@@ -920,6 +986,15 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
   }
 
   @override
+  Future<dynamic> generateActivityFromImage(XFile image) async {
+    return postMultipart(
+      Admin().GenerateActivityFromImage,
+      headers: await getHeaders(),
+      dataList: [ImageProperties('image', image)],
+    );
+  }
+
+  @override
   Future<http.Response> removeCommunityMember(
       {required String uid, required String memberUid}) async {
     var response = delete(ACommunity().RemoveMember(uid, memberUid),
@@ -1160,6 +1235,23 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
     return response;
   }
 
+  @override
+  Future<http.Response> initTeamMedia(String teamUid, List<XFile> files) async {
+    return post(ATeam().InitMediaUploads(teamUid),
+        headers: await getHeaders(),
+        body: jsonEncode({'files': _buildDirectUploadFilesPayload(files)}));
+  }
+
+  @override
+  Future<http.Response> finalizeTeamMedia(
+      String teamUid, List<DirectMediaUploadFinalizePayload> uploads) async {
+    return post(ATeam().FinalizeMediaUploads(teamUid),
+        headers: await getHeaders(),
+        body: jsonEncode({
+          'uploads': uploads.map((upload) => upload.toMap()).toList(),
+        }));
+  }
+
   // Provider Media & Collaborators
   @override
   Future<dynamic> uploadProviderMedia(String uid, List<XFile> files) async {
@@ -1168,6 +1260,23 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
         dataList:
             files.map((file) => ImageProperties("images", file)).toList());
     return response;
+  }
+
+  @override
+  Future<http.Response> initProviderMedia(String uid, List<XFile> files) async {
+    return post(User().InitMediaUploads(uid),
+        headers: await getHeaders(),
+        body: jsonEncode({'files': _buildDirectUploadFilesPayload(files)}));
+  }
+
+  @override
+  Future<http.Response> finalizeProviderMedia(
+      String uid, List<DirectMediaUploadFinalizePayload> uploads) async {
+    return post(User().FinalizeMediaUploads(uid),
+        headers: await getHeaders(),
+        body: jsonEncode({
+          'uploads': uploads.map((upload) => upload.toMap()).toList(),
+        }));
   }
 
   @override

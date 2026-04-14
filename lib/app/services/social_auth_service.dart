@@ -10,21 +10,27 @@ class SocialAuthService {
   final firebaseAuth = FirebaseAuth.instance;
   final _sessionManager = module<SessionManager>();
 
-  Future<Result<User, Exception>> signInWithGoogle(
-      {bool isPlatformWeb = true}) async {
+  bool isSignInWithEmailLink(String link) {
+    return firebaseAuth.isSignInWithEmailLink(link);
+  }
+
+  Future<Result<User, Exception>> signInWithGoogle() async {
     // Trigger the authentication flow
     try {
       UserCredential userRequest;
 
       GoogleAuthProvider googleProvider = GoogleAuthProvider();
-      googleProvider
-          .addScope('https://www.googleapis.com/auth/userinfo.profile');
-      if (isPlatformWeb) {
-        userRequest =
-            await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      googleProvider.addScope(
+        'https://www.googleapis.com/auth/userinfo.profile',
+      );
+      if (kIsWeb) {
+        userRequest = await FirebaseAuth.instance.signInWithPopup(
+          googleProvider,
+        );
       } else {
-        userRequest =
-            await FirebaseAuth.instance.signInWithProvider(googleProvider);
+        userRequest = await FirebaseAuth.instance.signInWithProvider(
+          googleProvider,
+        );
       }
 
       if (userRequest.user != null) {
@@ -67,15 +73,18 @@ class SocialAuthService {
 
   Future<Result<User, Exception>> signInWithApple() async {
     try {
-      final appleProvider =
-          AppleAuthProvider().addScope('email').addScope('fullName');
+      final appleProvider = AppleAuthProvider()
+          .addScope('email')
+          .addScope('fullName');
       UserCredential userRequest;
       if (kIsWeb) {
-        userRequest =
-            await FirebaseAuth.instance.signInWithPopup(appleProvider);
+        userRequest = await FirebaseAuth.instance.signInWithPopup(
+          appleProvider,
+        );
       } else {
-        userRequest =
-            await FirebaseAuth.instance.signInWithProvider(appleProvider);
+        userRequest = await FirebaseAuth.instance.signInWithProvider(
+          appleProvider,
+        );
       }
 
       if (userRequest.user != null) {
@@ -99,17 +108,20 @@ class SocialAuthService {
   Future sendEmailLink(String email) async {
     return firebaseAuth
         .sendSignInLinkToEmail(
-            email: email,
-            actionCodeSettings: ActionCodeSettings(
-                url: '${Url.web}/verification',
-                // ignore: deprecated_member_use
-//dynamicLinkDomain: 'regardlesssocialapp.page.link',
-                handleCodeInApp: true,
-                androidInstallApp: true,
-                androidPackageName: 'com.regardless.social_app'))
-        .catchError((onError) =>
-            throw ('We could not generate email link. Kindly try again later or use another sign-in option.\n$onError'))
-        .then((value) {});
+          email: email,
+          actionCodeSettings: ActionCodeSettings(
+            url: '${Url.web}/verification',
+            handleCodeInApp: true,
+            androidInstallApp: true,
+            iOSBundleId: 'com.regardlessmode.app',
+            linkDomain: 'login.regardlessmode.com',
+            androidPackageName: 'com.regardless.social_app',
+          ),
+        )
+        .catchError(
+          (onError) =>
+              throw ('We could not generate email link. Kindly try again later or use another sign-in option.\n$onError'),
+        );
   }
 
   Future<User?> verify(String emailLink) async {
@@ -118,8 +130,10 @@ class SocialAuthService {
 
       try {
         final email = _sessionManager.get('email');
-        final userCredential = await FirebaseAuth.instance
-            .signInWithEmailLink(email: email, emailLink: emailLink);
+        final userCredential = await FirebaseAuth.instance.signInWithEmailLink(
+          email: email,
+          emailLink: emailLink,
+        );
         return userCredential.user;
       } catch (error) {
         getLogger("Social Auth Service").e(error);

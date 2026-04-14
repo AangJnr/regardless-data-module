@@ -13,24 +13,28 @@ class LocationService {
   StreamSubscription<Position>? _positionStream;
   late LocationPermission permission;
 
-  void setLocationListener(
-      {Function(Position locationData)? onUpdated,
-      String? uid,
-      int updateIntervalInSeconds = 20}) async {
+  void setLocationListener({
+    Function(Position locationData)? onUpdated,
+    String? uid,
+    int updateIntervalInSeconds = 20,
+  }) async {
+    if (kIsWeb) return;
+
     dispose();
     await requestLocationPermission();
 
     _intervalInSeconds = updateIntervalInSeconds;
 
-    _positionStream = Geolocator.getPositionStream(
-      locationSettings: _getSettings(),
-    ).listen((Position position) async {
-      debugPrint("Bearing => ${position.heading}");
-      debugPrint('${position.latitude},${position.longitude}');
-      debugPrint("Update interval => $_intervalInSeconds");
+    _positionStream =
+        Geolocator.getPositionStream(locationSettings: _getSettings()).listen((
+          Position position,
+        ) async {
+          debugPrint("Bearing => ${position.heading}");
+          debugPrint('${position.latitude},${position.longitude}');
+          debugPrint("Update interval => $_intervalInSeconds");
 
-      onUpdated?.call(position);
-    });
+          onUpdated?.call(position);
+        });
   }
 
   Future<bool> hasPermission() async {
@@ -46,9 +50,7 @@ class LocationService {
 
   Future<Position> getCurrentLocation() async {
     await requestLocationPermission();
-    return Geolocator.getCurrentPosition(
-      locationSettings: _getSettings(),
-    );
+    return Geolocator.getCurrentPosition(locationSettings: _getSettings());
   }
 
   void dispose() async {
@@ -61,18 +63,22 @@ class LocationService {
   }
 
   LocationSettings _getSettings() {
-    if (Platform.isAndroid) {
-      return AndroidSettings(
-          accuracy: LocationAccuracy.high,
-          intervalDuration: Duration(seconds: _intervalInSeconds),
-          foregroundNotificationConfig: const ForegroundNotificationConfig(
-            notificationText:
-                "The location service will continue to receive your location even when you aren't using it",
-            notificationTitle: "Running in Background",
-            enableWakeLock: true,
-          ));
+    if (kIsWeb) {
+      return LocationSettings(accuracy: LocationAccuracy.high);
     }
     if (Platform.isAndroid) {
+      return AndroidSettings(
+        accuracy: LocationAccuracy.high,
+        intervalDuration: Duration(seconds: _intervalInSeconds),
+        foregroundNotificationConfig: const ForegroundNotificationConfig(
+          notificationText:
+              "The location service will continue to receive your location even when you aren't using it",
+          notificationTitle: "Running in Background",
+          enableWakeLock: true,
+        ),
+      );
+    }
+    if (Platform.isIOS) {
       return AppleSettings(
         accuracy: LocationAccuracy.high,
         activityType: ActivityType.fitness,
@@ -87,8 +93,10 @@ class LocationService {
     );
   }
 
-  Future<void> requestLocationPermission(
-      {VoidCallback? onGranted, VoidCallback? onDenied}) async {
+  Future<void> requestLocationPermission({
+    VoidCallback? onGranted,
+    VoidCallback? onDenied,
+  }) async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       ToastService().showToast('Location services are disabled.');
@@ -101,21 +109,25 @@ class LocationService {
     if (permission == LocationPermission.denied ||
         permission == LocationPermission.unableToDetermine ||
         permission == LocationPermission.deniedForever) {
+      if (kIsWeb) {
+        return;
+      }
       // Just notify — no forced redirect, no "OK goes to Settings"
       await DialogService()
           .showConfirmationDialog(
-        title: 'Location required',
-        description: 'This feature requires location access. '
-            'You can enable it in Settings if you change your mind.',
-        barrierDismissible: true,
-        cancelTitle: 'Dismiss',
-        confirmationTitle: 'Open Settings', // Optional, user-initiated
-      )
+            title: 'Location required',
+            description:
+                'This feature requires location access. '
+                'You can enable it in Settings if you change your mind.',
+            barrierDismissible: true,
+            cancelTitle: 'Dismiss',
+            confirmationTitle: 'Open Settings', // Optional, user-initiated
+          )
           .then((value) async {
-        if (value?.confirmed == true) {
-          await Geolocator.openLocationSettings();
-        }
-      });
+            if (value?.confirmed == true) {
+              await Geolocator.openLocationSettings();
+            }
+          });
 
       onDenied?.call();
       return;

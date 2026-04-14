@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -14,6 +15,7 @@ class UpdateUserMapper extends ClassMapperBase<UpdateUser> {
   static UpdateUserMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = UpdateUserMapper._());
+      VenueMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -51,6 +53,12 @@ class UpdateUserMapper extends ClassMapperBase<UpdateUser> {
     opt: true,
     def: '',
   );
+  static Venue? _$businessLocation(UpdateUser v) => v.businessLocation;
+  static const Field<UpdateUser, Venue> _f$businessLocation = Field(
+    'businessLocation',
+    _$businessLocation,
+    opt: true,
+  );
 
   @override
   final MappableFields<UpdateUser> fields = const {
@@ -59,6 +67,7 @@ class UpdateUserMapper extends ClassMapperBase<UpdateUser> {
     #phone: _f$phone,
     #picture: _f$picture,
     #bio: _f$bio,
+    #businessLocation: _f$businessLocation,
   };
 
   static UpdateUser _instantiate(DecodingData data) {
@@ -68,6 +77,7 @@ class UpdateUserMapper extends ClassMapperBase<UpdateUser> {
       phone: data.dec(_f$phone),
       picture: data.dec(_f$picture),
       bio: data.dec(_f$bio),
+      businessLocation: data.dec(_f$businessLocation),
     );
   }
 
@@ -131,12 +141,14 @@ extension UpdateUserValueCopy<$R, $Out>
 
 abstract class UpdateUserCopyWith<$R, $In extends UpdateUser, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
+  VenueCopyWith<$R, Venue, Venue>? get businessLocation;
   $R call({
     String? uid,
     String? fullName,
     String? phone,
     String? picture,
     String? bio,
+    Venue? businessLocation,
   });
   UpdateUserCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -150,34 +162,41 @@ class _UpdateUserCopyWithImpl<$R, $Out>
   late final ClassMapperBase<UpdateUser> $mapper =
       UpdateUserMapper.ensureInitialized();
   @override
+  VenueCopyWith<$R, Venue, Venue>? get businessLocation => $value
+      .businessLocation
+      ?.copyWith
+      .$chain((v) => call(businessLocation: v));
+  @override
   $R call({
     String? uid,
     String? fullName,
     String? phone,
     String? picture,
     String? bio,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (uid != null) #uid: uid,
-          if (fullName != null) #fullName: fullName,
-          if (phone != null) #phone: phone,
-          if (picture != null) #picture: picture,
-          if (bio != null) #bio: bio,
-        }),
-      );
+    Object? businessLocation = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (uid != null) #uid: uid,
+      if (fullName != null) #fullName: fullName,
+      if (phone != null) #phone: phone,
+      if (picture != null) #picture: picture,
+      if (bio != null) #bio: bio,
+      if (businessLocation != $none) #businessLocation: businessLocation,
+    }),
+  );
   @override
   UpdateUser $make(CopyWithData data) => UpdateUser(
-        uid: data.get(#uid, or: $value.uid),
-        fullName: data.get(#fullName, or: $value.fullName),
-        phone: data.get(#phone, or: $value.phone),
-        picture: data.get(#picture, or: $value.picture),
-        bio: data.get(#bio, or: $value.bio),
-      );
+    uid: data.get(#uid, or: $value.uid),
+    fullName: data.get(#fullName, or: $value.fullName),
+    phone: data.get(#phone, or: $value.phone),
+    picture: data.get(#picture, or: $value.picture),
+    bio: data.get(#bio, or: $value.bio),
+    businessLocation: data.get(#businessLocation, or: $value.businessLocation),
+  );
 
   @override
   UpdateUserCopyWith<$R2, UpdateUser, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) =>
-      _UpdateUserCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _UpdateUserCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

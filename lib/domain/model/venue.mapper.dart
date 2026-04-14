@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -200,36 +201,36 @@ class _VenueCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Venue, $Out>
     String? name,
     String? state,
     double? lat,
-  }) =>
-      $apply(
-        FieldCopyWithData({
-          if (placeId != null) #placeId: placeId,
-          if (country != null) #country: country,
-          if (address != null) #address: address,
-          if (otherAddress != null) #otherAddress: otherAddress,
-          if (lng != null) #lng: lng,
-          if (city != null) #city: city,
-          if (countryIso != null) #countryIso: countryIso,
-          if (name != null) #name: name,
-          if (state != null) #state: state,
-          if (lat != null) #lat: lat,
-        }),
-      );
+  }) => $apply(
+    FieldCopyWithData({
+      if (placeId != null) #placeId: placeId,
+      if (country != null) #country: country,
+      if (address != null) #address: address,
+      if (otherAddress != null) #otherAddress: otherAddress,
+      if (lng != null) #lng: lng,
+      if (city != null) #city: city,
+      if (countryIso != null) #countryIso: countryIso,
+      if (name != null) #name: name,
+      if (state != null) #state: state,
+      if (lat != null) #lat: lat,
+    }),
+  );
   @override
   Venue $make(CopyWithData data) => Venue(
-        placeId: data.get(#placeId, or: $value.placeId),
-        country: data.get(#country, or: $value.country),
-        address: data.get(#address, or: $value.address),
-        otherAddress: data.get(#otherAddress, or: $value.otherAddress),
-        lng: data.get(#lng, or: $value.lng),
-        city: data.get(#city, or: $value.city),
-        countryIso: data.get(#countryIso, or: $value.countryIso),
-        name: data.get(#name, or: $value.name),
-        state: data.get(#state, or: $value.state),
-        lat: data.get(#lat, or: $value.lat),
-      );
+    placeId: data.get(#placeId, or: $value.placeId),
+    country: data.get(#country, or: $value.country),
+    address: data.get(#address, or: $value.address),
+    otherAddress: data.get(#otherAddress, or: $value.otherAddress),
+    lng: data.get(#lng, or: $value.lng),
+    city: data.get(#city, or: $value.city),
+    countryIso: data.get(#countryIso, or: $value.countryIso),
+    name: data.get(#name, or: $value.name),
+    state: data.get(#state, or: $value.state),
+    lat: data.get(#lat, or: $value.lat),
+  );
 
   @override
   VenueCopyWith<$R2, Venue, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _VenueCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

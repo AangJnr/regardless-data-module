@@ -1,6 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:regardless_data_module/app/config/extensions.dart';
-
+ 
 // ignore_for_file: constant_identifier_names
 enum NotificationType {
   EVENT_REMINDER,
@@ -24,7 +23,9 @@ enum NotificationType {
   TEAM_JOIN_REQUEST_REJECTED,
   TEAM_MANAGER_ADDED,
   NEW_PROVIDER_COLLAB_INVITATION,
-  NEW_COLLABORATOR,USER_FOLLOWED,
+  NEW_COLLABORATOR,
+  USER_FOLLOWED,
+  NEARBY_ACTIVITY_ALERT,
   NONE
 }
 
@@ -59,24 +60,6 @@ class Notification {
     try {
       if (createdAt == null) return '';
       return DateFormat('EEEE dd • h:mmaa').format(createdAt!);
-    } catch (e) {
-      return '$createdAt';
-    }
-  }
-
-  String formatMonthYear() {
-    try {
-      if (createdAt.isToday()) {
-        return "Today";
-      }
-
-      if (createdAt.isThisWeek()) {
-        return 'This Week';
-      }
-      if (createdAt.isWithinThisMonth()) {
-        return 'This Month';
-      }
-      return DateFormat.yMMMM().format(createdAt!).toString();
     } catch (e) {
       return '$createdAt';
     }

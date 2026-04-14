@@ -3,9 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:regardless_data_module/app/config/extensions.dart';
 import 'package:regardless_data_module/domain/model/hash_image.dart';
 
-import '../community/community.dart';
-import '../price.dart';
-import '../venue.dart';
 import 'owner.dart';
 
 part 'announcement.mapper.dart';

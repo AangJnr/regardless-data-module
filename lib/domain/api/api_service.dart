@@ -12,6 +12,7 @@ import '../../data/model/service_api/service_api.dart';
 import '../../data/model/service_api/time_slot_api.dart';
 import '../model/appointment/appointment.dart';
 import '../model/community/comment.dart';
+import '../model/media_upload/direct_media_upload_finalize_payload.dart';
 import '../model/community/community.dart';
 import '../model/community/member.dart';
 import '../model/new_user.dart';
@@ -21,6 +22,8 @@ import '../model/update_user.dart';
 import '../repositories/event_repository.dart';
 
 abstract class ApiService {
+  Future<Response> health();
+
   Future<Response> attemptLogout();
   Future<Response> checkUserName(String name);
   Future<Response> createUserAccount(NewUser user);
@@ -29,6 +32,8 @@ abstract class ApiService {
   Future<Response> getUserAccounts();
   Future<Response> setDefaultUserAccount(String profileUid);
   Future<Response> getPublicUser(String uid);
+  Future<Response> getProviderTimeline(String uid,
+      {PaginationRequest? request});
   Future<Response> deleteUser(String id);
   Future<Response> deleteUserData();
   Future<dynamic> uploadPhoto(String profileUid, XFile file);
@@ -87,6 +92,9 @@ abstract class ApiService {
 
   Future<Response> getNotifications({PaginationRequest? request});
   Future<Response> markNotificationAsRead(String uid);
+  Future<Response> createActivityAlert(Map<String, dynamic> body);
+  Future<Response> getActivityAlerts();
+  Future<Response> deleteActivityAlert(String alertId);
   Future<Response> getReviews(
       {String userUid = '', PaginationRequest? request});
   Future<Response> getSubscriptions(
@@ -176,6 +184,7 @@ abstract class ApiService {
       {String uid = '', PaginationRequest? request});
   Future<Response> addProviderReview({String uid = '', required Review review});
   Future<Response> generateDescriptionSuggestions(String text);
+  Future<dynamic> generateActivityFromImage(XFile image);
 
   // Teams
   Future<dynamic> addTeam(Team team, {XFile? logo, XFile? headerImage});
@@ -212,6 +221,9 @@ abstract class ApiService {
   Future<Response> deleteTeamInvite(String teamUid, String inviteeUid);
   Future<Response> declineTeamJoinRequest(String requesterUid, String teamUid);
   Future<dynamic> uploadTeamMedia(String teamUid, List<XFile> files);
+  Future<Response> initTeamMedia(String teamUid, List<XFile> files);
+  Future<Response> finalizeTeamMedia(
+      String teamUid, List<DirectMediaUploadFinalizePayload> uploads);
   Future<Response> getTeamMedia(String teamUid, {PaginationRequest? request});
   Future<Response> searchTeams(String teamUid, {PaginationRequest? request});
   Future<Response> deleteTeamMedia(String teamUid, List<String> uids);
@@ -220,6 +232,9 @@ abstract class ApiService {
   Future<Response> getSportsCategories();
   // Provider Media & Collaborators
   Future<dynamic> uploadProviderMedia(String uid, List<XFile> files);
+  Future<Response> initProviderMedia(String uid, List<XFile> files);
+  Future<Response> finalizeProviderMedia(
+      String uid, List<DirectMediaUploadFinalizePayload> uploads);
   Future<Response> getProviderMedia(String uid, {PaginationRequest? request});
   Future<Response> deleteProviderMedia(String uid, List<String> uids);
 
