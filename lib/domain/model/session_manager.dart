@@ -26,7 +26,7 @@ abstract class SessionManager {
   NewUser getNewUserData();
   void invalidate();
   void set(String key, dynamic value);
-  dynamic get(String key);
+  String get(String key);
   List<Venue> getLocations();
   void addLocation(Venue location);
   void setNotificationCount([int count = 1]);

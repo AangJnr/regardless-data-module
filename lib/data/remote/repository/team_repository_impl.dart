@@ -7,6 +7,7 @@ import 'package:regardless_data_module/domain/model/new_user.dart';
 import 'package:regardless_data_module/domain/model/pagination.dart';
 import 'package:regardless_data_module/domain/model/media_upload/direct_media_upload_finalize_payload.dart';
 import 'package:regardless_data_module/domain/model/media_upload/direct_media_upload_init.dart';
+import 'package:regardless_data_module/domain/model/team/Invite_and_team.dart';
 import 'package:regardless_data_module/domain/model/team/team.dart';
 import 'package:regardless_data_module/domain/model/team/team_invite.dart';
 import 'package:regardless_data_module/domain/model/team/team_join_request.dart';
@@ -87,6 +88,16 @@ class TeamRepositoryImpl with BaseRepository implements TeamRepository {
     if (res.isSuccess()) {
       final e = res.tryGetSuccess()! as Map<String, dynamic>;
       return Success(TeamMapper.fromMap(e));
+    }
+    return Error(res.tryGetError()!);
+  }
+
+  @override
+  Future<Result<InviteAndTeam, Exception>> getTeamInvite(String token, String teamUid) async {
+    final res = await processRequest(() => apiService.getTeamInvite(token, teamUid));
+    if (res.isSuccess()) {
+      final e = res.tryGetSuccess()! as Map<String, dynamic>;
+      return Success(InviteAndTeam.fromMap(e));
     }
     return Error(res.tryGetError()!);
   }

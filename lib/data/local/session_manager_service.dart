@@ -12,6 +12,7 @@ import '../../domain/model/preference.dart';
 import '../../domain/model/session_manager.dart';
 import '../../domain/model/user.dart';
 
+const pendingInviteKey = "pendingInviteKey";
 const appStateKey = "appStateKey";
 const refreshTokenKey = "refreshTokenKey";
 const accessTokenKey = "accessTokenKey";
@@ -173,11 +174,15 @@ class SessionManagerImpl extends SessionManager {
 
   @override
   void set(String key, dynamic value) {
-    _hiveBox.put(key, value);
+    if (value == null) {
+      _hiveBox.delete(key);
+      return;
+    } 
+    _hiveBox.put(key, value.toString());
   }
 
   @override
-  dynamic get(String key) {
+  String get(String key) {
     return _hiveBox.get(key);
   }
 

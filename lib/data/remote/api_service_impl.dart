@@ -1491,4 +1491,9 @@ class ApiServiceImpl with ApiHelpers implements ApiService {
     );
     return response;
   }
+
+  @override
+  Future<http.Response> getTeamInvite(String token, String teamUid) async {
+    return get(ATeam().GetInvite(token, teamUid), headers: await getHeaders());
+  }
 }

@@ -219,6 +219,7 @@ class ATeam extends ApiRoutes {
   String get CreateTeamAccount => '$url/team/create';
   String UsersTeams(String ownerUid) => '$url/team/all/$ownerUid';
   String Get(String ownerUid, String uid) => '$url/team/$ownerUid/$uid';
+  String GetInvite(String token, String teamUid) => '$url/team/$teamUid/invite/$token';
   String Delete(String uid) => '$url/team/$uid';
   String Members(String uid) => '$url/team/$uid/members';
   String RemoveMember(String uid, String memberUid) =>

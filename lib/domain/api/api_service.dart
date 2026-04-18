@@ -192,6 +192,7 @@ abstract class ApiService {
       {XFile? logo, XFile? headerImage});
   Future<Response> getUsersTeams(String ownerUid, {PaginationRequest? request});
   Future<Response> getTeam(String ownerUid, String uid);
+  Future<Response> getTeamInvite(String token, String teamUid);
   Future<Response> deleteTeam(String uid);
   Future<Response> getTeamMembers(String uid, {PaginationRequest? request});
   Future<Response> removeTeamMember(String uid, String memberUid);
