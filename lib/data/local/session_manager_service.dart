@@ -44,7 +44,7 @@ const notificationCountKey = 'notificationCountKey';
 const distanceKey = 'distanceKey';
 const remindersKey = 'reminderKey';
 const hasAuthKey = 'hasAuthKey';
-
+const useDesktopKey = 'useDesktopKey';
 const NotificationKey = 'notification';
 const NotificationReceivedKey = 'notification_received_key';
 
@@ -267,5 +267,15 @@ class SessionManagerImpl extends SessionManager {
     return (jsonDecode(data) as List<dynamic>)
         .map((element) => ReminderMapper.fromMap(element))
         .toList();
+  }
+
+  @override
+  void setUseDesktop(bool value) {
+    _hiveBox.put(useDesktopKey, value);
+  }
+
+  @override
+  bool isDesktopMode() {
+    return _hiveBox.get(useDesktopKey, defaultValue: false);
   }
 }

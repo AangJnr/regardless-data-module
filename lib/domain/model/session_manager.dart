@@ -39,4 +39,6 @@ abstract class SessionManager {
   void addReminder(Reminder reminder);
   List<Reminder> getReminders();
   void removeReminder(Reminder reminder);
+  void setUseDesktop(bool value);
+  bool isDesktopMode();
 }
