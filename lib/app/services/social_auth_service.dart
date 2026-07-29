@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:multiple_result/multiple_result.dart';
+import 'package:regardless_data_module/domain/model/new_user.dart';
 import '../../app/app.logger.dart';
 import '../../domain/model/session_manager.dart';
 import '../app.locator.dart';
@@ -34,6 +35,33 @@ class SocialAuthService {
       }
 
       if (userRequest.user != null) {
+        final user = userRequest.user;
+        if (user != null) {
+          // 1. Extract metadata from additionalUserInfo
+          final profile = userRequest.additionalUserInfo?.profile;
+
+          if (profile != null) {
+            // Google returns flat key-value pairs in the profile map
+            final String? email = profile['email'];
+            final String? fullName = profile['name'];
+            final String? firstName = profile['given_name'];
+            final String? lastName = profile['family_name'];
+            final String? profilePicture = profile['picture']; // URL string
+
+            _sessionManager.saveNewUserData(
+              NewUser(
+                email: email ?? '',
+                fullName: fullName ?? '$firstName $lastName'.trim(),
+                picture: profilePicture ?? '',
+              ),
+            );
+            getLogger("SocialAuthService").i(
+              'Google User Details: $firstName $lastName, Email: $email, Photo: $profilePicture',
+            );
+          }
+
+          return Success(user);
+        }
         return Success(userRequest.user!);
       }
       return Error(Exception('Sign in not completed.'));
@@ -75,7 +103,7 @@ class SocialAuthService {
     try {
       final appleProvider = AppleAuthProvider()
           .addScope('email')
-          .addScope('fullName');
+          .addScope('name');
       UserCredential userRequest;
       if (kIsWeb) {
         userRequest = await FirebaseAuth.instance.signInWithPopup(
@@ -88,6 +116,43 @@ class SocialAuthService {
       }
 
       if (userRequest.user != null) {
+        final user = userRequest.user;
+        if (user != null) {
+          // 1. Extract metadata from additionalUserInfo
+          final profile = userRequest.additionalUserInfo?.profile;
+          getLogger("SocialAuthService").i('Apple User Details: $profile');
+          if (profile != null) {
+            // Apple provides nested name objects inside the profile map
+            final nameMap = profile['name'] as Map<String, dynamic>?;
+            final String? firstName = nameMap?['firstName'];
+            final String? lastName = nameMap?['lastName'];
+            final String? email = profile['email'];
+
+            final String fullName = '${firstName ?? ''} ${lastName ?? ''}'
+                .trim();
+
+            // 2. Proactively update the profile if displayName is empty
+            if (user.displayName == null || user.displayName!.isEmpty) {
+              if (fullName.isNotEmpty) {
+                await user.updateDisplayName(fullName);
+                await user.reload(); // Refresh the user cached state
+              }
+            }
+
+            _sessionManager.saveNewUserData(
+              NewUser(
+                email: email ?? '',
+                fullName: fullName,
+                picture: user.photoURL ?? '',
+              ),
+            );
+            getLogger(
+              "SocialAuthService",
+            ).i('Apple User Details: $fullName, Email: $email');
+          }
+
+          return Success(FirebaseAuth.instance.currentUser!);
+        }
         return Success(userRequest.user!);
       }
       return Error(Exception('Sign in not completed.'));

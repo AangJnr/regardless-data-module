@@ -9,13 +9,7 @@ part 'user.mapper.dart';
 
 @MappableEnum()
 // ignore: constant_identifier_names
-enum Gender {
-  Male,
-  Female,
-  NonBinary,
-  Unsure,
-  RatherNotSay,
-}
+enum Gender { Male, Female, NonBinary, Unsure, RatherNotSay }
 
 @MappableClass()
 class AUser with AUserMappable {
@@ -45,32 +39,33 @@ class AUser with AUserMappable {
   final List<TimeSlot> schedule;
   final Venue? businessLocation;
 
-  const AUser(
-      {this.uid = '',
-      this.email = '',
-      this.fullName = '',
-      this.phone = '',
-      this.createdAt,
-      this.updatedAt,
-      this.isProvider = false,
-      this.gender = Gender.Unsure,
-      this.bio = '',
-      this.userName = '',
-      this.authUid = '',
-      this.isVerified = false,
-      this.categoryUid = '',
-      this.userNameAlreadyUpdated = false,
-      this.category,
-      this.subCategories,
-      this.unreadNotificationCount = 0,
-      this.reviewsCount = 0,
-      this.rating = 5.0,
-      this.likedPostUids = const [],
-      this.favoratesUids = const [],
-      this.subCategoryUids = const [],
-      this.joinedCommunityUids = const [],
-      this.schedule = const [],
-      this.businessLocation});
+  const AUser({
+    this.uid = '',
+    this.email = '',
+    this.fullName = '',
+    this.phone = '',
+    this.createdAt,
+    this.updatedAt,
+    this.isProvider = false,
+    this.gender = Gender.Unsure,
+    this.bio = '',
+    this.userName = '',
+    this.authUid = '',
+    this.isVerified = false,
+    this.categoryUid = '',
+    this.userNameAlreadyUpdated = false,
+    this.category,
+    this.subCategories,
+    this.unreadNotificationCount = 0,
+    this.reviewsCount = 0,
+    this.rating = 5.0,
+    this.likedPostUids = const [],
+    this.favoratesUids = const [],
+    this.subCategoryUids = const [],
+    this.joinedCommunityUids = const [],
+    this.schedule = const [],
+    this.businessLocation,
+  });
 
   @override
   String toString() {

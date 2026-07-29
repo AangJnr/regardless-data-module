@@ -26,7 +26,7 @@ class Url {
     return Url._().webAddress;
   }
 
-  static Flavor _flavor = Flavor.local;
+  static Flavor _flavor = Flavor.dev;
 
   static String _url({String version = 'v1'}) {
     switch (_flavor) {
