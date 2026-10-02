@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:cross_file/cross_file.dart';
+ import 'package:cross_file/cross_file.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:regardless_data_module/data/model/paginated_response.dart';
 import 'package:regardless_data_module/data/remote/repository/base_repository.dart';

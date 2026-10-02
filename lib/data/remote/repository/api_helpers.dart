@@ -2,6 +2,8 @@
 
 // ignore_for_file: strict_top_level_inference
 
+import 'dart:math' show Random;
+
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter/foundation.dart';
 // ignore: depend_on_referenced_packages

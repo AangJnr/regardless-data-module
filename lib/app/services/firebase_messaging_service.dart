@@ -46,36 +46,37 @@ class FirebaseMessageService {
   late Stream<String> _tokenStream;
 
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  static AndroidNotificationChannel getChannel([RNotification? notification]) =>
-      AndroidNotificationChannel(
-          'regardless_notification_channel_id', // id
-          'New notifications',
-          description:
-              'This channel is used for delivery alerts and statuses notifications in Regardless app.',
-          importance: Importance.high,
-          playSound: true,
-          enableVibration: true,
-          enableLights: true);
+  static AndroidNotificationChannel getChannel([
+    RNotification? notification,
+  ]) => AndroidNotificationChannel(
+    'regardless_notification_channel_id', // id
+    'New notifications',
+    description:
+        'This channel is used for delivery alerts and statuses notifications in Regardless app.',
+    importance: Importance.high,
+    playSound: true,
+    enableVibration: true,
+    enableLights: true,
+  );
 
   Future<bool> _checkAndroidPermission() async {
     return await flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
-                AndroidFlutterLocalNotificationsPlugin>()
+              AndroidFlutterLocalNotificationsPlugin
+            >()
             ?.requestNotificationsPermission() ??
         false;
   }
 
   Future<bool> _checkIOSPermission() async {
-    final bool result = await flutterLocalNotificationsPlugin
+    final bool result =
+        await flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
-                IOSFlutterLocalNotificationsPlugin>()
-            ?.requestPermissions(
-              alert: true,
-              badge: true,
-              sound: true,
-            ) ??
+              IOSFlutterLocalNotificationsPlugin
+            >()
+            ?.requestPermissions(alert: true, badge: true, sound: true) ??
         false;
-// For apple platforms, ensure the APNS token is available before making any FCM plugin API calls
+    // For apple platforms, ensure the APNS token is available before making any FCM plugin API calls
     final apnsToken = await messaging.getAPNSToken();
     return (result && apnsToken != null);
   }
@@ -102,25 +103,31 @@ class FirebaseMessageService {
     if (await arePermissionsGranted()) {
       messaging
           .getToken(
-              vapidKey:
-                  'BHiUDPnbHYMViNK-1UpAuH4MiIZ8Yekk6r4NpW6FJELYLZ3RCogdsH-pVwBgZTRY5DoDG6f4M10B4c-s1FVDeOc')
+            vapidKey:
+                'BHiUDPnbHYMViNK-1UpAuH4MiIZ8Yekk6r4NpW6FJELYLZ3RCogdsH-pVwBgZTRY5DoDG6f4M10B4c-s1FVDeOc',
+          )
           .then(setToken);
       _tokenStream = messaging.onTokenRefresh;
       _tokenStream.listen(setToken);
     }
   }
 
-//Notification Helpers
+  //Notification Helpers
   void setToken(String? token) async {
     //Update token on the server
     if (token != null) {
-      (await module<UserRepository>().updateDeviceToken(token)).when((success) {
-        debugPrint(
-            "FirebaseMessageService FCM Token: $token has been registered");
-      }, (error) {
-        debugPrint(
-            "FirebaseMessageService FCM Token Error: $token || ${error.toString()}");
-      });
+      (await module<UserRepository>().updateDeviceToken(token)).when(
+        (success) {
+          debugPrint(
+            "FirebaseMessageService FCM Token: $token has been registered",
+          );
+        },
+        (error) {
+          debugPrint(
+            "FirebaseMessageService FCM Token Error: $token || ${error.toString()}",
+          );
+        },
+      );
     }
   }
 
@@ -132,16 +139,18 @@ class FirebaseMessageService {
 
     final notificationDetails = await getNotificationDetails(notification);
     flutterLocalNotificationsPlugin.show(
-      notification.id,
-      notification.title,
-      notification.body,
-      notificationDetails,
+      id: notification.id,
+      title: notification.title,
+      body: notification.body,
+      notificationDetails: notificationDetails,
       payload: jsonEncode(notification.data),
     );
   }
 
-  void showNotificationProgress(RNotification notification,
-      {int progress = 0}) async {
+  void showNotificationProgress(
+    RNotification notification, {
+    int progress = 0,
+  }) async {
     getLogger('FirebaseMessageService').i(notification.toString());
     final channel = getChannel(notification);
 
@@ -164,15 +173,16 @@ class FirebaseMessageService {
         maxProgress: 100,
         tag: notification.id.toString(),
         sound: RawResourceAndroidNotificationSound(
-            'regardless_notification_sound'),
+          'regardless_notification_sound',
+        ),
       ),
       iOS: const DarwinNotificationDetails(),
     );
     flutterLocalNotificationsPlugin.show(
-      notification.id,
-      notification.title,
-      notification.body,
-      notificationDetails,
+      id: notification.id,
+      title: notification.title,
+      body: notification.body,
+      notificationDetails: notificationDetails,
       payload: jsonEncode(notification.data),
     );
   }
@@ -189,12 +199,15 @@ class FirebaseMessageService {
       final notificationDetails = await getNotificationDetails(notification);
 
       await flutterLocalNotificationsPlugin.zonedSchedule(
-        notification.id,
-        notification.title,
-        notification.body,
+        id: notification.id,
+        title: notification.title,
+        body: notification.body,
         payload: jsonEncode(notification.data),
-        tz.TZDateTime.from(notification.scheduledTime!, tz.local),
-        notificationDetails,
+        scheduledDate: tz.TZDateTime.from(
+          notification.scheduledTime!,
+          tz.local,
+        ),
+        notificationDetails: notificationDetails,
         androidScheduleMode: AndroidScheduleMode.alarmClock,
         // uiLocalNotificationDateInterpretation:UILocalNotificationDateInterpretation.absoluteTime,
       );
@@ -207,35 +220,43 @@ class FirebaseMessageService {
     final channel = getChannel();
 
     AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(channel.id, channel.name,
-            channelDescription: channel.description,
-            icon: 'ic_notification',
-            autoCancel: false,
-            sound: RawResourceAndroidNotificationSound(
-                'regardless_notification_sound'),
-            importance: Importance.max,
-            priority: Priority.high,
-            ticker: 'ticker',
-            silent: true);
+        AndroidNotificationDetails(
+          channel.id,
+          channel.name,
+          channelDescription: channel.description,
+          icon: 'ic_notification',
+          autoCancel: false,
+          sound: RawResourceAndroidNotificationSound(
+            'regardless_notification_sound',
+          ),
+          importance: Importance.max,
+          priority: Priority.high,
+          ticker: 'ticker',
+          silent: true,
+        );
     const DarwinNotificationDetails darwinNotificationDetails =
-        DarwinNotificationDetails(
-      presentSound: false,
-    );
+        DarwinNotificationDetails(presentSound: false);
 
     final NotificationDetails notificationDetails = NotificationDetails(
-        android: androidNotificationDetails,
-        iOS: darwinNotificationDetails,
-        macOS: darwinNotificationDetails);
-    await flutterLocalNotificationsPlugin.show(notification.id,
-        notification.title, notification.body, notificationDetails);
+      android: androidNotificationDetails,
+      iOS: darwinNotificationDetails,
+      macOS: darwinNotificationDetails,
+    );
+    await flutterLocalNotificationsPlugin.show(
+      id: notification.id,
+      title: notification.title,
+      body: notification.body,
+      notificationDetails: notificationDetails,
+    );
   }
 
   void cancelNotification(int id) {
-    flutterLocalNotificationsPlugin.cancel(id);
+    flutterLocalNotificationsPlugin.cancel(id:id);
   }
 
   Future<NotificationDetails> getNotificationDetails(
-      RNotification notification) async {
+    RNotification notification,
+  ) async {
     final channel = getChannel(notification);
 
     BigPictureStyleInformation? androidStyleInformation;
@@ -245,64 +266,72 @@ class FirebaseMessageService {
     if (notification.data != null &&
         notification.data?.keys.contains('url') == true) {
       final String largeIconPath = await _downloadAndSaveFile(
-          notification.data!['url'], '${notification.id}_largeIcon.jpg',
-          isThumbnail: true);
+        notification.data!['url'],
+        '${notification.id}_largeIcon.jpg',
+        isThumbnail: true,
+      );
       final String bigPicturePath = await _downloadAndSaveFile(
-          notification.data!['url'], '${notification.id}_bigPicture.jpg');
+        notification.data!['url'],
+        '${notification.id}_bigPicture.jpg',
+      );
 
       androidStyleInformation = BigPictureStyleInformation(
-          FilePathAndroidBitmap(bigPicturePath),
-          largeIcon: FilePathAndroidBitmap(largeIconPath),
-          contentTitle: notification.title,
-          summaryText: notification.body,
-          htmlFormatContentTitle: true);
+        FilePathAndroidBitmap(bigPicturePath),
+        largeIcon: FilePathAndroidBitmap(largeIconPath),
+        contentTitle: notification.title,
+        summaryText: notification.body,
+        htmlFormatContentTitle: true,
+      );
 
-      attachments.add(DarwinNotificationAttachment(
-        bigPicturePath,
-        hideThumbnail: false,
-      ));
+      attachments.add(
+        DarwinNotificationAttachment(bigPicturePath, hideThumbnail: false),
+      );
     }
 
     if (notification.isTextInput) {
       iosCategoryId = darwinNotificationCategoryText;
-      androidActions.add(AndroidNotificationAction(
-        'reply_message',
-        'Reply',
-        showsUserInterface: true,
-        allowGeneratedReplies: true,
-        cancelNotification: true,
-        icon: DrawableResourceAndroidBitmap('ic_notification'),
-        inputs: <AndroidNotificationActionInput>[
-          AndroidNotificationActionInput(
-            label: 'Enter a message',
-          ),
-        ],
-      ));
+      androidActions.add(
+        AndroidNotificationAction(
+          'reply_message',
+          'Reply',
+          showsUserInterface: true,
+          allowGeneratedReplies: true,
+          cancelNotification: true,
+          icon: DrawableResourceAndroidBitmap('ic_notification'),
+          inputs: <AndroidNotificationActionInput>[
+            AndroidNotificationActionInput(label: 'Enter a message'),
+          ],
+        ),
+      );
     }
 
     AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(channel.id, channel.name,
-            channelDescription: channel.description,
-            groupKey: groupKey,
-            icon: 'ic_notification',
-            importance: Importance.max,
-            priority: Priority.high,
-            ticker: 'ticker',
-            autoCancel: false,
-            tag: notification.id.toString(),
-            sound: RawResourceAndroidNotificationSound(
-                'regardless_notification_sound'),
-            actions: androidActions,
-            styleInformation: androidStyleInformation);
+        AndroidNotificationDetails(
+          channel.id,
+          channel.name,
+          channelDescription: channel.description,
+          groupKey: groupKey,
+          icon: 'ic_notification',
+          importance: Importance.max,
+          priority: Priority.high,
+          ticker: 'ticker',
+          autoCancel: false,
+          tag: notification.id.toString(),
+          sound: RawResourceAndroidNotificationSound(
+            'regardless_notification_sound',
+          ),
+          actions: androidActions,
+          styleInformation: androidStyleInformation,
+        );
     DarwinNotificationDetails darwinNotificationDetails =
         DarwinNotificationDetails(
-      categoryIdentifier: iosCategoryId,
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true,
-      sound: 'regardless_notification_sound.aiff',
-      attachments: attachments,
-    );
+          categoryIdentifier: iosCategoryId,
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+          sound: 'regardless_notification_sound.aiff',
+          attachments: attachments,
+        );
 
     return NotificationDetails(
       android: androidNotificationDetails,
@@ -310,8 +339,11 @@ class FirebaseMessageService {
     );
   }
 
-  Future<String> _downloadAndSaveFile(String url, String fileName,
-      {bool isThumbnail = false}) async {
+  Future<String> _downloadAndSaveFile(
+    String url,
+    String fileName, {
+    bool isThumbnail = false,
+  }) async {
     final Directory directory = await getApplicationDocumentsDirectory();
     final String filePath = '${directory.path}/$fileName';
     final Response response = await get(Uri.parse(url));
@@ -334,10 +366,10 @@ class FirebaseMessageService {
     return filePath;
   }
 
-  Future<void> initialize(
-      {ValueChanged<NotificationResponse>? onBackgroundNotificationReceived,
-      ValueChanged<NotificationResponse>?
-          onForegroundNotificationReceived}) async {
+  Future<void> initialize({
+    ValueChanged<NotificationResponse>? onBackgroundNotificationReceived,
+    ValueChanged<NotificationResponse>? onForegroundNotificationReceived,
+  }) async {
     await _configureLocalTimeZone();
 
     const AndroidInitializationSettings initializationSettingsAndroid =
@@ -347,62 +379,62 @@ class FirebaseMessageService {
     /// done later
     final DarwinInitializationSettings initializationSettingsDarwin =
         DarwinInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
-      notificationCategories: <DarwinNotificationCategory>[
-        DarwinNotificationCategory(
-          darwinNotificationCategoryText,
-          actions: <DarwinNotificationAction>[
-            DarwinNotificationAction.text(
-              'reply_message',
-              'New Message',
-              buttonTitle: 'Reply',
-              placeholder: 'Enter a message',
+          requestAlertPermission: false,
+          requestBadgePermission: false,
+          requestSoundPermission: false,
+          notificationCategories: <DarwinNotificationCategory>[
+            DarwinNotificationCategory(
+              darwinNotificationCategoryText,
+              actions: <DarwinNotificationAction>[
+                DarwinNotificationAction.text(
+                  'reply_message',
+                  'New Message',
+                  buttonTitle: 'Reply',
+                  placeholder: 'Enter a message',
+                ),
+              ],
+            ),
+            DarwinNotificationCategory(
+              darwinNotificationCategoryPlain,
+              actions: <DarwinNotificationAction>[
+                DarwinNotificationAction.plain('id_1', 'Action 1'),
+                DarwinNotificationAction.plain(
+                  'id_2',
+                  'Action 2 (destructive)',
+                  options: <DarwinNotificationActionOption>{
+                    DarwinNotificationActionOption.destructive,
+                  },
+                ),
+                DarwinNotificationAction.plain(
+                  navigationActionId,
+                  'Action 3 (foreground)',
+                  options: <DarwinNotificationActionOption>{
+                    DarwinNotificationActionOption.foreground,
+                  },
+                ),
+                DarwinNotificationAction.plain(
+                  'id_4',
+                  'Action 4 (auth required)',
+                  options: <DarwinNotificationActionOption>{
+                    DarwinNotificationActionOption.authenticationRequired,
+                  },
+                ),
+              ],
+              options: <DarwinNotificationCategoryOption>{
+                DarwinNotificationCategoryOption.hiddenPreviewShowTitle,
+              },
             ),
           ],
-        ),
-        DarwinNotificationCategory(
-          darwinNotificationCategoryPlain,
-          actions: <DarwinNotificationAction>[
-            DarwinNotificationAction.plain('id_1', 'Action 1'),
-            DarwinNotificationAction.plain(
-              'id_2',
-              'Action 2 (destructive)',
-              options: <DarwinNotificationActionOption>{
-                DarwinNotificationActionOption.destructive,
-              },
-            ),
-            DarwinNotificationAction.plain(
-              navigationActionId,
-              'Action 3 (foreground)',
-              options: <DarwinNotificationActionOption>{
-                DarwinNotificationActionOption.foreground,
-              },
-            ),
-            DarwinNotificationAction.plain(
-              'id_4',
-              'Action 4 (auth required)',
-              options: <DarwinNotificationActionOption>{
-                DarwinNotificationActionOption.authenticationRequired,
-              },
-            ),
-          ],
-          options: <DarwinNotificationCategoryOption>{
-            DarwinNotificationCategoryOption.hiddenPreviewShowTitle,
-          },
-        )
-      ],
-    );
+        );
 
     final InitializationSettings initializationSettings =
         InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsDarwin,
-    );
+          android: initializationSettingsAndroid,
+          iOS: initializationSettingsDarwin,
+        );
 
     await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
+    settings:  initializationSettings,
       onDidReceiveNotificationResponse: onForegroundNotificationReceived,
       onDidReceiveBackgroundNotificationResponse:
           onBackgroundNotificationReceived,
@@ -413,16 +445,17 @@ class FirebaseMessageService {
     _setupFirebaseInteractedMessage();
   }
 
-  Future<void> checkInitialMessage(
-      [ValueChanged<NotificationResponse>?
-          onForegroundNotificationReceived]) async {
+  Future<void> checkInitialMessage([
+    ValueChanged<NotificationResponse>? onForegroundNotificationReceived,
+  ]) async {
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
         await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
     if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
       if (notificationAppLaunchDetails?.notificationResponse != null) {
-        onForegroundNotificationReceived
-            ?.call(notificationAppLaunchDetails!.notificationResponse!);
+        onForegroundNotificationReceived?.call(
+          notificationAppLaunchDetails!.notificationResponse!,
+        );
       }
     }
   }
@@ -439,7 +472,7 @@ class FirebaseMessageService {
   Future<bool> requestPermissions() async {
     var result = false;
     if (kIsWeb) return false;
- 
+
     if (Platform.isIOS || Platform.isMacOS) {
       result = await _checkIOSPermission();
     } else if (Platform.isAndroid) {
@@ -455,14 +488,16 @@ class FirebaseMessageService {
     if (Platform.isIOS || Platform.isMacOS) {
       return (await flutterLocalNotificationsPlugin
                   .resolvePlatformSpecificImplementation<
-                      IOSFlutterLocalNotificationsPlugin>()
+                    IOSFlutterLocalNotificationsPlugin
+                  >()
                   ?.checkPermissions())
               ?.isEnabled ??
           false;
     } else if (Platform.isAndroid) {
       return await flutterLocalNotificationsPlugin
               .resolvePlatformSpecificImplementation<
-                  AndroidFlutterLocalNotificationsPlugin>()
+                AndroidFlutterLocalNotificationsPlugin
+              >()
               ?.areNotificationsEnabled() ??
           false;
     }
@@ -470,7 +505,7 @@ class FirebaseMessageService {
   }
 
   void cancel(int hashCode) {
-    flutterLocalNotificationsPlugin.cancel(hashCode);
+    flutterLocalNotificationsPlugin.cancel(id:hashCode);
   }
 }
 
@@ -482,14 +517,15 @@ class RNotification {
   final DateTime? scheduledTime;
   final Map<String, dynamic>? data;
   final bool isTextInput;
-  RNotification(
-      {required this.title,
-      required this.body,
-      required this.id,
-      this.channelKey,
-      this.scheduledTime,
-      this.data,
-      this.isTextInput = false});
+  RNotification({
+    required this.title,
+    required this.body,
+    required this.id,
+    this.channelKey,
+    this.scheduledTime,
+    this.data,
+    this.isTextInput = false,
+  });
   factory RNotification.fromMessage(RemoteMessage message) {
     final metaData = message.data['metaData'] == null
         ? null
@@ -498,11 +534,12 @@ class RNotification {
 
     metaData?.putIfAbsent("type", () => type);
     return RNotification(
-        title: message.notification?.title ?? '',
-        body: message.notification?.body ?? '',
-        id: message.hashCode,
-        data: metaData,
-        isTextInput: type == NotificationType.NEW_MESSAGE.name);
+      title: message.notification?.title ?? '',
+      body: message.notification?.body ?? '',
+      id: message.hashCode,
+      data: metaData,
+      isTextInput: type == NotificationType.NEW_MESSAGE.name,
+    );
   }
 
   @override

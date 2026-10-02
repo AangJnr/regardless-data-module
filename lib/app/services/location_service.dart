@@ -57,8 +57,11 @@ class LocationService {
     _positionStream?.cancel();
   }
 
-  Future<String> getAddressName(lat, lng) async {
-    List<Placemark> placemark = await placemarkFromCoordinates(lat, lng);
+  Future<String> getAddressName(double lat, double lng) async {
+    List<Placemark> placemark = await Geocoding().placemarkFromCoordinates(
+      lat,
+      lng,
+    );
     return Future.value(placemark[0].name ?? "");
   }
 

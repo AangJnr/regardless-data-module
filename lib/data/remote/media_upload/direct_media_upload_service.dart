@@ -92,11 +92,11 @@ class DirectMediaUploadService {
         totalBytes: length,
         onProgress: onProgress,
       ));
- 
+
       final req = http.StreamedRequest('PUT', uri);
       req.headers['Content-Type'] = contentType;
       req.contentLength = length;
- 
+
       // // Add the stream to the request
       // stream.listen(
       //   (bytes) {
@@ -115,9 +115,9 @@ class DirectMediaUploadService {
       try {
         await req.sink.addStream(stream);
 
- 
+
         final res = await client.send(req);
- 
+
         if (res.statusCode < 200 || res.statusCode >= 300) {
           final body = await res.stream.bytesToString();
           throw Exception('PUT to signedUrl failed (${res.statusCode}): $body');
