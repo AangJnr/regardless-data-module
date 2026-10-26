@@ -1,3 +1,6 @@
+import 'package:regardless_data_module/domain/model/team/team.dart';
+import 'package:regardless_data_module/domain/model/tournament/tournament.dart';
+
 import 'community/community.dart';
 import 'feed.dart';
 import 'service/service.dart';
@@ -14,7 +17,8 @@ class SearchEventResults {
 
   final List<AUser> providers;
   final List<AUser> otherProviders;
-
+  final List<Team> teams;
+  final List<Tournament> tournaments;
   const SearchEventResults({
     this.events = const [],
     this.otherEvents = const [],
@@ -24,6 +28,8 @@ class SearchEventResults {
     this.otherServices = const [],
     this.providers = const [],
     this.otherProviders = const [],
+    this.teams = const [],
+    this.tournaments = const [],
   });
 
   @override

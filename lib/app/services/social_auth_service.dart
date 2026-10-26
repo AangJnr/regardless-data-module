@@ -195,6 +195,7 @@ class SocialAuthService {
 
       try {
         final email = _sessionManager.get('email');
+        if (email == null) throw ('No email found');
         final userCredential = await FirebaseAuth.instance.signInWithEmailLink(
           email: email,
           emailLink: emailLink,

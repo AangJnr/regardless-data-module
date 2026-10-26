@@ -11,11 +11,12 @@ class UpdateUser with UpdateUserMappable {
   final String bio;
   final String picture;
   final Venue? businessLocation;
-  const UpdateUser(
-      {required this.uid,
-      this.fullName = 'Regardless User',
-      this.phone = '',
-      this.picture = '',
-      this.bio = '',
-      this.businessLocation});
+  const UpdateUser({
+    required this.uid,
+    this.fullName = 'Regardless User',
+    this.phone = '',
+    this.picture = '',
+    this.bio = '',
+    this.businessLocation,
+  });
 }

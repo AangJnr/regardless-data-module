@@ -165,6 +165,7 @@ class TournamentMapper extends ClassMapperBase<Tournament> {
   static TournamentMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TournamentMapper._());
+      MediaMapper.ensureInitialized();
       TournamentStatusMapper.ensureInitialized();
       TournamentFormatMapper.ensureInitialized();
       RankingSystemMapper.ensureInitialized();
@@ -203,14 +204,14 @@ class TournamentMapper extends ClassMapperBase<Tournament> {
     opt: true,
     def: '',
   );
-  static String? _$logoUrl(Tournament v) => v.logoUrl;
-  static const Field<Tournament, String> _f$logoUrl = Field(
+  static Media? _$logoUrl(Tournament v) => v.logoUrl;
+  static const Field<Tournament, Media> _f$logoUrl = Field(
     'logoUrl',
     _$logoUrl,
     opt: true,
   );
-  static String? _$coverUrl(Tournament v) => v.coverUrl;
-  static const Field<Tournament, String> _f$coverUrl = Field(
+  static Media? _$coverUrl(Tournament v) => v.coverUrl;
+  static const Field<Tournament, Media> _f$coverUrl = Field(
     'coverUrl',
     _$coverUrl,
     opt: true,
@@ -235,6 +236,34 @@ class TournamentMapper extends ClassMapperBase<Tournament> {
     _$rankingSystem,
     opt: true,
     def: RankingSystem.points,
+  );
+  static String _$sportsCategoryUid(Tournament v) => v.sportsCategoryUid;
+  static const Field<Tournament, String> _f$sportsCategoryUid = Field(
+    'sportsCategoryUid',
+    _$sportsCategoryUid,
+    opt: true,
+    def: '',
+  );
+  static String _$sportsCategoryName(Tournament v) => v.sportsCategoryName;
+  static const Field<Tournament, String> _f$sportsCategoryName = Field(
+    'sportsCategoryName',
+    _$sportsCategoryName,
+    opt: true,
+    def: '',
+  );
+  static String _$seasonName(Tournament v) => v.seasonName;
+  static const Field<Tournament, String> _f$seasonName = Field(
+    'seasonName',
+    _$seasonName,
+    opt: true,
+    def: 'Season 1',
+  );
+  static String _$timezone(Tournament v) => v.timezone;
+  static const Field<Tournament, String> _f$timezone = Field(
+    'timezone',
+    _$timezone,
+    opt: true,
+    def: 'Etc/UTC',
   );
   static int _$winPoints(Tournament v) => v.winPoints;
   static const Field<Tournament, int> _f$winPoints = Field(
@@ -278,6 +307,18 @@ class TournamentMapper extends ClassMapperBase<Tournament> {
     opt: true,
     def: 20,
   );
+  static int? _$groupCount(Tournament v) => v.groupCount;
+  static const Field<Tournament, int> _f$groupCount = Field(
+    'groupCount',
+    _$groupCount,
+    opt: true,
+  );
+  static int? _$qualifiersPerGroup(Tournament v) => v.qualifiersPerGroup;
+  static const Field<Tournament, int> _f$qualifiersPerGroup = Field(
+    'qualifiersPerGroup',
+    _$qualifiersPerGroup,
+    opt: true,
+  );
   static List<String> _$participantTeamUids(Tournament v) =>
       v.participantTeamUids;
   static const Field<Tournament, List<String>> _f$participantTeamUids = Field(
@@ -316,12 +357,18 @@ class TournamentMapper extends ClassMapperBase<Tournament> {
     #status: _f$status,
     #format: _f$format,
     #rankingSystem: _f$rankingSystem,
+    #sportsCategoryUid: _f$sportsCategoryUid,
+    #sportsCategoryName: _f$sportsCategoryName,
+    #seasonName: _f$seasonName,
+    #timezone: _f$timezone,
     #winPoints: _f$winPoints,
     #drawPoints: _f$drawPoints,
     #lossPoints: _f$lossPoints,
     #roundRobinCount: _f$roundRobinCount,
     #minTeams: _f$minTeams,
     #maxTeams: _f$maxTeams,
+    #groupCount: _f$groupCount,
+    #qualifiersPerGroup: _f$qualifiersPerGroup,
     #participantTeamUids: _f$participantTeamUids,
     #currentSeasonUid: _f$currentSeasonUid,
     #createdAt: _f$createdAt,
@@ -339,12 +386,18 @@ class TournamentMapper extends ClassMapperBase<Tournament> {
       status: data.dec(_f$status),
       format: data.dec(_f$format),
       rankingSystem: data.dec(_f$rankingSystem),
+      sportsCategoryUid: data.dec(_f$sportsCategoryUid),
+      sportsCategoryName: data.dec(_f$sportsCategoryName),
+      seasonName: data.dec(_f$seasonName),
+      timezone: data.dec(_f$timezone),
       winPoints: data.dec(_f$winPoints),
       drawPoints: data.dec(_f$drawPoints),
       lossPoints: data.dec(_f$lossPoints),
       roundRobinCount: data.dec(_f$roundRobinCount),
       minTeams: data.dec(_f$minTeams),
       maxTeams: data.dec(_f$maxTeams),
+      groupCount: data.dec(_f$groupCount),
+      qualifiersPerGroup: data.dec(_f$qualifiersPerGroup),
       participantTeamUids: data.dec(_f$participantTeamUids),
       currentSeasonUid: data.dec(_f$currentSeasonUid),
       createdAt: data.dec(_f$createdAt),
@@ -412,6 +465,8 @@ extension TournamentValueCopy<$R, $Out>
 
 abstract class TournamentCopyWith<$R, $In extends Tournament, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
+  MediaCopyWith<$R, Media, Media>? get logoUrl;
+  MediaCopyWith<$R, Media, Media>? get coverUrl;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
   get participantTeamUids;
   $R call({
@@ -419,17 +474,23 @@ abstract class TournamentCopyWith<$R, $In extends Tournament, $Out>
     String? ownerUid,
     String? name,
     String? description,
-    String? logoUrl,
-    String? coverUrl,
+    Media? logoUrl,
+    Media? coverUrl,
     TournamentStatus? status,
     TournamentFormat? format,
     RankingSystem? rankingSystem,
+    String? sportsCategoryUid,
+    String? sportsCategoryName,
+    String? seasonName,
+    String? timezone,
     int? winPoints,
     int? drawPoints,
     int? lossPoints,
     int? roundRobinCount,
     int? minTeams,
     int? maxTeams,
+    int? groupCount,
+    int? qualifiersPerGroup,
     List<String>? participantTeamUids,
     String? currentSeasonUid,
     DateTime? createdAt,
@@ -446,6 +507,12 @@ class _TournamentCopyWithImpl<$R, $Out>
   @override
   late final ClassMapperBase<Tournament> $mapper =
       TournamentMapper.ensureInitialized();
+  @override
+  MediaCopyWith<$R, Media, Media>? get logoUrl =>
+      $value.logoUrl?.copyWith.$chain((v) => call(logoUrl: v));
+  @override
+  MediaCopyWith<$R, Media, Media>? get coverUrl =>
+      $value.coverUrl?.copyWith.$chain((v) => call(coverUrl: v));
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
   get participantTeamUids => ListCopyWith(
@@ -464,12 +531,18 @@ class _TournamentCopyWithImpl<$R, $Out>
     TournamentStatus? status,
     TournamentFormat? format,
     RankingSystem? rankingSystem,
+    String? sportsCategoryUid,
+    String? sportsCategoryName,
+    String? seasonName,
+    String? timezone,
     int? winPoints,
     int? drawPoints,
     int? lossPoints,
     int? roundRobinCount,
     int? minTeams,
     int? maxTeams,
+    Object? groupCount = $none,
+    Object? qualifiersPerGroup = $none,
     List<String>? participantTeamUids,
     Object? currentSeasonUid = $none,
     Object? createdAt = $none,
@@ -485,12 +558,18 @@ class _TournamentCopyWithImpl<$R, $Out>
       if (status != null) #status: status,
       if (format != null) #format: format,
       if (rankingSystem != null) #rankingSystem: rankingSystem,
+      if (sportsCategoryUid != null) #sportsCategoryUid: sportsCategoryUid,
+      if (sportsCategoryName != null) #sportsCategoryName: sportsCategoryName,
+      if (seasonName != null) #seasonName: seasonName,
+      if (timezone != null) #timezone: timezone,
       if (winPoints != null) #winPoints: winPoints,
       if (drawPoints != null) #drawPoints: drawPoints,
       if (lossPoints != null) #lossPoints: lossPoints,
       if (roundRobinCount != null) #roundRobinCount: roundRobinCount,
       if (minTeams != null) #minTeams: minTeams,
       if (maxTeams != null) #maxTeams: maxTeams,
+      if (groupCount != $none) #groupCount: groupCount,
+      if (qualifiersPerGroup != $none) #qualifiersPerGroup: qualifiersPerGroup,
       if (participantTeamUids != null)
         #participantTeamUids: participantTeamUids,
       if (currentSeasonUid != $none) #currentSeasonUid: currentSeasonUid,
@@ -509,12 +588,27 @@ class _TournamentCopyWithImpl<$R, $Out>
     status: data.get(#status, or: $value.status),
     format: data.get(#format, or: $value.format),
     rankingSystem: data.get(#rankingSystem, or: $value.rankingSystem),
+    sportsCategoryUid: data.get(
+      #sportsCategoryUid,
+      or: $value.sportsCategoryUid,
+    ),
+    sportsCategoryName: data.get(
+      #sportsCategoryName,
+      or: $value.sportsCategoryName,
+    ),
+    seasonName: data.get(#seasonName, or: $value.seasonName),
+    timezone: data.get(#timezone, or: $value.timezone),
     winPoints: data.get(#winPoints, or: $value.winPoints),
     drawPoints: data.get(#drawPoints, or: $value.drawPoints),
     lossPoints: data.get(#lossPoints, or: $value.lossPoints),
     roundRobinCount: data.get(#roundRobinCount, or: $value.roundRobinCount),
     minTeams: data.get(#minTeams, or: $value.minTeams),
     maxTeams: data.get(#maxTeams, or: $value.maxTeams),
+    groupCount: data.get(#groupCount, or: $value.groupCount),
+    qualifiersPerGroup: data.get(
+      #qualifiersPerGroup,
+      or: $value.qualifiersPerGroup,
+    ),
     participantTeamUids: data.get(
       #participantTeamUids,
       or: $value.participantTeamUids,

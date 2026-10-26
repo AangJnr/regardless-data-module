@@ -17,18 +17,19 @@ class Category with CategoryMappable {
   final String nameForProvider;
   final bool isActive;
   final String? tag;
-  const Category(
-      {this.name = '',
-      this.description = '',
-      this.imageUrl = '',
-      this.uid = '',
-      this.descriptionForProvider = '',
-      this.nameForProvider = '',
-      this.iconUrl = '',
-      this.tag,
-      this.hexColor,
-      this.isActive = true,
-      this.serviceSupported = false});
+  const Category({
+    this.name = '',
+    this.description = '',
+    this.imageUrl = '',
+    this.uid = '',
+    this.descriptionForProvider = '',
+    this.nameForProvider = '',
+    this.iconUrl = '',
+    this.tag,
+    this.hexColor,
+    this.isActive = true,
+    this.serviceSupported = false,
+  });
 
   @override
   String toString() {

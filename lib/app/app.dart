@@ -18,6 +18,7 @@ import 'services/access_service.dart';
 import 'services/cache_service.dart';
 import 'services/geocoder_service_impl.dart';
 import 'services/places_service_impl.dart';
+
 // @stacked-import
 
 @StackedApp(
@@ -32,7 +33,9 @@ import 'services/places_service_impl.dart';
     LazySingleton(classType: ServiceRepositoryImpl, asType: ServiceRepository),
     LazySingleton(classType: TeamRepositoryImpl, asType: TeamRepository),
     LazySingleton(
-        classType: TournamentRepositoryImpl, asType: TournamentRepository),
+      classType: TournamentRepositoryImpl,
+      asType: TournamentRepository,
+    ),
     LazySingleton(classType: GeocoderImpl, asType: TGeocoder),
     LazySingleton(classType: CacheServiceImpl, asType: CacheService),
     LazySingleton(classType: AccessService),

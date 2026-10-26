@@ -8,6 +8,52 @@
 
 part of 'post.dart';
 
+class PostTypeMapper extends EnumMapper<PostType> {
+  PostTypeMapper._();
+
+  static PostTypeMapper? _instance;
+  static PostTypeMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = PostTypeMapper._());
+    }
+    return _instance!;
+  }
+
+  static PostType fromValue(dynamic value) {
+    ensureInitialized();
+    return MapperContainer.globals.fromValue(value);
+  }
+
+  @override
+  PostType decode(dynamic value) {
+    switch (value) {
+      case r'announcement':
+        return PostType.announcement;
+      case r'post':
+        return PostType.post;
+      default:
+        throw MapperException.unknownEnumValue(value);
+    }
+  }
+
+  @override
+  dynamic encode(PostType self) {
+    switch (self) {
+      case PostType.announcement:
+        return r'announcement';
+      case PostType.post:
+        return r'post';
+    }
+  }
+}
+
+extension PostTypeMapperExtension on PostType {
+  String toValue() {
+    PostTypeMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<PostType>(this) as String;
+  }
+}
+
 class PostMapper extends ClassMapperBase<Post> {
   PostMapper._();
 
@@ -19,6 +65,7 @@ class PostMapper extends ClassMapperBase<Post> {
       HashImageMapper.ensureInitialized();
       PriceMapper.ensureInitialized();
       OwnerMapper.ensureInitialized();
+      PostTypeMapper.ensureInitialized();
       CommunityMapper.ensureInitialized();
     }
     return _instance!;
@@ -151,6 +198,13 @@ class PostMapper extends ClassMapperBase<Post> {
     opt: true,
     def: '',
   );
+  static PostType _$type(Post v) => v.type;
+  static const Field<Post, PostType> _f$type = Field(
+    'type',
+    _$type,
+    opt: true,
+    def: PostType.post,
+  );
   static Community? _$community(Post v) => v.community;
   static const Field<Post, Community> _f$community = Field(
     'community',
@@ -178,6 +232,7 @@ class PostMapper extends ClassMapperBase<Post> {
     #name: _f$name,
     #timestamp: _f$timestamp,
     #communityUid: _f$communityUid,
+    #type: _f$type,
     #community: _f$community,
   };
 
@@ -201,6 +256,7 @@ class PostMapper extends ClassMapperBase<Post> {
       name: data.dec(_f$name),
       timestamp: data.dec(_f$timestamp),
       communityUid: data.dec(_f$communityUid),
+      type: data.dec(_f$type),
       community: data.dec(_f$community),
     );
   }
@@ -276,6 +332,7 @@ abstract class PostCopyWith<$R, $In extends Post, $Out>
     String? name,
     int? timestamp,
     String? communityUid,
+    PostType? type,
     Community? community,
   });
   PostCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -330,6 +387,7 @@ class _PostCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Post, $Out>
     String? name,
     int? timestamp,
     String? communityUid,
+    PostType? type,
     Object? community = $none,
   }) => $apply(
     FieldCopyWithData({
@@ -351,6 +409,7 @@ class _PostCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Post, $Out>
       if (name != null) #name: name,
       if (timestamp != null) #timestamp: timestamp,
       if (communityUid != null) #communityUid: communityUid,
+      if (type != null) #type: type,
       if (community != $none) #community: community,
     }),
   );
@@ -374,6 +433,7 @@ class _PostCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Post, $Out>
     name: data.get(#name, or: $value.name),
     timestamp: data.get(#timestamp, or: $value.timestamp),
     communityUid: data.get(#communityUid, or: $value.communityUid),
+    type: data.get(#type, or: $value.type),
     community: data.get(#community, or: $value.community),
   );
 

@@ -14,16 +14,16 @@ class TimeSlotApi implements DomainMapper<TimeSlot> {
   String toString() => 'TimeSlot(day: $day, slots: $slots)';
 
   factory TimeSlotApi.fromMap(Map<String, dynamic> data) => TimeSlotApi(
-        day: data['day'] as String?,
-        slots: (data['slots'] as List<dynamic>?)
-            ?.map((e) => SlotApi.fromMap(e as Map<String, dynamic>))
-            .toList(),
-      );
+    day: data['day'] as String?,
+    slots: (data['slots'] as List<dynamic>?)
+        ?.map((e) => SlotApi.fromMap(e as Map<String, dynamic>))
+        .toList(),
+  );
 
   Map<String, dynamic> toMap() => {
-        'day': day,
-        'slots': slots?.map((e) => e.toMap()).toList(),
-      };
+    'day': day,
+    'slots': slots?.map((e) => e.toMap()).toList(),
+  };
 
   /// `dart:convert`
   ///
@@ -37,14 +37,8 @@ class TimeSlotApi implements DomainMapper<TimeSlot> {
   /// Converts [TimeSlotApi] to a JSON string.
   String toJson() => json.encode(toMap());
 
-  TimeSlotApi copyWith({
-    String? day,
-    List<SlotApi>? slots,
-  }) {
-    return TimeSlotApi(
-      day: day ?? this.day,
-      slots: slots ?? this.slots,
-    );
+  TimeSlotApi copyWith({String? day, List<SlotApi>? slots}) {
+    return TimeSlotApi(day: day ?? this.day, slots: slots ?? this.slots);
   }
 
   @override

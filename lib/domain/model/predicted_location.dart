@@ -5,10 +5,11 @@ class PredictedLocation {
   final int length;
   final int offset;
 
-  const PredictedLocation(
-      {required this.address,
-      this.matches = false,
-      required this.placeId,
-      this.length = 0,
-      this.offset = 0});
+  const PredictedLocation({
+    required this.address,
+    this.matches = false,
+    required this.placeId,
+    this.length = 0,
+    this.offset = 0,
+  });
 }

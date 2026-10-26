@@ -1,6 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:regardless_data_module/domain/model/team/team_invite.dart';
+import 'package:regardless_data_module/domain/model/user.dart';
 import '../collaborator/collaborator_role.dart';
 
 part 'collaborator_invite.mapper.dart';
@@ -27,6 +28,13 @@ class CollaboratorInvite with CollaboratorInviteMappable {
     this.invitedAt,
     this.status = InviteStatus.pending,
   });
+
+  AUser get user => AUser(
+        uid: uid,
+        email: email,
+        userName: userName,
+        fullName: name,
+      );
 
   String getInvitedAt() {
     try {

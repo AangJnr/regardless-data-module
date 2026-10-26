@@ -11,19 +11,26 @@ import 'base_repository.dart';
 class PostRepositoryImpl with BaseRepository implements PostRepository {
   @override
   Future<Result<Pagination<Post>, Exception>> getPosts(
-      PaginationRequest request) async {
-    var data =
-        await processRequest(() => apiService.getPosts(request: request));
+    PaginationRequest request,
+  ) async {
+    var data = await processRequest(
+      () => apiService.getPosts(request: request),
+    );
     if (data.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(data.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        data.tryGetSuccess()!,
+      );
       try {
-        final data =
-            paginationResponse.data?.map((e) => PostMapper.fromMap(e)).toList();
-        return Success(Pagination<Post>(
+        final data = paginationResponse.data
+            ?.map((e) => PostMapper.fromMap(e))
+            .toList();
+        return Success(
+          Pagination<Post>(
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {
         getLogger('PostRepositoryImpl').e(e);
       }
@@ -45,20 +52,26 @@ class PostRepositoryImpl with BaseRepository implements PostRepository {
 
   @override
   Future<Result<Pagination<Announcement>, Exception>> getUserAnnouncementPosts(
-      PaginationRequest request) async {
+    PaginationRequest request,
+  ) async {
     var data = await processRequest(
-        () => apiService.getUserAnnouncementPosts(request: request));
+      () => apiService.getUserAnnouncementPosts(request: request),
+    );
     if (data.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(data.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        data.tryGetSuccess()!,
+      );
       try {
         final data = paginationResponse.data
             ?.map((e) => AnnouncementMapper.fromMap(e))
             .toList();
-        return Success(Pagination<Announcement>(
+        return Success(
+          Pagination<Announcement>(
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {
         getLogger('PostRepositoryImpl').e(e);
       }
@@ -68,20 +81,25 @@ class PostRepositoryImpl with BaseRepository implements PostRepository {
 
   @override
   Future<Result<Pagination<Announcement>, Exception>>
-      getPublicAnnouncementPosts(PaginationRequest request) async {
+  getPublicAnnouncementPosts(PaginationRequest request) async {
     var data = await processRequest(
-        () => apiService.getPublicAnnouncements(request: request));
+      () => apiService.getPublicAnnouncements(request: request),
+    );
     if (data.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(data.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        data.tryGetSuccess()!,
+      );
       try {
         final data = paginationResponse.data
             ?.map((e) => AnnouncementMapper.fromMap(e))
             .toList();
-        return Success(Pagination<Announcement>(
+        return Success(
+          Pagination<Announcement>(
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {
         getLogger('PostRepositoryImpl').e(e);
       }
@@ -91,9 +109,11 @@ class PostRepositoryImpl with BaseRepository implements PostRepository {
 
   @override
   Future<Result<Announcement, Exception>> addAnnouncementPost(
-      Announcement postData) async {
+    Announcement postData,
+  ) async {
     var data = await processRequest(
-        () => apiService.addAnnouncementPost(postData.toMap()));
+      () => apiService.addAnnouncementPost(postData.toMap()),
+    );
     if (data.isSuccess()) {
       return Success(AnnouncementMapper.fromMap(data.tryGetSuccess()!));
     }
@@ -102,16 +122,19 @@ class PostRepositoryImpl with BaseRepository implements PostRepository {
 
   @override
   Future<bool> deleteAnnouncementPost(String uid) async {
-    var data =
-        await processRequest(() => apiService.deleteAnnouncementPost(uid));
+    var data = await processRequest(
+      () => apiService.deleteAnnouncementPost(uid),
+    );
     return data.isSuccess();
   }
 
   @override
   Future<Result<Announcement, Exception>> editAnnouncementPost(
-      Announcement postData) async {
+    Announcement postData,
+  ) async {
     var data = await processRequest(
-        () => apiService.editAnnouncementPost(postData.uid, postData.toMap()));
+      () => apiService.editAnnouncementPost(postData.uid, postData.toMap()),
+    );
     if (data.isSuccess()) {
       return Success(AnnouncementMapper.fromMap(data.tryGetSuccess()!));
     }
@@ -120,9 +143,11 @@ class PostRepositoryImpl with BaseRepository implements PostRepository {
 
   @override
   Future<Result<ActivityAlert, Exception>> createActivityAlert(
-      ActivityAlert draft) async {
+    ActivityAlert draft,
+  ) async {
     final response = await processRequest(
-        () => apiService.createActivityAlert(draft.toCreateBody()));
+      () => apiService.createActivityAlert(draft.toCreateBody()),
+    );
     if (response.isSuccess()) {
       try {
         final map = response.tryGetSuccess()! as Map<String, dynamic>;
@@ -142,8 +167,9 @@ class PostRepositoryImpl with BaseRepository implements PostRepository {
         final map = response.tryGetSuccess()! as Map<String, dynamic>;
         final raw = map['alerts'] as List<dynamic>? ?? [];
         final list = raw
-            .map((e) =>
-                ActivityAlert.fromMap(Map<String, dynamic>.from(e as Map)))
+            .map(
+              (e) => ActivityAlert.fromMap(Map<String, dynamic>.from(e as Map)),
+            )
             .toList();
         return Success(list);
       } catch (e) {
@@ -155,8 +181,9 @@ class PostRepositoryImpl with BaseRepository implements PostRepository {
 
   @override
   Future<Result<bool, Exception>> deleteActivityAlert(String alertId) async {
-    final response =
-        await processRequest(() => apiService.deleteActivityAlert(alertId));
+    final response = await processRequest(
+      () => apiService.deleteActivityAlert(alertId),
+    );
     if (response.isSuccess()) {
       return const Success(true);
     }

@@ -15,17 +15,18 @@ class DashboardMetrics with DashboardMetricsMappable {
   final int leaguesCount;
   final int announcementsCount;
 
-  const DashboardMetrics(
-      {this.eventsCount = 0,
-      this.appointmentsCount = 0,
-      this.notificationsCount = 0,
-      this.communitiesCount = 0,
-      this.servicesCount = 0,
-      this.teamsCount = 0,
-      this.collaboratorsCount = 0,
-      this.mediaCount = 0,
-      this.leaguesCount = 0,
-      this.announcementsCount = 0});
+  const DashboardMetrics({
+    this.eventsCount = 0,
+    this.appointmentsCount = 0,
+    this.notificationsCount = 0,
+    this.communitiesCount = 0,
+    this.servicesCount = 0,
+    this.teamsCount = 0,
+    this.collaboratorsCount = 0,
+    this.mediaCount = 0,
+    this.leaguesCount = 0,
+    this.announcementsCount = 0,
+  });
 
   @override
   String toString() {

@@ -48,14 +48,15 @@ class Venue with VenueMappable implements DataMapper<VenueApi> {
 
   @override
   VenueApi mapToApi() => VenueApi(
-      country: country,
-      address: address,
-      lng: lng,
-      city: city,
-      name: name,
-      state: state,
-      lat: lat,
-      countryIso: countryIso,
-      otherAddress: otherAddress,
-      placeId: placeId);
+    country: country,
+    address: address,
+    lng: lng,
+    city: city,
+    name: name,
+    state: state,
+    lat: lat,
+    countryIso: countryIso,
+    otherAddress: otherAddress,
+    placeId: placeId,
+  );
 }

@@ -26,42 +26,42 @@ String permission(String section, String action) => '$section:$action';
 
 List<String> getPermissionsForAccountType(AUser user) =>
     user.isSportsTeamAccount
-        ? [
-            kManageTeams,
-            kManageActivities,
-            kManageMedia,
-            kManageCollaborators,
-            kManageConversations,
-            kManagePosts,
-          ]
-        : user.isLeagueManagerAccount
-            ? [
-                kManageActivities,
-                kManageMedia,
-                kManageCollaborators,
-                kManagePosts,
-                kManageTeams,
-                kManageLeagues,
-              ]
-            : user.isGymAccount
-                ? [
-                    kManageSchedule,
-                    kManagePackages,
-                    kManageActivities,
-                    kManageMedia,
-                    kManageCollaborators,
-                    kManageConversations,
-                    kManagePosts,
-                  ]
-                : [
-                    kManageActivities,
-                    kManagePackages,
-                    kManageMedia,
-                    kManageCollaborators,
-                    kManageConversations,
-                    kManageCommunities,
-                    kManagePosts,
-                  ];
+    ? [
+        kManageTeams,
+        kManageActivities,
+        kManageMedia,
+        kManageCollaborators,
+        kManageConversations,
+        kManagePosts,
+      ]
+    : user.isLeagueManagerAccount
+    ? [
+        kManageActivities,
+        kManageMedia,
+        kManageCollaborators,
+        kManagePosts,
+        kManageTeams,
+        kManageLeagues,
+      ]
+    : user.isGymAccount
+    ? [
+        kManageSchedule,
+        kManagePackages,
+        kManageActivities,
+        kManageMedia,
+        kManageCollaborators,
+        kManageConversations,
+        kManagePosts,
+      ]
+    : [
+        kManageActivities,
+        kManagePackages,
+        kManageMedia,
+        kManageCollaborators,
+        kManageConversations,
+        kManageCommunities,
+        kManagePosts,
+      ];
 
 // Default permissions per role
 List<String> defaultPermissionsForRole(AUser account, CollaboratorRole role) {

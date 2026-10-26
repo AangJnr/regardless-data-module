@@ -45,20 +45,20 @@ class CreateService {
   }
 
   Map<String, dynamic> toMap() => {
-        'createdAt': createdAt?.toIso8601String(),
-        'uid': uid,
-        'keywords': keywords,
-        'prices': prices?.map((e) => e.toMap()).toList(),
-        'name': name,
-        'description': description,
-        'timeSlots': timeSlots?.map((e) => e.toMap()).toList(),
-        'location': location?.toMap(),
-        'ownerUid': ownerUid,
-        'updatedAt': updatedAt?.toIso8601String(),
-        'categoryUid': categoryUid,
-        'isActive': isActive,
-        'subscriptionDurationDays': subscriptionDurationDays,
-      };
+    'createdAt': createdAt?.toIso8601String(),
+    'uid': uid,
+    'keywords': keywords,
+    'prices': prices?.map((e) => e.toMap()).toList(),
+    'name': name,
+    'description': description,
+    'timeSlots': timeSlots?.map((e) => e.toMap()).toList(),
+    'location': location?.toMap(),
+    'ownerUid': ownerUid,
+    'updatedAt': updatedAt?.toIso8601String(),
+    'categoryUid': categoryUid,
+    'isActive': isActive,
+    'subscriptionDurationDays': subscriptionDurationDays,
+  };
 
   /// `dart:convert`
   ///

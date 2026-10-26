@@ -18,10 +18,7 @@ class PendingInvite {
     if (json == null) return null;
     try {
       final map = json is String ? jsonDecode(json) : json;
-      return PendingInvite(
-        token: map['token'],
-        teamUid: map['teamUid'],
-      );
+      return PendingInvite(token: map['token'], teamUid: map['teamUid']);
     } catch (e) {
       print(e);
       return null;

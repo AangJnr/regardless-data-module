@@ -1,27 +1,16 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:regardless_data_module/domain/media.dart';
 
 part 'tournament.mapper.dart';
 
 @MappableEnum()
-enum TournamentStatus {
-  draft,
-  active,
-  completed,
-  archived,
-}
+enum TournamentStatus { draft, active, completed, archived }
 
 @MappableEnum()
-enum TournamentFormat {
-  league,
-  knockout,
-  groupKnockout,
-}
+enum TournamentFormat { league, knockout, groupKnockout }
 
 @MappableEnum()
-enum RankingSystem {
-  points,
-  winRate,
-}
+enum RankingSystem { points, winRate }
 
 @MappableClass()
 class Tournament with TournamentMappable {
@@ -29,11 +18,15 @@ class Tournament with TournamentMappable {
   final String ownerUid;
   final String name;
   final String description;
-  final String? logoUrl;
-  final String? coverUrl;
+  final Media? logoUrl;
+  final Media? coverUrl;
   final TournamentStatus status;
   final TournamentFormat format;
   final RankingSystem rankingSystem;
+  final String sportsCategoryUid;
+  final String sportsCategoryName;
+  final String seasonName;
+  final String timezone;
 
   // Scoring Configuration
   final int winPoints;
@@ -44,6 +37,8 @@ class Tournament with TournamentMappable {
   final int roundRobinCount; // legs (1 or 2)
   final int minTeams;
   final int maxTeams;
+  final int? groupCount;
+  final int? qualifiersPerGroup;
 
   final List<String> participantTeamUids;
   final String? currentSeasonUid;
@@ -61,12 +56,18 @@ class Tournament with TournamentMappable {
     this.status = TournamentStatus.draft,
     this.format = TournamentFormat.league,
     this.rankingSystem = RankingSystem.points,
+    this.sportsCategoryUid = '',
+    this.sportsCategoryName = '',
+    this.seasonName = 'Season 1',
+    this.timezone = 'Etc/UTC',
     this.winPoints = 3,
     this.drawPoints = 1,
     this.lossPoints = 0,
     this.roundRobinCount = 1,
     this.minTeams = 2,
     this.maxTeams = 20,
+    this.groupCount,
+    this.qualifiersPerGroup,
     this.participantTeamUids = const [],
     this.currentSeasonUid,
     this.createdAt,

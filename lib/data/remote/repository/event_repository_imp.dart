@@ -25,7 +25,8 @@ import 'base_repository.dart';
 class EventRepositoryImpl with BaseRepository implements EventRepository {
   @override
   Future<Result<SearchEventResults, Exception>> searchEventsV2(
-      SearchEventParams params) async {
+    SearchEventParams params,
+  ) async {
     var data = await processRequest(() => apiService.searchEventsV2(params));
     if (data.isSuccess()) {
       final results = SearchResults.fromMap(data.tryGetSuccess()!);
@@ -36,9 +37,10 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   @override
   Future<Result<List<CommunityAndEvent>, Exception>>
-      searchNearByCommunityAndEvents(SearchEventParams params) async {
+  searchNearByCommunityAndEvents(SearchEventParams params) async {
     var data = await processRequest(
-        () => apiService.searchNearbyCommunitiesAndEvents(params));
+      () => apiService.searchNearbyCommunitiesAndEvents(params),
+    );
     if (data.isSuccess()) {
       final results = (data.tryGetSuccess()! as List<dynamic>)
           .map((data) => CommunityAndEventApi.fromMap(data).mapToDomain())
@@ -50,20 +52,25 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   @override
   Future<Result<Pagination<Feed>, Exception>> searchEvent(
-      SearchFilter filter) async {
+    SearchFilter filter,
+  ) async {
     // ignore: deprecated_member_use_from_same_package
     var data = await processRequest(() => apiService.searchEvents(filter));
     if (data.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(data.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        data.tryGetSuccess()!,
+      );
       try {
         final feeds = paginationResponse.data
             ?.map((e) => FeedApi.fromMap(e).mapToDomain())
             .toList();
-        return Success(Pagination<Feed>(
+        return Success(
+          Pagination<Feed>(
             data: feeds ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {
         getLogger('EventRepositoryImpl').e(e);
       }
@@ -72,22 +79,28 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
   }
 
   @override
-  Future<Result<Pagination<Feed>, Exception>> getFeedData(
-      {PaginationRequest? request}) async {
+  Future<Result<Pagination<Feed>, Exception>> getFeedData({
+    PaginationRequest? request,
+  }) async {
     var data = await processRequest(() => apiService.getFeed(request: request));
     if (data.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(data.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        data.tryGetSuccess()!,
+      );
 
       try {
-        final feeds = paginationResponse.data
+        final feeds =
+            paginationResponse.data
                 ?.map((e) => FeedApi.fromMap(e).mapToDomain())
                 .toList() ??
             [];
-        return Success(Pagination<Feed>(
+        return Success(
+          Pagination<Feed>(
             data: feeds,
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {
         getLogger('EventRepositoryImpl').e(e);
       }
@@ -99,8 +112,10 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
   Future<Result<Pagination<Category>, Exception>> getCategories() async {
     final cache = module<CacheService>();
 
-    final categories =
-        await cache.execute(_fetchAndCacheCategories, "categories");
+    final categories = await cache.execute(
+      _fetchAndCacheCategories,
+      "categories",
+    );
     if (categories.isEmpty) {
       cache.clear('categories');
     }
@@ -112,9 +127,11 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
     var results = await processRequest(() => apiService.getCategories());
     List<Category> list = [];
     if (results.isSuccess()) {
-      list.addAll((results.tryGetSuccess()! as List<dynamic>)
-          .map((e) => CategoryMapper.fromMap(e as Map<String, dynamic>))
-          .toList());
+      list.addAll(
+        (results.tryGetSuccess()! as List<dynamic>)
+            .map((e) => CategoryMapper.fromMap(e as Map<String, dynamic>))
+            .toList(),
+      );
       getLogger('EventRepositoryImpl').i("categories size => ${list.length}");
     } else {
       getLogger('EventRepositoryImpl').e("fetchCategoriesWasNotSuccessfull!");
@@ -124,11 +141,14 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   @override
   Future<Result<Pagination<Category>, Exception>> getSubCategories(
-      String categoryUid) async {
+    String categoryUid,
+  ) async {
     final cache = module<CacheService>();
 
     final categories = await cache.execute(
-        () => _fetchAndCacheSubCategories(categoryUid), categoryUid);
+      () => _fetchAndCacheSubCategories(categoryUid),
+      categoryUid,
+    );
     if (categories.isEmpty) {
       cache.clear(categoryUid);
     }
@@ -139,9 +159,11 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
     var results = await processRequest(() => apiService.getSubCategories(uid));
     List<Category> list = [];
     if (results.isSuccess()) {
-      list.addAll((results.tryGetSuccess()! as List<dynamic>)
-          .map((e) => CategoryMapper.fromMap(e as Map<String, dynamic>))
-          .toList());
+      list.addAll(
+        (results.tryGetSuccess()! as List<dynamic>)
+            .map((e) => CategoryMapper.fromMap(e as Map<String, dynamic>))
+            .toList(),
+      );
       getLogger('EventRepositoryImpl').i("categories size => ${list.length}");
     } else {
       getLogger('EventRepositoryImpl').e("fetchCategoriesWasNotSuccessfull!");
@@ -151,8 +173,9 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   @override
   Future<Venue> geocode(double lat, double lng) async {
-    var data =
-        await processRequest(() => apiService.reverseGeoLocation(lat, lng));
+    var data = await processRequest(
+      () => apiService.reverseGeoLocation(lat, lng),
+    );
     if (data.isSuccess()) {
       return VenueApi.fromMap(data.tryGetSuccess()!).mapToDomain();
     }
@@ -161,8 +184,9 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   @override
   Future<Result<bool, Exception>> favorateEvent(String eventUid) async {
-    var res =
-        await processRequest(() => apiService.addEventToFavorates(eventUid));
+    var res = await processRequest(
+      () => apiService.addEventToFavorates(eventUid),
+    );
     if (res.isSuccess()) {
       final user = sessionManager.getUserProfile();
       user.favoratesUids.add(eventUid);
@@ -173,20 +197,25 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
   }
 
   @override
-  Future<Result<Pagination<Feed>, Exception>> getFavorateEvents(
-      {PaginationRequest? request}) async {
+  Future<Result<Pagination<Feed>, Exception>> getFavorateEvents({
+    PaginationRequest? request,
+  }) async {
     var response = await processRequest(() => apiService.getFavorateEvents());
     if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        response.tryGetSuccess()!,
+      );
       try {
         final data = paginationResponse.data
             ?.map((e) => FeedApi.fromMap(e).mapToDomain())
             .toList();
-        return Success(Pagination<Feed>(
+        return Success(
+          Pagination<Feed>(
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {
         getLogger('EventRepositoryImpl').e(e);
       }
@@ -196,9 +225,12 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   @override
   Future<Result<bool, Exception>> linkToCommunity(
-      String eventUid, Community community) async {
+    String eventUid,
+    Community community,
+  ) async {
     var res = await processRequest(
-        () => apiService.linkToCommunity(eventUid, community));
+      () => apiService.linkToCommunity(eventUid, community),
+    );
     if (res.isSuccess()) {
       return const Success(true);
     }
@@ -207,9 +239,12 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   @override
   Future<Result<bool, Exception>> unlinkFromCommunity(
-      String eventUid, Community community) async {
+    String eventUid,
+    Community community,
+  ) async {
     var res = await processRequest(
-        () => apiService.unlinkFromCommunity(eventUid, community));
+      () => apiService.unlinkFromCommunity(eventUid, community),
+    );
     if (res.isSuccess()) {
       return const Success(true);
     }
@@ -217,23 +252,33 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
   }
 
   @override
-  Future<Result<Pagination<Feed>, Exception>> getCommunityEvents(
-      {required String uid,
-      required String ownerUid,
-      PaginationRequest? request}) async {
-    var response = await processRequest(() => apiService.getCommunityEvents(
-        uid: uid, ownerUid: ownerUid, request: request));
+  Future<Result<Pagination<Feed>, Exception>> getCommunityEvents({
+    required String uid,
+    required String ownerUid,
+    PaginationRequest? request,
+  }) async {
+    var response = await processRequest(
+      () => apiService.getCommunityEvents(
+        uid: uid,
+        ownerUid: ownerUid,
+        request: request,
+      ),
+    );
     if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        response.tryGetSuccess()!,
+      );
       try {
         final data = paginationResponse.data
             ?.map((e) => FeedApi.fromMap(e).mapToDomain())
             .toList();
-        return Success(Pagination<Feed>(
+        return Success(
+          Pagination<Feed>(
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {
         getLogger('EventRepositoryImpl').e(e);
       }
@@ -242,17 +287,21 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
   }
 
   @override
-  Future<Result<bool, Exception>> joinCommunitites(
-      {List<String> private = const [], List<String> public = const []}) async {
-    var response =
-        await processRequest(() => apiService.joinCommunities(private, public));
+  Future<Result<bool, Exception>> joinCommunitites({
+    List<String> private = const [],
+    List<String> public = const [],
+  }) async {
+    var response = await processRequest(
+      () => apiService.joinCommunities(private, public),
+    );
     return Success(response.isSuccess());
   }
 
   @override
   Future<Result<bool, Exception>> removeFromFavorates(String eventUid) async {
     var res = await processRequest(
-        () => apiService.removeEventFromFavorates(eventUid));
+      () => apiService.removeEventFromFavorates(eventUid),
+    );
     if (res.isSuccess()) {
       final user = sessionManager.getUserProfile();
       user.favoratesUids.remove(eventUid);
@@ -265,23 +314,30 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   @override
   Future<Result<Pagination<Feed>, Exception>> getProviderEvents(
-      String providerUid,
-      {PaginationRequest? request}) async {
+    String providerUid, {
+    PaginationRequest? request,
+  }) async {
     var data = await processRequest(
-        () => apiService.getProviderEvents(providerUid, request: request));
+      () => apiService.getProviderEvents(providerUid, request: request),
+    );
     if (data.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(data.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        data.tryGetSuccess()!,
+      );
 
       try {
-        final feeds = paginationResponse.data
+        final feeds =
+            paginationResponse.data
                 ?.map((e) => FeedApi.fromMap(e).mapToDomain())
                 .toList() ??
             [];
-        return Success(Pagination<Feed>(
+        return Success(
+          Pagination<Feed>(
             data: feeds,
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {
         getLogger('EventRepositoryImpl').e(e);
       }
@@ -291,13 +347,17 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   @override
   Future<Result<List<Feed>, Exception>> getPopularEvents(
-      SearchEventParams params) async {
+    SearchEventParams params,
+  ) async {
     var data = await processRequest(() => apiService.getPopularEvents(params));
     if (data.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(data.tryGetSuccess()!, label: 'events');
+      final paginationResponse = PaginatedResponse.fromMap(
+        data.tryGetSuccess()!,
+        label: 'events',
+      );
       try {
-        final feeds = paginationResponse.data
+        final feeds =
+            paginationResponse.data
                 ?.map((e) => FeedApi.fromMap(e).mapToDomain())
                 .toList() ??
             [];
@@ -333,9 +393,12 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   @override
   Future<Result<Event, Exception>> updateEvent(
-      NewEventRequest e, EventActionType actionType) async {
-    var data =
-        await processRequest(() => apiService.updateEvent(e, actionType));
+    NewEventRequest e,
+    EventActionType actionType,
+  ) async {
+    var data = await processRequest(
+      () => apiService.updateEvent(e, actionType),
+    );
     if (data.isSuccess()) {
       return Success(EventMapper.fromMap(data.tryGetSuccess()!));
     }
@@ -343,22 +406,28 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
   }
 
   @override
-  Future<Result<Pagination<Event>, Exception>> getEvents(
-      {PaginationRequest? request}) async {
-    var response =
-        await processRequest(() => apiService.getEvents(request: request));
+  Future<Result<Pagination<Event>, Exception>> getEvents({
+    PaginationRequest? request,
+  }) async {
+    var response = await processRequest(
+      () => apiService.getEvents(request: request),
+    );
     if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        response.tryGetSuccess()!,
+      );
 
       try {
         final data = paginationResponse.data
             ?.map((e) => EventMapper.fromMap(e))
             .toList();
-        return Success(Pagination<Event>(
+        return Success(
+          Pagination<Event>(
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {
         getLogger('EventRepositoryImpl').e(e);
       }
@@ -367,10 +436,16 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
   }
 
   @override
-  Future<Result<bool, Exception>> attend(
-      {required String eventUid, String? recurrenceUid}) async {
-    var res = await processRequest(() => apiService.attendEvent(
-        eventUid: eventUid, recurrenceUid: recurrenceUid));
+  Future<Result<bool, Exception>> attend({
+    required String eventUid,
+    String? recurrenceUid,
+  }) async {
+    var res = await processRequest(
+      () => apiService.attendEvent(
+        eventUid: eventUid,
+        recurrenceUid: recurrenceUid,
+      ),
+    );
     if (res.isSuccess()) {
       return const Success(true);
     }
@@ -378,10 +453,16 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
   }
 
   @override
-  Future<Result<bool, Exception>> unAttend(
-      {required String eventUid, String? recurrenceUid}) async {
-    var res = await processRequest(() => apiService.unattendEvent(
-        eventUid: eventUid, recurrenceUid: recurrenceUid));
+  Future<Result<bool, Exception>> unAttend({
+    required String eventUid,
+    String? recurrenceUid,
+  }) async {
+    var res = await processRequest(
+      () => apiService.unattendEvent(
+        eventUid: eventUid,
+        recurrenceUid: recurrenceUid,
+      ),
+    );
     if (res.isSuccess()) {
       return const Success(true);
     }
@@ -390,9 +471,12 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   @override
   Future<Result<bool, Exception>> deleteEvent(
-      String eventUid, EventActionType actionType) async {
+    String eventUid,
+    EventActionType actionType,
+  ) async {
     var res = await processRequest(
-        () => apiService.deleteEvent(eventUid, actionType));
+      () => apiService.deleteEvent(eventUid, actionType),
+    );
     if (res.isSuccess()) {
       return const Success(true);
     }
@@ -400,23 +484,33 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
   }
 
   @override
-  Future<Result<Pagination<Member>, Exception>> getEventAttendees(
-      {required String eventUid,
-      required String recurrenceUid,
-      PaginationRequest? request}) async {
-    var response = await processRequest(() => apiService.getEventAttendees(
-        eventUid: eventUid, recurrenceUid: recurrenceUid, request: request));
+  Future<Result<Pagination<Member>, Exception>> getEventAttendees({
+    required String eventUid,
+    required String recurrenceUid,
+    PaginationRequest? request,
+  }) async {
+    var response = await processRequest(
+      () => apiService.getEventAttendees(
+        eventUid: eventUid,
+        recurrenceUid: recurrenceUid,
+        request: request,
+      ),
+    );
     if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        response.tryGetSuccess()!,
+      );
       try {
         final data = paginationResponse.data
             ?.map((e) => MemberMapper.fromMap(e))
             .toList();
-        return Success(Pagination<Member>(
+        return Success(
+          Pagination<Member>(
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
         // ignore: empty_catches
       } catch (e) {}
     }
@@ -425,9 +519,14 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   @override
   Future<Result<bool, Exception>> deleteRecurringEvent(
-      String eventUid, String recurrenceUid, EventActionType actionType) async {
-    var res = await processRequest(() =>
-        apiService.deleteRecurringEvent(eventUid, recurrenceUid, actionType));
+    String eventUid,
+    String recurrenceUid,
+    EventActionType actionType,
+  ) async {
+    var res = await processRequest(
+      () =>
+          apiService.deleteRecurringEvent(eventUid, recurrenceUid, actionType),
+    );
     if (res.isSuccess()) {
       return const Success(true);
     }
@@ -436,11 +535,14 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   @override
   Future<Result<Event, Exception>> getRecurringEvent(
-      String uid, String recurrenceUid) async {
+    String uid,
+    String recurrenceUid,
+  ) async {
     getLogger('EventRepositoryImpl').e('getRecurringEvent');
 
     var data = await processRequest(
-        () => apiService.getRecurringEvent(uid, recurrenceUid));
+      () => apiService.getRecurringEvent(uid, recurrenceUid),
+    );
     if (data.isSuccess()) {
       try {
         return Success(EventMapper.fromMap(data.tryGetSuccess()!));
@@ -453,21 +555,32 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   @override
   Future<Result<Pagination<Member>, Exception>> getRecurringEventAttendees(
-      String uid, String recurrenceUid,
-      {PaginationRequest? request}) async {
-    var response = await processRequest(() => apiService
-        .getRecurringEventAttendees(uid, recurrenceUid, request: request));
+    String uid,
+    String recurrenceUid, {
+    PaginationRequest? request,
+  }) async {
+    var response = await processRequest(
+      () => apiService.getRecurringEventAttendees(
+        uid,
+        recurrenceUid,
+        request: request,
+      ),
+    );
     if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        response.tryGetSuccess()!,
+      );
       try {
         final data = paginationResponse.data
             ?.map((e) => MemberMapper.fromMap(e))
             .toList();
-        return Success(Pagination<Member>(
+        return Success(
+          Pagination<Member>(
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
         // ignore: empty_catches
       } catch (e) {}
     }
@@ -475,22 +588,29 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
   }
 
   @override
-  Future<Result<Pagination<Feed>, Exception>> getRecurringEvents(String uid,
-      {PaginationRequest? request}) async {
+  Future<Result<Pagination<Feed>, Exception>> getRecurringEvents(
+    String uid, {
+    PaginationRequest? request,
+  }) async {
     var response = await processRequest(
-        () => apiService.getRecurringEvents(uid, request: request));
+      () => apiService.getRecurringEvents(uid, request: request),
+    );
     if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        response.tryGetSuccess()!,
+      );
 
       try {
         final data = paginationResponse.data
             ?.map((e) => FeedApi.fromMap(e).mapToDomain())
             .toList();
-        return Success(Pagination<Feed>(
+        return Success(
+          Pagination<Feed>(
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {
         getLogger('EventRepositoryImpl').e(e);
       }
@@ -500,9 +620,12 @@ class EventRepositoryImpl with BaseRepository implements EventRepository {
 
   @override
   Future<Result<Event, Exception>> updateRecurringEvent(
-      NewEventRequest e, EventActionType actionType) async {
+    NewEventRequest e,
+    EventActionType actionType,
+  ) async {
     var data = await processRequest(
-        () => apiService.updateRecurringEvent(e, actionType));
+      () => apiService.updateRecurringEvent(e, actionType),
+    );
     if (data.isSuccess()) {
       return Success(EventMapper.fromMap(data.tryGetSuccess()!));
     }

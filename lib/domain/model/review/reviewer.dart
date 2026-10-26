@@ -3,8 +3,11 @@ class Reviewer {
   final String name;
   final String profilePictureUrl;
 
-  const Reviewer(
-      {this.userUid = '', this.name = 'G', this.profilePictureUrl = ''});
+  const Reviewer({
+    this.userUid = '',
+    this.name = 'G',
+    this.profilePictureUrl = '',
+  });
 
   @override
   String toString() {

@@ -10,12 +10,13 @@ class FollowerResponse implements DomainMapper<Follower> {
   final DateTime? updatedAt;
   final String? userName;
 
-  const FollowerResponse(
-      {this.uid,
-      this.createdAt,
-      this.updatedAt,
-      this.profileUrl,
-      this.userName});
+  const FollowerResponse({
+    this.uid,
+    this.createdAt,
+    this.updatedAt,
+    this.profileUrl,
+    this.userName,
+  });
 
   @override
   String toString() {
@@ -36,12 +37,12 @@ class FollowerResponse implements DomainMapper<Follower> {
       );
 
   Map<String, dynamic> toMap() => {
-        'uid': uid,
-        'userName': userName,
-        'profileUrl': profileUrl,
-        'createdAt': createdAt?.toIso8601String(),
-        'updatedAt': updatedAt?.toIso8601String(),
-      };
+    'uid': uid,
+    'userName': userName,
+    'profileUrl': profileUrl,
+    'createdAt': createdAt?.toIso8601String(),
+    'updatedAt': updatedAt?.toIso8601String(),
+  };
 
   /// `dart:convert`
   ///
@@ -57,9 +58,10 @@ class FollowerResponse implements DomainMapper<Follower> {
 
   @override
   Follower mapToDomain() => Follower(
-      uid: uid ?? '',
-      profileUrl: profileUrl ?? '',
-      createdAt: createdAt,
-      updatedAt: updatedAt,
-      userName: userName ?? "");
+    uid: uid ?? '',
+    profileUrl: profileUrl ?? '',
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+    userName: userName ?? "",
+  );
 }

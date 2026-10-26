@@ -1,14 +1,30 @@
-class TournamentMatch {
+import 'package:dart_mappable/dart_mappable.dart';
+
+part 'tournament_match.mapper.dart';
+
+@MappableEnum()
+enum MatchStatus { scheduled, completed, postponed, cancelled, bye }
+
+@MappableEnum()
+enum MatchStage { league, group, knockout }
+
+@MappableClass()
+class TournamentMatch with TournamentMatchMappable {
   final String uid;
   final String tournamentUid;
   final String seasonUid;
   final String homeTeamUid;
   final String awayTeamUid;
-  final int homeScore;
-  final int awayScore;
+  final int? homeScore;
+  final int? awayScore;
   final int? round;
+  final int? matchNumber;
   final DateTime? date;
-  final String status;
+  final MatchStatus status;
+  final MatchStage stage;
+  final String? groupUid;
+  final String? winnerTeamUid;
+  final String? cancellationReason;
 
   const TournamentMatch({
     this.uid = '',
@@ -16,27 +32,18 @@ class TournamentMatch {
     this.seasonUid = '',
     this.homeTeamUid = '',
     this.awayTeamUid = '',
-    this.homeScore = 0,
-    this.awayScore = 0,
+    this.homeScore,
+    this.awayScore,
     this.round,
+    this.matchNumber,
     this.date,
-    this.status = 'completed',
+    this.status = MatchStatus.scheduled,
+    this.stage = MatchStage.league,
+    this.groupUid,
+    this.winnerTeamUid,
+    this.cancellationReason,
   });
 
-  factory TournamentMatch.fromMap(Map<String, dynamic> map) {
-    return TournamentMatch(
-      uid: map['uid'] as String? ?? '',
-      tournamentUid: map['tournamentUid'] as String? ?? '',
-      seasonUid: map['seasonUid'] as String? ?? '',
-      homeTeamUid: map['homeTeamUid'] as String? ?? '',
-      awayTeamUid: map['awayTeamUid'] as String? ?? '',
-      homeScore: (map['homeScore'] as num?)?.toInt() ?? 0,
-      awayScore: (map['awayScore'] as num?)?.toInt() ?? 0,
-      round: (map['round'] as num?)?.toInt(),
-      date: map['date'] != null
-          ? DateTime.tryParse(map['date'].toString())
-          : null,
-      status: map['status'] as String? ?? 'completed',
-    );
-  }
+  static const fromMap = TournamentMatchMapper.fromMap;
+  static const fromJson = TournamentMatchMapper.fromJson;
 }

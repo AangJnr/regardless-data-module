@@ -4,15 +4,15 @@ import '../../../domain/repositories/auth_repository.dart';
 import 'base_repository.dart';
 
 class AuthRepositoryImpl with BaseRepository implements AuthRepository {
-
   @override
   Future<Result<bool, Exception>> healthCheck() async {
     final response = await processRequest(() => apiService.health());
-    if(response.isSuccess()){
+    if (response.isSuccess()) {
       return Future.value(const Success(true));
     }
     return Future.value(Error(response.tryGetError()!));
   }
+
   @override
   Future<Result<bool, Exception>> attemptLogout() async {
     await processRequest(() => apiService.attemptLogout());
@@ -32,7 +32,8 @@ class AuthRepositoryImpl with BaseRepository implements AuthRepository {
   @override
   Future<Result<bool, Exception>> deleteAccount() async {
     var data = await processRequest(
-        () => apiService.deleteUser(sessionManager.getUserProfile().uid));
+      () => apiService.deleteUser(sessionManager.getUserProfile().uid),
+    );
     if (data.isSuccess()) {
       final result = data.tryGetSuccess()! as Map<String, dynamic>;
 

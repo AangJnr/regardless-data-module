@@ -124,6 +124,62 @@ class TeamMemberMapper extends ClassMapperBase<TeamMember> {
     opt: true,
     def: TeamMemberStatus.active,
   );
+  static String _$position(TeamMember v) => v.position;
+  static const Field<TeamMember, String> _f$position = Field(
+    'position',
+    _$position,
+    opt: true,
+    def: '',
+  );
+  static int _$jerseyNumber(TeamMember v) => v.jerseyNumber;
+  static const Field<TeamMember, int> _f$jerseyNumber = Field(
+    'jerseyNumber',
+    _$jerseyNumber,
+    opt: true,
+    def: 0,
+  );
+  static int _$age(TeamMember v) => v.age;
+  static const Field<TeamMember, int> _f$age = Field(
+    'age',
+    _$age,
+    opt: true,
+    def: 0,
+  );
+  static String _$height(TeamMember v) => v.height;
+  static const Field<TeamMember, String> _f$height = Field(
+    'height',
+    _$height,
+    opt: true,
+    def: '',
+  );
+  static String _$nameAbbreviation(TeamMember v) => v.nameAbbreviation;
+  static const Field<TeamMember, String> _f$nameAbbreviation = Field(
+    'nameAbbreviation',
+    _$nameAbbreviation,
+    opt: true,
+    def: '',
+  );
+  static String _$shortBio(TeamMember v) => v.shortBio;
+  static const Field<TeamMember, String> _f$shortBio = Field(
+    'shortBio',
+    _$shortBio,
+    opt: true,
+    def: '',
+  );
+  static Map<String, dynamic> _$stats(TeamMember v) => v.stats;
+  static const Field<TeamMember, Map<String, dynamic>> _f$stats = Field(
+    'stats',
+    _$stats,
+    opt: true,
+    def: const {},
+  );
+  static int _$activeTournamentCount(TeamMember v) => v.activeTournamentCount;
+  static const Field<TeamMember, int> _f$activeTournamentCount = Field(
+    'activeTournamentCount',
+    _$activeTournamentCount,
+    opt: true,
+    def: 0,
+  );
 
   @override
   final MappableFields<TeamMember> fields = const {
@@ -135,6 +191,14 @@ class TeamMemberMapper extends ClassMapperBase<TeamMember> {
     #fullName: _f$fullName,
     #joinedAt: _f$joinedAt,
     #status: _f$status,
+    #position: _f$position,
+    #jerseyNumber: _f$jerseyNumber,
+    #age: _f$age,
+    #height: _f$height,
+    #nameAbbreviation: _f$nameAbbreviation,
+    #shortBio: _f$shortBio,
+    #stats: _f$stats,
+    #activeTournamentCount: _f$activeTournamentCount,
   };
 
   static TeamMember _instantiate(DecodingData data) {
@@ -147,6 +211,14 @@ class TeamMemberMapper extends ClassMapperBase<TeamMember> {
       fullName: data.dec(_f$fullName),
       joinedAt: data.dec(_f$joinedAt),
       status: data.dec(_f$status),
+      position: data.dec(_f$position),
+      jerseyNumber: data.dec(_f$jerseyNumber),
+      age: data.dec(_f$age),
+      height: data.dec(_f$height),
+      nameAbbreviation: data.dec(_f$nameAbbreviation),
+      shortBio: data.dec(_f$shortBio),
+      stats: data.dec(_f$stats),
+      activeTournamentCount: data.dec(_f$activeTournamentCount),
     );
   }
 
@@ -211,6 +283,8 @@ extension TeamMemberValueCopy<$R, $Out>
 abstract class TeamMemberCopyWith<$R, $In extends TeamMember, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get permissions;
+  MapCopyWith<$R, String, dynamic, ObjectCopyWith<$R, dynamic, dynamic>?>
+  get stats;
   $R call({
     String? uid,
     String? email,
@@ -220,6 +294,14 @@ abstract class TeamMemberCopyWith<$R, $In extends TeamMember, $Out>
     String? fullName,
     DateTime? joinedAt,
     TeamMemberStatus? status,
+    String? position,
+    int? jerseyNumber,
+    int? age,
+    String? height,
+    String? nameAbbreviation,
+    String? shortBio,
+    Map<String, dynamic>? stats,
+    int? activeTournamentCount,
   });
   TeamMemberCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -240,6 +322,13 @@ class _TeamMemberCopyWithImpl<$R, $Out>
     (v) => call(permissions: v),
   );
   @override
+  MapCopyWith<$R, String, dynamic, ObjectCopyWith<$R, dynamic, dynamic>?>
+  get stats => MapCopyWith(
+    $value.stats,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(stats: v),
+  );
+  @override
   $R call({
     String? uid,
     Object? email = $none,
@@ -249,6 +338,14 @@ class _TeamMemberCopyWithImpl<$R, $Out>
     String? fullName,
     Object? joinedAt = $none,
     TeamMemberStatus? status,
+    String? position,
+    int? jerseyNumber,
+    int? age,
+    String? height,
+    String? nameAbbreviation,
+    String? shortBio,
+    Map<String, dynamic>? stats,
+    int? activeTournamentCount,
   }) => $apply(
     FieldCopyWithData({
       if (uid != null) #uid: uid,
@@ -259,6 +356,15 @@ class _TeamMemberCopyWithImpl<$R, $Out>
       if (fullName != null) #fullName: fullName,
       if (joinedAt != $none) #joinedAt: joinedAt,
       if (status != null) #status: status,
+      if (position != null) #position: position,
+      if (jerseyNumber != null) #jerseyNumber: jerseyNumber,
+      if (age != null) #age: age,
+      if (height != null) #height: height,
+      if (nameAbbreviation != null) #nameAbbreviation: nameAbbreviation,
+      if (shortBio != null) #shortBio: shortBio,
+      if (stats != null) #stats: stats,
+      if (activeTournamentCount != null)
+        #activeTournamentCount: activeTournamentCount,
     }),
   );
   @override
@@ -271,6 +377,17 @@ class _TeamMemberCopyWithImpl<$R, $Out>
     fullName: data.get(#fullName, or: $value.fullName),
     joinedAt: data.get(#joinedAt, or: $value.joinedAt),
     status: data.get(#status, or: $value.status),
+    position: data.get(#position, or: $value.position),
+    jerseyNumber: data.get(#jerseyNumber, or: $value.jerseyNumber),
+    age: data.get(#age, or: $value.age),
+    height: data.get(#height, or: $value.height),
+    nameAbbreviation: data.get(#nameAbbreviation, or: $value.nameAbbreviation),
+    shortBio: data.get(#shortBio, or: $value.shortBio),
+    stats: data.get(#stats, or: $value.stats),
+    activeTournamentCount: data.get(
+      #activeTournamentCount,
+      or: $value.activeTournamentCount,
+    ),
   );
 
   @override

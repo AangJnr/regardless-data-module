@@ -6,28 +6,33 @@ class ToastService {
       showToast(message, length: Toast.LENGTH_LONG);
   void showToast(String message, {Toast length = Toast.LENGTH_SHORT}) {
     Fluttertoast.showToast(
-        msg: message,
-        toastLength: length,
-        gravity: ToastGravity.SNACKBAR,
-        timeInSecForIosWeb: length == Toast.LENGTH_SHORT ? 4 : 8,
-        backgroundColor: blackColor,
-        textColor: Colors.white,
-        fontSize: 14.0);
+      msg: message,
+      toastLength: length,
+      gravity: ToastGravity.SNACKBAR,
+      timeInSecForIosWeb: length == Toast.LENGTH_SHORT ? 4 : 8,
+      backgroundColor: blackColor,
+      textColor: Colors.white,
+      fontSize: 14.0,
+    );
   }
 
   void showErrorToast(String message, {Toast length = Toast.LENGTH_SHORT}) {
     Fluttertoast.showToast(
-        msg: message,
-        toastLength: length,
-        gravity: ToastGravity.SNACKBAR,
-        timeInSecForIosWeb: length == Toast.LENGTH_SHORT ? 4 : 8,
-        backgroundColor: error,
-        textColor: Colors.white,
-        fontSize: 14.0);
+      msg: message,
+      toastLength: length,
+      gravity: ToastGravity.SNACKBAR,
+      timeInSecForIosWeb: length == Toast.LENGTH_SHORT ? 4 : 8,
+      backgroundColor: error,
+      textColor: Colors.white,
+      fontSize: 14.0,
+    );
   }
 
-  void showCustomToast(BuildContext context, String message,
-      {Toast length = Toast.LENGTH_SHORT}) {
+  void showCustomToast(
+    BuildContext context,
+    String message, {
+    Toast length = Toast.LENGTH_SHORT,
+  }) {
     Widget toast = Container(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
       decoration: BoxDecoration(
@@ -39,19 +44,20 @@ class ToastService {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.check),
-          SizedBox(
-            width: 12.0,
-          ),
+          SizedBox(width: 12.0),
           Text("This is a Custom Toast"),
         ],
       ),
     );
 
-    FToast().init(context).showToast(
+    FToast()
+        .init(context)
+        .showToast(
           child: toast,
           gravity: ToastGravity.CENTER,
-          toastDuration:
-              Duration(seconds: length == Toast.LENGTH_SHORT ? 4 : 8),
+          toastDuration: Duration(
+            seconds: length == Toast.LENGTH_SHORT ? 4 : 8,
+          ),
         );
   }
 }

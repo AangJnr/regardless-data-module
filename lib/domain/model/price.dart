@@ -58,10 +58,10 @@ class Price with PriceMappable implements DataMapper<PriceApi> {
 
   @override
   PriceApi mapToApi() => PriceApi(
-        amount: amount.toString(),
-        currency: currency,
-        type: type,
-        description: description,
-        durationDays: durationDays,
-      );
+    amount: amount.toString(),
+    currency: currency,
+    type: type,
+    description: description,
+    durationDays: durationDays,
+  );
 }

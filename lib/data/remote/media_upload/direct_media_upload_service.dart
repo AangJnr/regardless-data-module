@@ -18,16 +18,18 @@ class DirectUploadHandle {
 class DirectMediaUploadService {
   const DirectMediaUploadService();
 
-  DirectUploadHandle uploadBytesWithProgress(
-      {required String signedUrl,
-      required XFile file,
-      required String contentType,
-      required void Function(double progress) onProgress}) {
+  DirectUploadHandle uploadBytesWithProgress({
+    required String signedUrl,
+    required XFile file,
+    required String contentType,
+    required void Function(double progress) onProgress,
+  }) {
     bool cancelled = false;
 
     Future<void> run() async {
       final uri = Uri.parse(
-          signedUrl.replaceFirst('127.0.0.1', Url.firebaseEmulatorHost));
+        signedUrl.replaceFirst('127.0.0.1', Url.firebaseEmulatorHost),
+      );
 
       final request = http.StreamedRequest('PUT', uri);
       request.headers['Content-Type'] = contentType; // Adjust content type
@@ -36,15 +38,12 @@ class DirectMediaUploadService {
       int bytesUploaded = 0;
       final data = await file.readAsBytes();
       int totalBytes = data.length;
-      final Stream<List<int>> byteStream =
-          _openRead(file).transform(_progressTransformer(
-        totalBytes: totalBytes,
-        onProgress: onProgress,
-      ));
+      final Stream<List<int>> byteStream = _openRead(file).transform(
+        _progressTransformer(totalBytes: totalBytes, onProgress: onProgress),
+      );
 
       byteStream.listen(
         (bytes) {
-
           request.sink.add(bytes);
           bytesUploaded += bytes.length;
           final p = (bytesUploaded / totalBytes).clamp(0.0, 1.0);
@@ -86,12 +85,11 @@ class DirectMediaUploadService {
     bool cancelled = false;
 
     Future<void> run() async {
-       final uri = Uri.parse(signedUrl);
+      final uri = Uri.parse(signedUrl);
       final length = await _fileLength(file);
-      final stream = _openRead(file).transform(_progressTransformer(
-        totalBytes: length,
-        onProgress: onProgress,
-      ));
+      final stream = _openRead(file).transform(
+        _progressTransformer(totalBytes: length, onProgress: onProgress),
+      );
 
       final req = http.StreamedRequest('PUT', uri);
       req.headers['Content-Type'] = contentType;
@@ -114,7 +112,6 @@ class DirectMediaUploadService {
 
       try {
         await req.sink.addStream(stream);
-
 
         final res = await client.send(req);
 

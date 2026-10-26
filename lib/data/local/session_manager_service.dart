@@ -13,6 +13,7 @@ import '../../domain/model/session_manager.dart';
 import '../../domain/model/user.dart';
 
 const pendingInviteKey = "pendingInviteKey";
+const pendingTeamJoinKey = "pendingTeamJoinKey";
 const appStateKey = "appStateKey";
 const refreshTokenKey = "refreshTokenKey";
 const accessTokenKey = "accessTokenKey";
@@ -118,9 +119,10 @@ class SessionManagerImpl extends SessionManager {
   @override
   AppState getAppState() {
     final v = AppState.values.firstWhere(
-        (element) =>
-            element.name == (_hiveBox.get(appStateKey) ?? AppState.signUp.name),
-        orElse: () => AppState.signUp);
+      (element) =>
+          element.name == (_hiveBox.get(appStateKey) ?? AppState.signUp.name),
+      orElse: () => AppState.signUp,
+    );
     return v;
   }
 
@@ -177,13 +179,13 @@ class SessionManagerImpl extends SessionManager {
     if (value == null) {
       _hiveBox.delete(key);
       return;
-    } 
+    }
     _hiveBox.put(key, value.toString());
   }
 
   @override
-  String get(String key) {
-    return _hiveBox.get(key);
+  String? get(String key) {
+    return _hiveBox.get(key );
   }
 
   @override
@@ -203,9 +205,9 @@ class SessionManagerImpl extends SessionManager {
     }
 
     _hiveBox.put(
-        locationsKey,
-        jsonEncode(
-            locations.take(5).map((e) => e.mapToApi().toMap()).toList()));
+      locationsKey,
+      jsonEncode(locations.take(5).map((e) => e.mapToApi().toMap()).toList()),
+    );
   }
 
   @override

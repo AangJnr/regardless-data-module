@@ -12,7 +12,7 @@ class Media extends ApiRoutes {
 }
 
 class Auth extends ApiRoutes {
-    String get Health => "$url/health/";
+  String get Health => "$url/health/";
   String get LogoutPath => "$url/auth/logout/";
   String get NameCheck => "$url/user/check-username/";
   String get DeleteAccount => "$url/user/delete";
@@ -80,6 +80,8 @@ class User extends ApiRoutes {
   String GetCollaborator(String uid) => '$url/user/$uid/collaborator';
   String RemoveCollaborator(String uid, String collaboratorUid) =>
       '$url/user/$uid/collaborators/$collaboratorUid';
+  String RevokeCollaboratorAccess(String uid) =>
+      '$url/user/$uid/collaborators/revoke-access';
   String UpdateCollaboratorPermissions(String uid, String collaboratorUid) =>
       '$url/user/$uid/collaborators/$collaboratorUid/permissions';
   String UpdateUserSchedule(String uid) => '$url/user/$uid/schedule';
@@ -176,9 +178,10 @@ class ACommunity extends ApiRoutes {
       '$url/community/$ownerUid/$uid/join';
   String RequestToJoin({required String uid, required String ownerUid}) =>
       '$url/community/request-to-join/$ownerUid/$uid';
-  String ApproveRequestToJoin(
-          {required String uid, required String ownerUid}) =>
-      '$url/community/request-to-join/$ownerUid/$uid/approve';
+  String ApproveRequestToJoin({
+    required String uid,
+    required String ownerUid,
+  }) => '$url/community/request-to-join/$ownerUid/$uid/approve';
   String get JoinCommunities => '$url/community/join-communities';
   String CommunitiesJoined(String userUid) =>
       '$url/community/joined/all/$userUid';
@@ -211,17 +214,28 @@ class ASearch extends ApiRoutes {
       '$url/search/nearby-community-event$params';
   String SearchNearbyCommunity(String params) =>
       '$url/search/nearby-community$params';
-  String SearchProviders(String params) => '$url/search/providers$params';
+  String SearchUsers(String params) => '$url/search/users$params';
 }
 
 class ATeam extends ApiRoutes {
   String get Add => '$url/team';
   String get CreateTeamAccount => '$url/team/create';
+  String get MyTeams => '$url/team/my';
+  String get TeamSummaries => '$url/team/summaries';
+  String TeamJoinLinks(String uid) => '$url/team/$uid/join-links';
+  String TeamJoinLink(String uid, String linkUid) =>
+      '$url/team/$uid/join-links/$linkUid';
+  String RequestToJoinByLink(String linkUid) =>
+      '$url/team/join-links/$linkUid/request';
   String UsersTeams(String ownerUid) => '$url/team/all/$ownerUid';
   String Get(String ownerUid, String uid) => '$url/team/$ownerUid/$uid';
-  String GetInvite(String token, String teamUid) => '$url/team/$teamUid/invite/$token';
+  String GetInvite(String token, String teamUid) =>
+      '$url/team/$teamUid/invite/$token';
   String Delete(String uid) => '$url/team/$uid';
   String Members(String uid) => '$url/team/$uid/members';
+  String Lineup(String uid) => '$url/team/$uid/lineup';
+  String PlayerProfile(String uid, String memberUid) =>
+      '$url/team/$uid/members/$memberUid/profile';
   String RemoveMember(String uid, String memberUid) =>
       '$url/team/$uid/remove-member/$memberUid';
   String Join(String ownerUid, String uid) => '$url/team/$ownerUid/$uid/join';
@@ -233,6 +247,8 @@ class ATeam extends ApiRoutes {
   String ApproveRequestToJoin(String ownerUid, String uid) =>
       '$url/team/request-to-join/$ownerUid/$uid/approve';
   String MemberRequests(String uid) => '$url/team/$uid/join/requests/all';
+  String get AllMemberRequests => '$url/team/all/join/requests/';
+
   String InvitePlayers(String uid) => '$url/team/$uid/invite-players-email';
   String Invite(String uid) => '$url/team/$uid/invite'; //:uid/invites/:inviteId
   String Invitees(String uid) => '$url/team/$uid/invited-users';
@@ -253,6 +269,14 @@ class ATeam extends ApiRoutes {
   String GetTeamMedia(String teamUid, {String params = ''}) =>
       '$url/team/$teamUid/media$params';
   String SearchTeams(String params) => '$url/team/search$params';
+  String TeamsBySportsCategories(List<String> sportsCategoryUids) =>
+      '$url/team/sports-categories?sportsCategoryUids=${Uri.encodeQueryComponent(sportsCategoryUids.join(','))}';
+  String TeamsBySportsCategory(String categoryUid, {String params = ''}) =>
+      '$url/team/sports-categories/$categoryUid/teams$params';
+  String TeamGroups(String categoryUid) => '$url/team/groups/$categoryUid';
+  String SaveTeamGroup(String uid) =>
+      uid.isEmpty ? '$url/team/groups' : '$url/team/groups/$uid';
+  String DeleteTeamGroup(String uid) => '$url/team/groups/$uid';
   String DeleteMedia(String teamUid) => '$url/team/$teamUid/media';
 
   String TeamActivities(String ownerUid, String uid) =>
@@ -267,8 +291,28 @@ class ATournament extends ApiRoutes {
   String Delete(String uid) => '$url/tournament/$uid';
   String List(String ownerUid, String params) =>
       '$url/tournament/manage/$ownerUid$params';
+  String PublicList(String ownerUid, String params) =>
+      '$url/tournament/public/$ownerUid$params';
   String Matches(String tournamentUid) =>
       '$url/tournament/$tournamentUid/matches';
+  String BracketMatches(String tournamentUid, String seasonUid) =>
+      '${Season(tournamentUid, seasonUid)}/bracket';
   String Standings(String tournamentUid) =>
       '$url/tournament/$tournamentUid/standings';
+  String Statistics(String tournamentUid) =>
+      '$url/tournament/$tournamentUid/statistics';
+  String Seasons(String tournamentUid) =>
+      '$url/tournament/$tournamentUid/seasons';
+  String CategoryRules(String categoryUid) =>
+      '$url/tournament/sports-categories/$categoryUid/rules';
+  String Season(String tournamentUid, String seasonUid) =>
+      '$url/tournament/$tournamentUid/seasons/$seasonUid';
+  String StartSeason(String tournamentUid, String seasonUid) =>
+      '${Season(tournamentUid, seasonUid)}/start';
+  String RegenerateSeasonFixtures(String tournamentUid, String seasonUid) =>
+      '${Season(tournamentUid, seasonUid)}/regenerate-fixtures';
+  String CompleteSeason(String tournamentUid, String seasonUid) =>
+      '${Season(tournamentUid, seasonUid)}/complete';
+  String Match(String tournamentUid, String matchUid) =>
+      '$url/tournament/$tournamentUid/matches/$matchUid';
 }

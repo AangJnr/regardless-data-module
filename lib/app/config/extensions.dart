@@ -54,12 +54,14 @@ extension StringExtension on String? {
     List<String> words = this!.split(' ');
 
     // Capitalize the first letter of each word and join them back into a single string.
-    String capitalCaseString = words.map((word) {
-      if (word.isNotEmpty) {
-        return '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}';
-      }
-      return word;
-    }).join(' ');
+    String capitalCaseString = words
+        .map((word) {
+          if (word.isNotEmpty) {
+            return '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}';
+          }
+          return word;
+        })
+        .join(' ');
 
     return capitalCaseString;
   }
@@ -251,8 +253,11 @@ extension DateTimeExtension on DateTime? {
       if (this == null) return false;
 
       final today = DateTime.now();
-      final startOfThisWeek =
-          DateTime(today.year, today.month, today.day - today.weekday + 1);
+      final startOfThisWeek = DateTime(
+        today.year,
+        today.month,
+        today.day - today.weekday + 1,
+      );
       final startOfNextWeek = startOfThisWeek.add(Duration(days: 7));
       return (this!.isAfter(startOfThisWeek) &&
           this!.isBefore(startOfNextWeek));
@@ -270,6 +275,7 @@ extension DateTimeExtension on DateTime? {
       return false;
     }
   }
+
   String formatMonthYear() {
     if (this == null) return '';
     try {

@@ -37,13 +37,13 @@ class PaymentDetailsA implements DomainMapper<PaymentDetails> {
   }
 
   Map<String, dynamic> toMap() => {
-        'payment_method': paymentMethod,
-        'last_payment_date': lastPaymentDate,
-        'next_payment_due': nextPaymentDue,
-        'amount': amount,
-        'currency': currency,
-        'uid': uid
-      };
+    'payment_method': paymentMethod,
+    'last_payment_date': lastPaymentDate,
+    'next_payment_due': nextPaymentDue,
+    'amount': amount,
+    'currency': currency,
+    'uid': uid,
+  };
 
   /// `dart:convert`
   ///

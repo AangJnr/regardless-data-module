@@ -11,18 +11,30 @@ import 'package:regardless_data_module/domain/model/activity_from_image_result.d
 abstract class MediaRepository {
   Future<Result<List<HashImage>, Exception>> uploadImages(List<XFile> images);
   Future<Result<List<String>, Exception>> getDescriptionSuggessions(
-      String text);
+    String text,
+  );
   Future<Result<ActivityFromImageResult, Exception>> extractActivityFromImage(
-      XFile image);
+    XFile image,
+  );
   Future<Result<List<DirectMediaUploadInit>, Exception>> initProviderMedia(
-      String providerUid, List<XFile> files);
+    String providerUid,
+    List<XFile> files,
+  );
   Future<Result<List<Media>, Exception>> finalizeProviderMedia(
-      String providerUid, List<DirectMediaUploadFinalizePayload> uploads);
+    String providerUid,
+    List<DirectMediaUploadFinalizePayload> uploads,
+  );
 
   Future<Result<List<Media>, Exception>> uploadProviderMedia(
-      String uid, List<XFile> files);
-  Future<Result<Pagination<Media>, Exception>> getProviderMedia(String uid,
-      {PaginationRequest? request});
+    String uid,
+    List<XFile> files,
+  );
+  Future<Result<Pagination<Media>, Exception>> getProviderMedia(
+    String uid, {
+    PaginationRequest? request,
+  });
   Future<Result<bool, Exception>> deleteProviderMedia(
-      String uid, List<String> uids);
+    String uid,
+    List<String> uids,
+  );
 }

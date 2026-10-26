@@ -15,6 +15,7 @@ class TeamMapper extends ClassMapperBase<Team> {
   static TeamMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TeamMapper._());
+      SportsCategoryMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -71,6 +72,13 @@ class TeamMapper extends ClassMapperBase<Team> {
     _$headerUrl,
     opt: true,
   );
+  static List<String> _$startingPlayerUids(Team v) => v.startingPlayerUids;
+  static const Field<Team, List<String>> _f$startingPlayerUids = Field(
+    'startingPlayerUids',
+    _$startingPlayerUids,
+    opt: true,
+    def: const [],
+  );
   static bool _$isPublic(Team v) => v.isPublic;
   static const Field<Team, bool> _f$isPublic = Field(
     'isPublic',
@@ -97,6 +105,12 @@ class TeamMapper extends ClassMapperBase<Team> {
     _$updatedAt,
     opt: true,
   );
+  static SportsCategory? _$category(Team v) => v.category;
+  static const Field<Team, SportsCategory> _f$category = Field(
+    'category',
+    _$category,
+    opt: true,
+  );
 
   @override
   final MappableFields<Team> fields = const {
@@ -108,10 +122,12 @@ class TeamMapper extends ClassMapperBase<Team> {
     #sportsCategoryName: _f$sportsCategoryName,
     #bio: _f$bio,
     #headerUrl: _f$headerUrl,
+    #startingPlayerUids: _f$startingPlayerUids,
     #isPublic: _f$isPublic,
     #isArchived: _f$isArchived,
     #createdAt: _f$createdAt,
     #updatedAt: _f$updatedAt,
+    #category: _f$category,
   };
 
   static Team _instantiate(DecodingData data) {
@@ -124,10 +140,12 @@ class TeamMapper extends ClassMapperBase<Team> {
       sportsCategoryName: data.dec(_f$sportsCategoryName),
       bio: data.dec(_f$bio),
       headerUrl: data.dec(_f$headerUrl),
+      startingPlayerUids: data.dec(_f$startingPlayerUids),
       isPublic: data.dec(_f$isPublic),
       isArchived: data.dec(_f$isArchived),
       createdAt: data.dec(_f$createdAt),
       updatedAt: data.dec(_f$updatedAt),
+      category: data.dec(_f$category),
     );
   }
 
@@ -177,6 +195,9 @@ extension TeamValueCopy<$R, $Out> on ObjectCopyWith<$R, Team, $Out> {
 
 abstract class TeamCopyWith<$R, $In extends Team, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+  get startingPlayerUids;
+  SportsCategoryCopyWith<$R, SportsCategory, SportsCategory>? get category;
   $R call({
     String? uid,
     String? ownerUid,
@@ -186,10 +207,12 @@ abstract class TeamCopyWith<$R, $In extends Team, $Out>
     String? sportsCategoryName,
     String? bio,
     String? headerUrl,
+    List<String>? startingPlayerUids,
     bool? isPublic,
     bool? isArchived,
     DateTime? createdAt,
     DateTime? updatedAt,
+    SportsCategory? category,
   });
   TeamCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -201,6 +224,16 @@ class _TeamCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Team, $Out>
   @override
   late final ClassMapperBase<Team> $mapper = TeamMapper.ensureInitialized();
   @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+  get startingPlayerUids => ListCopyWith(
+    $value.startingPlayerUids,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(startingPlayerUids: v),
+  );
+  @override
+  SportsCategoryCopyWith<$R, SportsCategory, SportsCategory>? get category =>
+      $value.category?.copyWith.$chain((v) => call(category: v));
+  @override
   $R call({
     String? uid,
     String? ownerUid,
@@ -210,10 +243,12 @@ class _TeamCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Team, $Out>
     Object? sportsCategoryName = $none,
     String? bio,
     Object? headerUrl = $none,
+    List<String>? startingPlayerUids,
     bool? isPublic,
     bool? isArchived,
     Object? createdAt = $none,
     Object? updatedAt = $none,
+    Object? category = $none,
   }) => $apply(
     FieldCopyWithData({
       if (uid != null) #uid: uid,
@@ -224,10 +259,12 @@ class _TeamCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Team, $Out>
       if (sportsCategoryName != $none) #sportsCategoryName: sportsCategoryName,
       if (bio != null) #bio: bio,
       if (headerUrl != $none) #headerUrl: headerUrl,
+      if (startingPlayerUids != null) #startingPlayerUids: startingPlayerUids,
       if (isPublic != null) #isPublic: isPublic,
       if (isArchived != null) #isArchived: isArchived,
       if (createdAt != $none) #createdAt: createdAt,
       if (updatedAt != $none) #updatedAt: updatedAt,
+      if (category != $none) #category: category,
     }),
   );
   @override
@@ -246,10 +283,15 @@ class _TeamCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Team, $Out>
     ),
     bio: data.get(#bio, or: $value.bio),
     headerUrl: data.get(#headerUrl, or: $value.headerUrl),
+    startingPlayerUids: data.get(
+      #startingPlayerUids,
+      or: $value.startingPlayerUids,
+    ),
     isPublic: data.get(#isPublic, or: $value.isPublic),
     isArchived: data.get(#isArchived, or: $value.isArchived),
     createdAt: data.get(#createdAt, or: $value.createdAt),
     updatedAt: data.get(#updatedAt, or: $value.updatedAt),
+    category: data.get(#category, or: $value.category),
   );
 
   @override

@@ -36,19 +36,20 @@ class NotificationRequest {
   }
 
   Map<String, dynamic> toMap() => {
-        'name': name,
-        'token': token,
-        'deviceId': deviceId,
-        'active': active,
-        'type': type,
-      };
+    'name': name,
+    'token': token,
+    'deviceId': deviceId,
+    'active': active,
+    'type': type,
+  };
 
   /// `dart:convert`
   ///
   /// Parses the string and returns the resulting Json object as [NotificationRequest].
   factory NotificationRequest.fromJson(String data) {
     return NotificationRequest.fromMap(
-        json.decode(data) as Map<String, dynamic>);
+      json.decode(data) as Map<String, dynamic>,
+    );
   }
 
   /// `dart:convert`

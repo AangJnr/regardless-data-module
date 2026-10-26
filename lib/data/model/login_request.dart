@@ -6,10 +6,7 @@ class LoginRequest implements DomainMapper<Login> {
   String password = "";
   String token = "";
 
-  LoginRequest({
-    required this.email,
-    required this.password,
-  });
+  LoginRequest({required this.email, required this.password});
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -31,6 +28,8 @@ class LoginResponse {
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
-        refresh: json['refresh'] ?? "", access: json['access']);
+      refresh: json['refresh'] ?? "",
+      access: json['access'],
+    );
   }
 }

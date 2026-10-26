@@ -1,5 +1,5 @@
 enum ClickAction {
   signInWithGoogle,
   signInWithApple,
-  signInWithEmailVerificationLink
+  signInWithEmailVerificationLink,
 }

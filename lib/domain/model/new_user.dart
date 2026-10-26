@@ -23,29 +23,32 @@ class NewUser with NewUserMappable {
   final String? categoryName;
   final Venue? location;
 
-  const NewUser(
-      {this.email = '',
-      this.fullName = '',
-      this.phone = '',
-      this.bio = '',
-      this.picture = '',
-      this.userName = '',
-      this.categoryUid,
-      this.categoryName,
-      this.isProvider = false,
-      this.defaultProfileUid = '',
-      this.gender = Gender.Unsure,
-      this.privateCommunities = const [],
-      this.publicCommunities = const [],
-      this.subCategoryUids = const [],
-      this.location});
+  const NewUser({
+    this.email = '',
+    this.fullName = '',
+    this.phone = '',
+    this.bio = '',
+    this.picture = '',
+    this.userName = '',
+    this.categoryUid,
+    this.categoryName,
+    this.isProvider = false,
+    this.defaultProfileUid = '',
+    this.gender = Gender.Unsure,
+    this.privateCommunities = const [],
+    this.publicCommunities = const [],
+    this.subCategoryUids = const [],
+    this.location,
+  });
 
   factory NewUser.fromUser(User user) => NewUser(
-      email: user.email ?? "",
-      phone: user.phoneNumber ?? "",
-      picture: user.photoURL ?? '',
-      fullName: user.displayName ??
-          user.providerData.map((e) => e.displayName).toSet().first ??
-          "",
-      userName: (user.email?.split('@').firstOrNull ?? ''));
+    email: user.email ?? "",
+    phone: user.phoneNumber ?? "",
+    picture: user.photoURL ?? '',
+    fullName:
+        user.displayName ??
+        user.providerData.map((e) => e.displayName).toSet().first ??
+        "",
+    userName: (user.email?.split('@').firstOrNull ?? ''),
+  );
 }

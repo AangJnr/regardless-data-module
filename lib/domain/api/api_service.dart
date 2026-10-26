@@ -1,6 +1,7 @@
 import 'package:cross_file/cross_file.dart';
 import 'package:http/http.dart' show Response;
 import 'package:regardless_data_module/domain/model/team/team.dart';
+import 'package:regardless_data_module/domain/model/team/team_group.dart';
 import 'package:regardless_data_module/domain/model/tournament/tournament.dart';
 import 'package:regardless_data_module/domain/model/user.dart';
 
@@ -32,18 +33,27 @@ abstract class ApiService {
   Future<Response> getUserAccounts();
   Future<Response> setDefaultUserAccount(String profileUid);
   Future<Response> getPublicUser(String uid);
-  Future<Response> getProviderTimeline(String uid,
-      {PaginationRequest? request});
+  Future<Response> getProviderTimeline(
+    String uid, {
+    PaginationRequest? request,
+  });
   Future<Response> deleteUser(String id);
   Future<Response> deleteUserData();
   Future<dynamic> uploadPhoto(String profileUid, XFile file);
-  Future<Response> deleteAccount(String uid,
-      {String title = 'None', String reason = 'Not provided'});
-  Future<Response> updateFCMTokekn(NotificationRequest request,
-      {bool isUpdate = false});
+  Future<Response> deleteAccount(
+    String uid, {
+    String title = 'None',
+    String reason = 'Not provided',
+  });
+  Future<Response> updateFCMTokekn(
+    NotificationRequest request, {
+    bool isUpdate = false,
+  });
   Future<Response> getFCMToken(String registrationId);
-  Future<Response> updateUserName(
-      {required String profileUid, required String userName});
+  Future<Response> updateUserName({
+    required String profileUid,
+    required String userName,
+  });
   Future<Response> getUserPreferences();
   Future<Response> updatePreferences(Preference prefs);
 
@@ -57,9 +67,12 @@ abstract class ApiService {
   Future<Response> searchNearbyCommunitiesAndEvents(SearchEventParams params);
   Future<Response> searchNearbyCommunities(SearchEventParams params);
   Future<Response> searchCommunitiesViaQuery(SearchEventParams params);
-  Future<Response> searchProvider(SearchEventParams params);
-  Future<Response> getProviderEvents(String providerUid,
-      {PaginationRequest? request});
+  Future<Response> searchUsers(SearchEventParams params);
+
+  Future<Response> getProviderEvents(
+    String providerUid, {
+    PaginationRequest? request,
+  });
   Future<Response> linkToCommunity(String eventUid, Community community);
   Future<Response> unlinkFromCommunity(String eventUid, Community community);
 
@@ -70,40 +83,63 @@ abstract class ApiService {
     required String eventUid,
     required String? recurrenceUid,
   });
-  Future<Response> unattendEvent(
-      {required String eventUid, String? recurrenceUid});
-  Future<Response> getEventAttendees(
-      {required String eventUid,
-      required String recurrenceUid,
-      PaginationRequest? request});
+  Future<Response> unattendEvent({
+    required String eventUid,
+    String? recurrenceUid,
+  });
+  Future<Response> getEventAttendees({
+    required String eventUid,
+    required String recurrenceUid,
+    PaginationRequest? request,
+  });
   Future<Response> deleteEvent(String eventUid, EventActionType actionType);
   Future<Response> updateEvent(NewEventRequest e, EventActionType actionType);
 
   Future<Response> getRecurringEvent(String uid, String recurrenceUid);
-  Future<Response> getRecurringEvents(String recurrenceUid,
-      {PaginationRequest? request});
+  Future<Response> getRecurringEvents(
+    String recurrenceUid, {
+    PaginationRequest? request,
+  });
   Future<Response> updateRecurringEvent(
-      NewEventRequest e, EventActionType actionType);
+    NewEventRequest e,
+    EventActionType actionType,
+  );
 
-  Future<Response> getRecurringEventAttendees(String uid, String recurrenceUid,
-      {PaginationRequest? request});
+  Future<Response> getRecurringEventAttendees(
+    String uid,
+    String recurrenceUid, {
+    PaginationRequest? request,
+  });
   Future<Response> deleteRecurringEvent(
-      String eventUid, String recurrenceUid, EventActionType actionType);
+    String eventUid,
+    String recurrenceUid,
+    EventActionType actionType,
+  );
 
   Future<Response> getNotifications({PaginationRequest? request});
   Future<Response> markNotificationAsRead(String uid);
   Future<Response> createActivityAlert(Map<String, dynamic> body);
   Future<Response> getActivityAlerts();
   Future<Response> deleteActivityAlert(String alertId);
-  Future<Response> getReviews(
-      {String userUid = '', PaginationRequest? request});
-  Future<Response> getSubscriptions(
-      {String userUid = '', PaginationRequest? request});
+  Future<Response> getReviews({
+    String userUid = '',
+    PaginationRequest? request,
+  });
+  Future<Response> getSubscriptions({
+    String userUid = '',
+    PaginationRequest? request,
+  });
   Future<Response> reverseGeoLocation(double lat, double lng);
   Future<Response> logout();
   Future<Response> followUser(String uid);
-  Future<Response> getFollowers({PaginationRequest? request});
-  Future<Response> getFollowing({PaginationRequest? request});
+  Future<Response> getFollowers({
+    PaginationRequest? request,
+    String userUid = '',
+  });
+  Future<Response> getFollowing({
+    PaginationRequest? request,
+    String userUid = '',
+  });
   Future<Response> unfollowUser(String uid);
   Future<Response> followEvent(String eventUid);
   Future<Response> getFavorateEvents();
@@ -138,32 +174,58 @@ abstract class ApiService {
   Future<Response> deleteCommunity({required String uid});
   Future<Response> addAComment(String uid, Comment comment);
   Future<Response> deleteComment(String communityUid, String uid);
-  Future<Response> joinCommunity(
-      {required String uid, required String ownerUid});
-  Future<Response> requestToJoin(
-      {required String uid, required String ownerUid, required String userUid});
-  Future<Response> approveRequestToJoinCommunity(
-      {required String uid, required String ownerUid, required Member member});
+  Future<Response> joinCommunity({
+    required String uid,
+    required String ownerUid,
+  });
+  Future<Response> requestToJoin({
+    required String uid,
+    required String ownerUid,
+    required String userUid,
+  });
+  Future<Response> approveRequestToJoinCommunity({
+    required String uid,
+    required String ownerUid,
+    required Member member,
+  });
   Future<Response> leaveCommunity(String uid);
-  Future<Response> removeCommunityMember(
-      {required String uid, required String memberUid});
-  Future<Response> getUserJoinedCommunities(
-      {required String userUid, PaginationRequest? request});
+  Future<Response> removeCommunityMember({
+    required String uid,
+    required String memberUid,
+  });
+  Future<Response> getUserJoinedCommunities({
+    required String userUid,
+    PaginationRequest? request,
+  });
   Future<Response> joinCommunities(List<String> private, List<String> public);
-  Future<Response> getUserCommunities(String ownerUid,
-      {PaginationRequest? request});
-  Future<Response> getCommunityComments(String uid,
-      {PaginationRequest? request});
-  Future<Response> getCommunityMembers(String uid,
-      {PaginationRequest? request});
-  Future<Response> getCommunityMemberRequests(String uid,
-      {PaginationRequest? request});
-  Future<Response> getCommunityReviews(
-      {String uid = '', PaginationRequest? request});
-  Future<Response> addCommunityReview(
-      {String uid = '', required Review review});
+  Future<Response> getUserCommunities(
+    String ownerUid, {
+    PaginationRequest? request,
+  });
+  Future<Response> getCommunityComments(
+    String uid, {
+    PaginationRequest? request,
+  });
+  Future<Response> getCommunityMembers(
+    String uid, {
+    PaginationRequest? request,
+  });
+  Future<Response> getCommunityMemberRequests(
+    String uid, {
+    PaginationRequest? request,
+  });
+  Future<Response> getCommunityReviews({
+    String uid = '',
+    PaginationRequest? request,
+  });
+  Future<Response> addCommunityReview({
+    String uid = '',
+    required Review review,
+  });
   Future<Response> updateAppointmentStatus(
-      AppointmentStatus status, Appointment appointment);
+    AppointmentStatus status,
+    Appointment appointment,
+  );
   Future<Response> getDashboardMetrics(String date);
 
   Future<Response> getPosts({PaginationRequest? request});
@@ -174,48 +236,88 @@ abstract class ApiService {
   Future<Response> getPublicAnnouncements({PaginationRequest? request});
   Future<Response> addAnnouncementPost(Map<String, dynamic> postData);
   Future<Response> editAnnouncementPost(
-      String uid, Map<String, dynamic> postData);
+    String uid,
+    Map<String, dynamic> postData,
+  );
 
   Future<Response> deleteAnnouncementPost(String uid);
 
   Future<dynamic> uploadImages(List<XFile> images);
 
-  Future<Response> getProviderReviews(
-      {String uid = '', PaginationRequest? request});
+  Future<Response> getProviderReviews({
+    String uid = '',
+    PaginationRequest? request,
+  });
   Future<Response> addProviderReview({String uid = '', required Review review});
   Future<Response> generateDescriptionSuggestions(String text);
   Future<dynamic> generateActivityFromImage(XFile image);
 
   // Teams
   Future<dynamic> addTeam(Team team, {XFile? logo, XFile? headerImage});
-  Future<dynamic> createTeamAccount(Team team, NewUser user,
-      {XFile? logo, XFile? headerImage});
+  Future<dynamic> createTeamAccount(
+    Team team,
+    NewUser user, {
+    XFile? logo,
+    XFile? headerImage,
+  });
+  Future<Response> getMyTeams({PaginationRequest? request});
+  Future<Response> getTeamSummaries(List<String> teamUids);
   Future<Response> getUsersTeams(String ownerUid, {PaginationRequest? request});
   Future<Response> getTeam(String ownerUid, String uid);
+  Future<Response> updateTeamStartingPlayers(
+    String teamUid,
+    List<String> playerUids,
+  );
   Future<Response> getTeamInvite(String token, String teamUid);
   Future<Response> deleteTeam(String uid);
   Future<Response> getTeamMembers(String uid, {PaginationRequest? request});
+  Future<Response> updateTeamMemberPlayerProfile(
+    String teamUid,
+    String memberUid,
+    Map<String, dynamic> profile,
+  );
+  Future<Response> createTeamJoinLink(String teamUid, {int expiresInDays = 7});
+  Future<Response> getTeamJoinLinks(String teamUid);
+  Future<Response> revokeTeamJoinLink(String teamUid, String linkUid);
+  Future<Response> requestToJoinTeamByLink(String linkUid);
   Future<Response> removeTeamMember(String uid, String memberUid);
   Future<Response> requestToJoinTeam(String ownerUid, String uid);
   Future<Response> inviteUserToTeam(List<AUser> users, String uid);
 
-  Future<Response> approveRequestToJoinTeam(
-      {required String ownerUid,
-      required String uid,
-      required String requesterUid,
-      String? role});
-  Future<Response> getTeamJoinRequests(String uid,
-      {PaginationRequest? request});
-  Future<Response> inviteMemberByEmail(String uid,
-      {required String email, String? name, String? role});
-  Future<Response> invitePlayersByEmail(String teamUid,
-      {required List<String> emails});
+  Future<Response> approveRequestToJoinTeam({
+    required String ownerUid,
+    required String uid,
+    required String requesterUid,
+    String? role,
+  });
+  Future<Response> getTeamJoinRequests(
+    String uid, {
+    PaginationRequest? request,
+  });
+
+  Future<Response> getAllTeamsJoinRequests({PaginationRequest? request});
+  Future<Response> inviteMemberByEmail(
+    String uid, {
+    required String email,
+    String? name,
+    String? role,
+  });
+  Future<Response> invitePlayersByEmail(
+    String teamUid, {
+    required List<String> emails,
+  });
   Future<Response> acceptTeamInvite(String token, String teamUid);
   Future<Response> finalizeTeamInvite(String token, String teamUid);
   Future<Response> linkTeamWithEvent(
-      String ownerUid, String teamUid, String eventUid);
+    String ownerUid,
+    String teamUid,
+    String eventUid,
+  );
   Future<Response> unlinkTeamWithEvent(
-      String ownerUid, String teamUid, String eventUid);
+    String ownerUid,
+    String teamUid,
+    String eventUid,
+  );
   Future<Response> addTeamManager(String teamUid, String managerUid);
   Future<Response> removeTeamManager(String teamUid, String managerUid);
   Future<Response> getTeamInvitees(String uid, {PaginationRequest? request});
@@ -224,9 +326,19 @@ abstract class ApiService {
   Future<dynamic> uploadTeamMedia(String teamUid, List<XFile> files);
   Future<Response> initTeamMedia(String teamUid, List<XFile> files);
   Future<Response> finalizeTeamMedia(
-      String teamUid, List<DirectMediaUploadFinalizePayload> uploads);
+    String teamUid,
+    List<DirectMediaUploadFinalizePayload> uploads,
+  );
   Future<Response> getTeamMedia(String teamUid, {PaginationRequest? request});
-  Future<Response> searchTeams(String teamUid, {PaginationRequest? request});
+  Future<Response> searchTeams(String query, {PaginationRequest? request});
+  Future<Response> getTeamsBySportsCategories(List<String> sportsCategoryUids);
+  Future<Response> getTeamsBySportsCategory(
+    String sportsCategoryUid, {
+    PaginationRequest? request,
+  });
+  Future<Response> getTeamGroups(String sportsCategoryUid);
+  Future<Response> saveTeamGroup(TeamGroup group);
+  Future<Response> deleteTeamGroup(String uid);
   Future<Response> deleteTeamMedia(String teamUid, List<String> uids);
 
   // Sports Categories
@@ -235,14 +347,22 @@ abstract class ApiService {
   Future<dynamic> uploadProviderMedia(String uid, List<XFile> files);
   Future<Response> initProviderMedia(String uid, List<XFile> files);
   Future<Response> finalizeProviderMedia(
-      String uid, List<DirectMediaUploadFinalizePayload> uploads);
+    String uid,
+    List<DirectMediaUploadFinalizePayload> uploads,
+  );
   Future<Response> getProviderMedia(String uid, {PaginationRequest? request});
   Future<Response> deleteProviderMedia(String uid, List<String> uids);
 
   Future<Response> inviteCollaborators(
-      List<AUser> users, String uid, String role, List<String> permissions);
-  Future<Response> getInvitedCollaborators(String uid,
-      {PaginationRequest? request});
+    List<AUser> users,
+    String uid,
+    String role,
+    List<String> permissions,
+  );
+  Future<Response> getInvitedCollaborators(
+    String uid, {
+    PaginationRequest? request,
+  });
   Future<Response> deleteCollaboratorInvite(String uid, String inviteId);
   Future<Response> acceptCollaboratorInvite(String token, String providerUid);
   Future<Response> finalizeCollaboratorInvite(String token, String providerUid);
@@ -251,17 +371,36 @@ abstract class ApiService {
   Future<Response> getCollaborator(String uid);
 
   Future<Response> removeCollaborator(String uid, String collaboratorUid);
-  Future<Response> updateCollaboratorPermissions(String uid,
-      String collaboratorUid, String role, List<String> permissions);
+  Future<Response> revokeCollaboratorAccountAccess(String uid);
+
+  Future<Response> updateCollaboratorPermissions(
+    String uid,
+    String collaboratorUid,
+    String role,
+    List<String> permissions,
+  );
   Future<Response> updateUserSchedule(String uid, List<TimeSlotApi> schedule);
 
   // Tournament
-  Future<dynamic> createTournament(Tournament tournament,
-      {XFile? logo, XFile? cover});
-  Future<dynamic> updateTournament(Tournament tournament,
-      {XFile? logo, XFile? cover});
-  Future<Response> getTournaments(String ownerUid,
-      {PaginationRequest? request});
+  Future<dynamic> createTournament(
+    Tournament tournament, {
+    XFile? logo,
+    XFile? cover,
+  });
+  Future<dynamic> updateTournament(
+    Tournament tournament, {
+    XFile? logo,
+    XFile? cover,
+    Map<String, dynamic>? categoryRulesSnapshot,
+  });
+  Future<Response> getTournaments(
+    String ownerUid, {
+    PaginationRequest? request,
+  });
+  Future<Response> getPublicTournaments(
+    String ownerUid, {
+    PaginationRequest? request,
+  });
   Future<Response> getTournament(String uid);
   Future<Response> deleteTournament(String uid);
   Future<Response> getTournamentMatches(
@@ -269,8 +408,44 @@ abstract class ApiService {
     String? seasonUid,
     PaginationRequest? request,
   });
+  Future<Response> getTournamentBracketMatches(
+    String tournamentUid, {
+    required String seasonUid,
+  });
   Future<Response> getTournamentStandings(
     String tournamentUid, {
     String? seasonUid,
   });
+  Future<Response> getTournamentStatistics(
+    String tournamentUid, {
+    String? seasonUid,
+  });
+  Future<Response> getTournamentSeasons(String tournamentUid);
+  Future<Response> getTournamentCategoryRules(String categoryUid);
+  Future<Response> createTournamentSeason(
+    String tournamentUid,
+    Map<String, dynamic> body,
+  );
+  Future<Response> updateTournamentSeason(
+    String tournamentUid,
+    String seasonUid,
+    Map<String, dynamic> body,
+  );
+  Future<Response> startTournamentSeason(
+    String tournamentUid,
+    String seasonUid,
+  );
+  Future<Response> regenerateTournamentSeasonFixtures(
+    String tournamentUid,
+    String seasonUid,
+  );
+  Future<Response> completeTournamentSeason(
+    String tournamentUid,
+    String seasonUid,
+  );
+  Future<Response> recordTournamentMatch(
+    String tournamentUid,
+    String matchUid,
+    Map<String, dynamic> body,
+  );
 }

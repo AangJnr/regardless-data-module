@@ -42,35 +42,35 @@ class NotificationA implements DomainMapper<Notification> {
   }
 
   factory NotificationA.fromMap(Map<String, dynamic> data) => NotificationA(
-        uid: data['uid'] as String?,
-        createdAt: data['createdAt'] == null
-            ? null
-            : DateTime.parse(data['createdAt'] as String),
-        updatedAt: data['updatedAt'] == null
-            ? null
-            : DateTime.parse(data['updatedAt'] as String),
-        isActive: data['isActive'] as bool?,
-        title: data['title'] as String?,
-        message: data['body'] as String?,
-        type: data['type'] as String?,
-        metaData: data['metaData'] as String?,
-        customLinkText: data['custom_link_text'] as dynamic,
-        image: data['image'] as dynamic,
-      );
+    uid: data['uid'] as String?,
+    createdAt: data['createdAt'] == null
+        ? null
+        : DateTime.parse(data['createdAt'] as String),
+    updatedAt: data['updatedAt'] == null
+        ? null
+        : DateTime.parse(data['updatedAt'] as String),
+    isActive: data['isActive'] as bool?,
+    title: data['title'] as String?,
+    message: data['body'] as String?,
+    type: data['type'] as String?,
+    metaData: data['metaData'] as String?,
+    customLinkText: data['custom_link_text'] as dynamic,
+    image: data['image'] as dynamic,
+  );
 
   Map<String, dynamic> toMap() => {
-        'id': uid,
-        'createdAt': createdAt?.toIso8601String(),
-        'updatedAt': updatedAt?.toIso8601String(),
-        'isActive': isActive,
-        'deleted_at': deletedAt,
-        'title': title,
-        'body': message,
-        'type': type,
-        'metaData': metaData,
-        'custom_link_text': customLinkText,
-        'image': image,
-      };
+    'id': uid,
+    'createdAt': createdAt?.toIso8601String(),
+    'updatedAt': updatedAt?.toIso8601String(),
+    'isActive': isActive,
+    'deleted_at': deletedAt,
+    'title': title,
+    'body': message,
+    'type': type,
+    'metaData': metaData,
+    'custom_link_text': customLinkText,
+    'image': image,
+  };
 
   /// `dart:convert`
   ///
@@ -114,17 +114,19 @@ class NotificationA implements DomainMapper<Notification> {
 
   @override
   Notification mapToDomain() => Notification(
-        uid: uid ?? '',
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-        isActive: isActive ?? false,
-        title: title ?? '',
-        message: message ?? '',
-        type: NotificationType.values
-                .firstWhereOrNull((element) => element.name == type) ??
-            NotificationType.NONE,
-        metaData: metaData ?? '',
-        customLinkText: customLinkText ?? '',
-        image: image ?? '',
-      );
+    uid: uid ?? '',
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+    isActive: isActive ?? false,
+    title: title ?? '',
+    message: message ?? '',
+    type:
+        NotificationType.values.firstWhereOrNull(
+          (element) => element.name == type,
+        ) ??
+        NotificationType.NONE,
+    metaData: metaData ?? '',
+    customLinkText: customLinkText ?? '',
+    image: image ?? '',
+  );
 }

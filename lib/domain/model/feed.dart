@@ -31,32 +31,32 @@ class Feed with FeedMappable {
   final bool isFromFeed;
   final String recurrenceUid;
   final bool isRepeating;
-  const Feed(
-      {this.venue = const Venue(),
-      this.description = '',
-      this.createdAt,
-      this.uid = '',
-      this.isArchived = false,
-      this.title = '',
-      this.timestamp = 0,
-      this.category = const Category(),
-      this.localTimestamp = '',
-      this.categoryUid = '',
-      this.updatedAt,
-      this.imageUrls = const [],
-      this.tags = const [],
-      this.ownerUid = '',
-      this.ownerUserName = '',
-      this.ownerProfileImageUrl = '',
-      this.isSponsored = false,
-      this.communityUid = '',
-      this.recurrenceUid = '',
-      this.isRepeating = false,
-      this.distance = 0.0,
-      this.isFromFeed = true});
+  const Feed({
+    this.venue = const Venue(),
+    this.description = '',
+    this.createdAt,
+    this.uid = '',
+    this.isArchived = false,
+    this.title = '',
+    this.timestamp = 0,
+    this.category = const Category(),
+    this.localTimestamp = '',
+    this.categoryUid = '',
+    this.updatedAt,
+    this.imageUrls = const [],
+    this.tags = const [],
+    this.ownerUid = '',
+    this.ownerUserName = '',
+    this.ownerProfileImageUrl = '',
+    this.isSponsored = false,
+    this.communityUid = '',
+    this.recurrenceUid = '',
+    this.isRepeating = false,
+    this.distance = 0.0,
+    this.isFromFeed = true,
+  });
 
   HashImage getImage() => imageUrls.firstOrNull ?? const HashImage();
-
 
   String formatDistance() {
     if (distance >= 1000) {
@@ -108,24 +108,25 @@ class Feed with FeedMappable {
 
   factory Feed.fromEventItem(Event feed) {
     return Feed(
-        isArchived: feed.isArchived,
-        description: feed.description,
-        createdAt: feed.createdAt,
-        uid: feed.uid,
-        localTimestamp: feed.localTimestamp,
-        categoryUid: feed.categoryUid,
-        category: feed.category,
-        updatedAt: feed.updatedAt,
-        imageUrls: feed.imageUrls,
-        title: feed.name,
-        ownerUid: feed.ownerUid,
-        ownerUserName: feed.ownerUserName,
-        ownerProfileImageUrl: feed.ownerProfileImageUrl,
-        timestamp: feed.timestamp,
-        distance: feed.distance,
-        communityUid: feed.communityUid,
-        isFromFeed: feed.isFromFeed,
-        isRepeating: feed.isRepeating,
-        recurrenceUid: feed.recurrenceUid);
+      isArchived: feed.isArchived,
+      description: feed.description,
+      createdAt: feed.createdAt,
+      uid: feed.uid,
+      localTimestamp: feed.localTimestamp,
+      categoryUid: feed.categoryUid,
+      category: feed.category,
+      updatedAt: feed.updatedAt,
+      imageUrls: feed.imageUrls,
+      title: feed.name,
+      ownerUid: feed.ownerUid,
+      ownerUserName: feed.ownerUserName,
+      ownerProfileImageUrl: feed.ownerProfileImageUrl,
+      timestamp: feed.timestamp,
+      distance: feed.distance,
+      communityUid: feed.communityUid,
+      isFromFeed: feed.isFromFeed,
+      isRepeating: feed.isRepeating,
+      recurrenceUid: feed.recurrenceUid,
+    );
   }
 }

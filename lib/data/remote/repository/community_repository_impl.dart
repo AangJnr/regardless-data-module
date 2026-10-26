@@ -21,7 +21,9 @@ class CommunityRepositoryImpl
     implements CommunityRepository {
   @override
   Future<Result<Comment, Exception>> addAComment(
-      String uid, Comment comment) async {
+    String uid,
+    Comment comment,
+  ) async {
     var data = await processRequest(() => apiService.addAComment(uid, comment));
     if (data.isSuccess()) {
       return Success(CommentMapper.fromMap(data.tryGetSuccess()!));
@@ -40,9 +42,12 @@ class CommunityRepositoryImpl
 
   @override
   Future<Result<bool, Exception>> deleteComment(
-      String communityUid, String uid) async {
-    var data =
-        await processRequest(() => apiService.deleteComment(communityUid, uid));
+    String communityUid,
+    String uid,
+  ) async {
+    var data = await processRequest(
+      () => apiService.deleteComment(communityUid, uid),
+    );
     if (data.isSuccess()) {
       return const Success(true);
     }
@@ -63,8 +68,9 @@ class CommunityRepositoryImpl
     required String uid,
     required String ownerUid,
   }) async {
-    var data =
-        await processRequest(() => apiService.getCommunity(ownerUid, uid));
+    var data = await processRequest(
+      () => apiService.getCommunity(ownerUid, uid),
+    );
     if (data.isSuccess()) {
       return Success(CommunityMapper.fromMap(data.tryGetSuccess()!));
     }
@@ -73,42 +79,55 @@ class CommunityRepositoryImpl
 
   @override
   Future<Result<Pagination<Comment>, Exception>> getCommunityComments(
-      String uid,
-      {PaginationRequest? request}) async {
+    String uid, {
+    PaginationRequest? request,
+  }) async {
     var response = await processRequest(
-        () => apiService.getCommunityComments(uid, request: request));
+      () => apiService.getCommunityComments(uid, request: request),
+    );
     if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        response.tryGetSuccess()!,
+      );
       try {
         final data = paginationResponse.data
             ?.map((e) => CommentMapper.fromMap(e))
             .toList();
-        return Success(Pagination<Comment>(
+        return Success(
+          Pagination<Comment>(
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {}
     }
     return const Success(Pagination<Comment>());
   }
 
   @override
-  Future<Result<Pagination<Member>, Exception>> getCommunityMembers(String uid,
-      {PaginationRequest? request}) async {
+  Future<Result<Pagination<Member>, Exception>> getCommunityMembers(
+    String uid, {
+    PaginationRequest? request,
+  }) async {
     var response = await processRequest(
-        () => apiService.getCommunityMembers(uid, request: request));
+      () => apiService.getCommunityMembers(uid, request: request),
+    );
     if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        response.tryGetSuccess()!,
+      );
       try {
         final data = paginationResponse.data
             ?.map((e) => MemberMapper.fromMap(e))
             .toList();
-        return Success(Pagination<Member>(
+        return Success(
+          Pagination<Member>(
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {}
     }
     return Error(response.tryGetError()!);
@@ -116,42 +135,58 @@ class CommunityRepositoryImpl
 
   @override
   Future<Result<Pagination<Community>, Exception>> getUserCommunities(
-      String ownerUid,
-      {PaginationRequest? request}) async {
+    String ownerUid, {
+    PaginationRequest? request,
+  }) async {
     var response = await processRequest(
-        () => apiService.getUserCommunities(ownerUid, request: request));
+      () => apiService.getUserCommunities(ownerUid, request: request),
+    );
     if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        response.tryGetSuccess()!,
+      );
       try {
         final data = paginationResponse.data
             ?.map((e) => CommunityMapper.fromMap(e))
             .toList();
-        return Success(Pagination<Community>(
+        return Success(
+          Pagination<Community>(
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {}
     }
     return const Success(Pagination<Community>());
   }
 
   @override
-  Future<Result<Pagination<Community>, Exception>> getUserJoinedCommunities(
-      {required String userUid, PaginationRequest? request}) async {
-    var response = await processRequest(() => apiService
-        .getUserJoinedCommunities(userUid: userUid, request: request));
+  Future<Result<Pagination<Community>, Exception>> getUserJoinedCommunities({
+    required String userUid,
+    PaginationRequest? request,
+  }) async {
+    var response = await processRequest(
+      () => apiService.getUserJoinedCommunities(
+        userUid: userUid,
+        request: request,
+      ),
+    );
     if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        response.tryGetSuccess()!,
+      );
       try {
         final data = paginationResponse.data
             ?.map((e) => CommunityMapper.fromMap(e))
             .toList();
-        return Success(Pagination<Community>(
+        return Success(
+          Pagination<Community>(
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {}
     }
     return const Success(Pagination<Community>());
@@ -162,13 +197,18 @@ class CommunityRepositoryImpl
     bool isRequest = false,
     required Community community,
   }) async {
-    var data = await processRequest(() => isRequest
-        ? apiService.requestToJoin(
-            uid: community.uid,
-            ownerUid: community.ownerUid,
-            userUid: sessionManager.getUserProfile().uid)
-        : apiService.joinCommunity(
-            uid: community.uid, ownerUid: community.ownerUid));
+    var data = await processRequest(
+      () => isRequest
+          ? apiService.requestToJoin(
+              uid: community.uid,
+              ownerUid: community.ownerUid,
+              userUid: sessionManager.getUserProfile().uid,
+            )
+          : apiService.joinCommunity(
+              uid: community.uid,
+              ownerUid: community.ownerUid,
+            ),
+    );
     if (data.isSuccess()) {
       return Success(MemberMapper.fromMap(data.tryGetSuccess()!));
     }
@@ -185,10 +225,13 @@ class CommunityRepositoryImpl
   }
 
   @override
-  Future<Result<bool, Exception>> removeCommunityMember(
-      {required String uid, required String memberUid}) async {
+  Future<Result<bool, Exception>> removeCommunityMember({
+    required String uid,
+    required String memberUid,
+  }) async {
     var data = await processRequest(
-        () => apiService.removeCommunityMember(uid: uid, memberUid: memberUid));
+      () => apiService.removeCommunityMember(uid: uid, memberUid: memberUid),
+    );
     if (data.isSuccess()) {
       return const Success(true);
     }
@@ -196,11 +239,17 @@ class CommunityRepositoryImpl
   }
 
   @override
-  Future<Result<Member, Exception>> approveRequestToJoinCommunity(
-      {required Community community, required Member member}) async {
-    var data = await processRequest(() =>
-        apiService.approveRequestToJoinCommunity(
-            uid: community.uid, ownerUid: community.ownerUid, member: member));
+  Future<Result<Member, Exception>> approveRequestToJoinCommunity({
+    required Community community,
+    required Member member,
+  }) async {
+    var data = await processRequest(
+      () => apiService.approveRequestToJoinCommunity(
+        uid: community.uid,
+        ownerUid: community.ownerUid,
+        member: member,
+      ),
+    );
     if (data.isSuccess()) {
       return Success(MemberMapper.fromMap(data.tryGetSuccess()!));
     }
@@ -209,42 +258,53 @@ class CommunityRepositoryImpl
 
   @override
   Future<Result<Pagination<Member>, Exception>> getCommunityMemberRequests(
-      String uid,
-      {PaginationRequest? request}) async {
+    String uid, {
+    PaginationRequest? request,
+  }) async {
     var response = await processRequest(
-        () => apiService.getCommunityMemberRequests(uid, request: request));
+      () => apiService.getCommunityMemberRequests(uid, request: request),
+    );
     if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        response.tryGetSuccess()!,
+      );
       try {
         final data = paginationResponse.data
             ?.map((e) => MemberMapper.fromMap(e))
             .toList();
-        return Success(Pagination<Member>(
+        return Success(
+          Pagination<Member>(
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {}
     }
     return Error(response.tryGetError()!);
   }
 
   @override
-  Future<Result<Pagination<Review>, Exception>> getCommunityReviews(
-      {PaginationRequest? request, String uid = ''}) async {
+  Future<Result<Pagination<Review>, Exception>> getCommunityReviews({
+    PaginationRequest? request,
+    String uid = '',
+  }) async {
     try {
       bool hasNext = false;
       List<Review> allData = [];
       var data = await processRequest(
-          () => apiService.getCommunityReviews(request: request, uid: uid));
+        () => apiService.getCommunityReviews(request: request, uid: uid),
+      );
       if (data.isSuccess()) {
-        final paginatedResults =
-            PaginatedResponse.fromMap(data.tryGetSuccess()!);
+        final paginatedResults = PaginatedResponse.fromMap(
+          data.tryGetSuccess()!,
+        );
 
         if (paginatedResults.data != null) {
           try {
             allData.addAll(
-                paginatedResults.data!.map((e) => ReviewMapper.fromMap(e)));
+              paginatedResults.data!.map((e) => ReviewMapper.fromMap(e)),
+            );
           } catch (e) {
             //
           }
@@ -252,17 +312,21 @@ class CommunityRepositoryImpl
         }
       }
       return Future.value(
-          Success(Pagination<Review>(data: allData, hasNext: hasNext)));
+        Success(Pagination<Review>(data: allData, hasNext: hasNext)),
+      );
     } catch (e) {
       return Future.value(Error(Exception(e)));
     }
   }
 
   @override
-  Future<Result<Review, Exception>> addReview(
-      {required Review review, String uid = ''}) async {
+  Future<Result<Review, Exception>> addReview({
+    required Review review,
+    String uid = '',
+  }) async {
     var response = await processRequest(
-        () => apiService.addCommunityReview(review: review, uid: uid));
+      () => apiService.addCommunityReview(review: review, uid: uid),
+    );
     if (response.isSuccess()) {
       return Success(ReviewMapper.fromMap(response.tryGetSuccess()!));
     }
@@ -272,9 +336,11 @@ class CommunityRepositoryImpl
 
   @override
   Future<Result<List<Community>, Exception>> searchNearByCommunity(
-      SearchEventParams params) async {
-    var data =
-        await processRequest(() => apiService.searchNearbyCommunities(params));
+    SearchEventParams params,
+  ) async {
+    var data = await processRequest(
+      () => apiService.searchNearbyCommunities(params),
+    );
     if (data.isSuccess()) {
       final results = (data.tryGetSuccess()! as List<dynamic>)
           .map((data) => CommunityMapper.fromMap(data))
@@ -286,9 +352,11 @@ class CommunityRepositoryImpl
 
   @override
   Future<Result<List<Community>, Exception>> searchCommunity(
-      SearchEventParams params) async {
+    SearchEventParams params,
+  ) async {
     var data = await processRequest(
-        () => apiService.searchCommunitiesViaQuery(params));
+      () => apiService.searchCommunitiesViaQuery(params),
+    );
     if (data.isSuccess()) {
       final results = (data.tryGetSuccess()! as List<dynamic>)
           .map((data) => CommunityMapper.fromMap(data))

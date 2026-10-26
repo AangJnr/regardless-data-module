@@ -12,18 +12,19 @@ class ActivityFromImageResult {
   final double? longitude;
   final String? priceNotes;
   final Price? price;
-  const ActivityFromImageResult(
-      {this.name,
-      this.descriptions = const [],
-      this.startDateTime,
-      this.venueText,
-      this.venueName,
-      this.phone,
-      this.email,
-      this.latitude,
-      this.longitude,
-      this.priceNotes,
-      this.price});
+  const ActivityFromImageResult({
+    this.name,
+    this.descriptions = const [],
+    this.startDateTime,
+    this.venueText,
+    this.venueName,
+    this.phone,
+    this.email,
+    this.latitude,
+    this.longitude,
+    this.priceNotes,
+    this.price,
+  });
 
   factory ActivityFromImageResult.fromMap(Map<String, dynamic> m) {
     double? toDouble(dynamic v) {
@@ -34,22 +35,24 @@ class ActivityFromImageResult {
     }
 
     return ActivityFromImageResult(
-        name: m['name'] as String?,
-        descriptions: (m['descriptions'] as List<dynamic>?)
-                ?.map((e) => e.toString())
-                .toList() ??
-            [],
-        startDateTime: m['startDateTime'] as String?,
-        venueText: m['venueText'] as String?,
-        venueName: m['venueName'] as String?,
-        phone: m['phone'] as String?,
-        email: m['email'] as String?,
-        latitude: toDouble(m['latitude']),
-        longitude: toDouble(m['longitude']),
-        priceNotes: m['priceNotes'] as String?,
-        price: m['price'] != null ? PriceMapper.fromMap(m['price']) : null);
+      name: m['name'] as String?,
+      descriptions:
+          (m['descriptions'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
+      startDateTime: m['startDateTime'] as String?,
+      venueText: m['venueText'] as String?,
+      venueName: m['venueName'] as String?,
+      phone: m['phone'] as String?,
+      email: m['email'] as String?,
+      latitude: toDouble(m['latitude']),
+      longitude: toDouble(m['longitude']),
+      priceNotes: m['priceNotes'] as String?,
+      price: m['price'] != null ? PriceMapper.fromMap(m['price']) : null,
+    );
   }
-@override
+  @override
   String toString() {
     return 'ActivityFromImageResult(name: $name, descriptions: $descriptions, startDateTime: $startDateTime, venueText: $venueText, venueName: $venueName, phone: $phone, email: $email, latitude: $latitude, longitude: $longitude, priceNotes: $priceNotes, price: $price)';
   }

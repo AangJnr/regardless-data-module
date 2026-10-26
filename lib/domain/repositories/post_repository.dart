@@ -7,21 +7,26 @@ import '../model/post/post.dart';
 
 abstract class PostRepository {
   Future<Result<Pagination<Post>, Exception>> getPosts(
-      PaginationRequest request);
+    PaginationRequest request,
+  );
   Future<bool> likePost(String uid);
   Future<bool> unlikePost(String uid);
   Future<Result<Pagination<Announcement>, Exception>> getUserAnnouncementPosts(
-      PaginationRequest request);
+    PaginationRequest request,
+  );
   Future<Result<Announcement, Exception>> addAnnouncementPost(
-      Announcement postData);
+    Announcement postData,
+  );
   Future<Result<Announcement, Exception>> editAnnouncementPost(
-      Announcement postData);
+    Announcement postData,
+  );
   Future<Result<Pagination<Announcement>, Exception>>
-      getPublicAnnouncementPosts(PaginationRequest request);
+  getPublicAnnouncementPosts(PaginationRequest request);
   Future<bool> deleteAnnouncementPost(String uid);
 
   Future<Result<ActivityAlert, Exception>> createActivityAlert(
-      ActivityAlert draft);
+    ActivityAlert draft,
+  );
   Future<Result<List<ActivityAlert>, Exception>> getActivityAlerts();
   Future<Result<bool, Exception>> deleteActivityAlert(String alertId);
 }

@@ -6,41 +6,49 @@ import '../../domain/model/venue.dart';
 class PlacesServiceImpl implements PlacesService {
   FlutterGooglePlacesSdk? _googlePlace;
   PlacesServiceImpl() {
-    _googlePlace =
-        FlutterGooglePlacesSdk("AIzaSyA8w14yzjHUN5o7P-bJ4247kSNJUD4S_Ms");
+    _googlePlace = FlutterGooglePlacesSdk(
+      "AIzaSyA8w14yzjHUN5o7P-bJ4247kSNJUD4S_Ms",
+    );
   }
 
   @override
   Future<List<PredictedLocation>> searchPlaceByQuery(String query) async {
     final predictions = await _googlePlace?.findAutocompletePredictions(query);
-    final locations = predictions?.predictions
-            .map((e) => PredictedLocation(
+    final locations =
+        predictions?.predictions
+            .map(
+              (e) => PredictedLocation(
                 address: e.fullText,
                 length: e.distanceMeters ?? 0,
                 offset: 0,
-                placeId: e.placeId))
+                placeId: e.placeId,
+              ),
+            )
             .toList() ??
         [];
     debugPrint(
-        "PlacesServiceImpl - Query ==> $query || Predictions is ==> ${locations.length}");
+      "PlacesServiceImpl - Query ==> $query || Predictions is ==> ${locations.length}",
+    );
     return locations;
   }
 
   @override
   Future<Venue> getAddressDetails(PredictedLocation predictedLocation) async {
-    FetchPlaceResponse? detailsResponse =
-        await _googlePlace?.fetchPlace(predictedLocation.placeId, fields: [
-      PlaceField.Address,
-      PlaceField.AddressComponents,
-      PlaceField.Location,
-      PlaceField.Name,
-    ]);
+    FetchPlaceResponse? detailsResponse = await _googlePlace?.fetchPlace(
+      predictedLocation.placeId,
+      fields: [
+        PlaceField.Address,
+        PlaceField.AddressComponents,
+        PlaceField.Location,
+        PlaceField.Name,
+      ],
+    );
     if (detailsResponse != null) {
       final place = detailsResponse.place;
 
       debugPrint("PlacesService - result?.addressComponents?.toString()");
       final a = Venue(
-        address:predictedLocation.address,
+        address: predictedLocation.address,
         city: getData(3, place?.addressComponents),
         country: getData(6, place?.addressComponents),
         state: getData(5, place?.addressComponents),
@@ -53,8 +61,11 @@ class PlacesServiceImpl implements PlacesService {
     return Venue(address: predictedLocation.address);
   }
 
-  String getData(int index, List<AddressComponent>? components,
-      {bool isShortName = false}) {
+  String getData(
+    int index,
+    List<AddressComponent>? components, {
+    bool isShortName = false,
+  }) {
     if (components?.isEmpty == true || components!.length <= index) return '';
     if (isShortName) {
       return components[index].shortName;

@@ -11,8 +11,9 @@ class TeamJoinRequest with TeamJoinRequestMappable {
   final AUser requester;
   final DateTime? requestedAt;
   final TeamJoinRequestStatus status; // pending | approved | rejected
-  const TeamJoinRequest(
-      {this.requester = const AUser(),
-      this.requestedAt,
-      this.status = TeamJoinRequestStatus.pending});
+  const TeamJoinRequest({
+    this.requester = const AUser(),
+    this.requestedAt,
+    this.status = TeamJoinRequestStatus.pending,
+  });
 }

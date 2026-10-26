@@ -7,7 +7,8 @@ class Pagination<E> {
 
   Pagination<E> copyWith({List<E>? data, dynamic last, bool? hasNext}) =>
       Pagination(
-          data: data ?? this.data,
-          last: last ?? this.last,
-          hasNext: hasNext ?? this.hasNext);
+        data: data ?? this.data,
+        last: last ?? this.last,
+        hasNext: hasNext ?? this.hasNext,
+      );
 }

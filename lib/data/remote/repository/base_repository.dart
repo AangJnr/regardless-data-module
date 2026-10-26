@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:http/http.dart' show Response;
 import 'package:multiple_result/multiple_result.dart';
 
@@ -26,7 +27,8 @@ mixin BaseRepository {
     return (request() as Future).timeout(
       _kRequestTimeout,
       onTimeout: () => throw Exception(
-          'Connection to our servers timed out.\nPlease try at a later time while we resolve the issue'),
+        'Connection to our servers timed out.\nPlease try at a later time while we resolve the issue',
+      ),
     );
   }
 
@@ -36,9 +38,9 @@ mixin BaseRepository {
         var response = (await _withTimeout(request)) as Response;
 
         final dynamic r = jsonDecode(response.body);
-        getLogger("BaseRepository")
-            .i(" ${response.statusCode}\nresponseBody: $r}");
+        getLogger("BaseRepository").i(" ${response.statusCode}\n}");
 
+        logLargeJson(r);
         if (response.statusCode >= 400) {
           return Error(Exception(parseErrors(r)));
         }
@@ -57,11 +59,38 @@ mixin BaseRepository {
     }
   }
 
+  void logLargeJson(dynamic jsonObject) {
+    if (!kDebugMode) return;
+    // 1. Convert your object/map into a neatly formatted readable JSON string
+    const JsonEncoder encoder = JsonEncoder.withIndent('  ');
+    final String prettyString = encoder.convert(jsonObject);
+
+    // 2. Define your chunk limit (safely below the console buffer max)
+    const int chunkLength = 800;
+
+    // 3. Loop and slice the string piece by piece
+    int startIndex = 0;
+    while (startIndex < prettyString.length) {
+      int endIndex = startIndex + chunkLength;
+      if (endIndex > prettyString.length) {
+        endIndex = prettyString.length;
+      }
+
+      // Print the specific fragment
+      if (kDebugMode) {
+        print(prettyString.substring(startIndex, endIndex));
+      }
+
+      startIndex = endIndex;
+    }
+  }
+
   Future<Result<dynamic, Exception>> processMultiPartRequest(
-      Function request) async {
+    Function request,
+  ) async {
     if (await InternetUtil.isConnected()) {
       try {
-        var streamedResponse = await request();
+        var streamedResponse = (await _withTimeout(request)) ;
         getLogger("BaseRepository").i("response body : $streamedResponse");
 
         final response = await Response.fromStream(streamedResponse);

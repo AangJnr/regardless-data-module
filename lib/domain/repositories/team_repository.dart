@@ -2,10 +2,10 @@ import 'package:cross_file/cross_file.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:regardless_data_module/domain/model/event.dart';
 import 'package:regardless_data_module/domain/model/new_user.dart';
-import 'package:regardless_data_module/domain/model/feed.dart';
 import 'package:regardless_data_module/domain/model/media_upload/direct_media_upload_finalize_payload.dart';
 import 'package:regardless_data_module/domain/model/media_upload/direct_media_upload_init.dart';
 import 'package:regardless_data_module/domain/model/team/Invite_and_team.dart';
+import 'package:regardless_data_module/domain/model/team/team_and_join_requests.dart';
 import '../media.dart';
 import '../model/pagination.dart';
 import '../../data/model/paginated_response.dart';
@@ -13,7 +13,9 @@ import '../model/sports/sports_category.dart';
 import '../model/team/team.dart';
 import '../model/team/team_invite.dart';
 import '../model/team/team_join_request.dart';
+import '../model/team/team_join_link.dart';
 import '../model/team/team_member.dart';
+import '../model/team/team_with_role.dart';
 import '../model/user.dart';
 
 abstract class TeamRepository {
@@ -38,8 +40,19 @@ abstract class TeamRepository {
     String ownerUid, {
     PaginationRequest? request,
   });
+  Future<Result<Pagination<TeamWithRole>, Exception>> getMyTeams({
+    PaginationRequest? request,
+  });
+  Future<Result<List<Team>, Exception>> getTeamSummaries(List<String> teamUids);
   Future<Result<Team, Exception>> getTeam(String ownerUid, String uid);
-  Future<Result<InviteAndTeam, Exception>> getTeamInvite(String token, String teamUid);
+  Future<Result<Team, Exception>> updateTeamStartingPlayers(
+    String teamUid,
+    List<String> playerUids,
+  );
+  Future<Result<InviteAndTeam, Exception>> getTeamInvite(
+    String token,
+    String teamUid,
+  );
 
   Future<Result<bool, Exception>> deleteTeam(String uid);
 
@@ -47,6 +60,23 @@ abstract class TeamRepository {
     String uid, {
     PaginationRequest? request,
   });
+  Future<Result<TeamMember, Exception>> updateTeamMemberPlayerProfile(
+    String teamUid,
+    String memberUid,
+    Map<String, dynamic> profile,
+  );
+  Future<Result<TeamJoinLink, Exception>> createTeamJoinLink(
+    String teamUid, {
+    int expiresInDays = 7,
+  });
+  Future<Result<List<TeamJoinLink>, Exception>> getTeamJoinLinks(
+    String teamUid,
+  );
+  Future<Result<bool, Exception>> revokeTeamJoinLink(
+    String teamUid,
+    String linkUid,
+  );
+  Future<Result<bool, Exception>> requestToJoinTeamByLink(String linkUid);
   Future<Result<bool, Exception>> removeTeamMember(
     String uid,
     String memberUid,
@@ -70,6 +100,9 @@ abstract class TeamRepository {
     String uid, {
     PaginationRequest? request,
   });
+
+  Future<Result<Pagination<TeamAndJoinRequests>, Exception>>
+  getAllTeamsJoinRequests({PaginationRequest? request});
 
   Future<Result<bool, Exception>> inviteMemberByEmail(
     String uid, {
@@ -155,4 +188,6 @@ abstract class TeamRepository {
     required String ownerUid,
     PaginationRequest? request,
   });
+
+  void invalidateTeamCaches();
 }

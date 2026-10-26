@@ -7,28 +7,40 @@ class Utils {
     return MediaQuery.of(context).size;
   }
 
+ static bool isDarkMode(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark;
+
   static void setStatusBarColor(BuildContext context, {bool isLight = true}) {
+    return;
     final brightness = Theme.of(context).brightness;
     final isDarkMode = brightness == Brightness.dark;
 
     if (isDarkMode) {
-      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle.light.copyWith(
           statusBarColor: Colors.transparent,
           systemNavigationBarColor: Colors.white12,
-          systemNavigationBarDividerColor: Colors.white12));
+          systemNavigationBarDividerColor: Colors.white12,
+        ),
+      );
     } else {
-      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle.dark.copyWith(
           statusBarColor: Colors.transparent,
-          systemNavigationBarColor: Colors.white24));
+          systemNavigationBarColor: Colors.white24,
+        ),
+      );
     }
+  }
+
+  static void setLightStatusBarColor(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith());
   }
 
   static String parseDate(String? date) {
     try {
       var format = DateFormat('EEE, MMM d yyyy', 'en_US');
-      return format.format(DateFormat('dd/MM/yyyy', 'en_US').parse(
-        date ?? '',
-      ));
+      return format.format(DateFormat('dd/MM/yyyy', 'en_US').parse(date ?? ''));
     } catch (e) {
       debugPrint(e.toString());
       return "--";

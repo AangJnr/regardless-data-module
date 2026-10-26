@@ -17,35 +17,54 @@ abstract class CommunityRepository {
   Future<Result<bool, Exception>> deleteCommunity({required String uid});
   Future<Result<Comment, Exception>> addAComment(String uid, Comment comment);
   Future<Result<bool, Exception>> deleteComment(
-      String communityUid, String uid);
+    String communityUid,
+    String uid,
+  );
   Future<Result<Member, Exception>> joinCommunity({
     bool isRequest = false,
     required Community community,
   });
   Future<Result<bool, Exception>> leaveCommunity(String uid);
-  Future<Result<bool, Exception>> removeCommunityMember(
-      {required String uid, required String memberUid});
-  Future<Result<Member, Exception>> approveRequestToJoinCommunity(
-      {required Community community, required Member member});
-  Future<Result<Pagination<Community>, Exception>> getUserJoinedCommunities(
-      {required String userUid, PaginationRequest? request});
+  Future<Result<bool, Exception>> removeCommunityMember({
+    required String uid,
+    required String memberUid,
+  });
+  Future<Result<Member, Exception>> approveRequestToJoinCommunity({
+    required Community community,
+    required Member member,
+  });
+  Future<Result<Pagination<Community>, Exception>> getUserJoinedCommunities({
+    required String userUid,
+    PaginationRequest? request,
+  });
   Future<Result<Pagination<Community>, Exception>> getUserCommunities(
-      String ownerUid,
-      {PaginationRequest? request});
+    String ownerUid, {
+    PaginationRequest? request,
+  });
   Future<Result<Pagination<Comment>, Exception>> getCommunityComments(
-      String uid,
-      {PaginationRequest? request});
-  Future<Result<Pagination<Member>, Exception>> getCommunityMembers(String uid,
-      {PaginationRequest? request});
+    String uid, {
+    PaginationRequest? request,
+  });
+  Future<Result<Pagination<Member>, Exception>> getCommunityMembers(
+    String uid, {
+    PaginationRequest? request,
+  });
   Future<Result<Pagination<Member>, Exception>> getCommunityMemberRequests(
-      String uid,
-      {PaginationRequest? request});
-  Future<Result<Pagination<Review>, Exception>> getCommunityReviews(
-      {PaginationRequest? request, String uid = ''});
-  Future<Result<Review, Exception>> addReview(
-      {required Review review, String uid = ''});
+    String uid, {
+    PaginationRequest? request,
+  });
+  Future<Result<Pagination<Review>, Exception>> getCommunityReviews({
+    PaginationRequest? request,
+    String uid = '',
+  });
+  Future<Result<Review, Exception>> addReview({
+    required Review review,
+    String uid = '',
+  });
   Future<Result<List<Community>, Exception>> searchNearByCommunity(
-      SearchEventParams params);
+    SearchEventParams params,
+  );
   Future<Result<List<Community>, Exception>> searchCommunity(
-      SearchEventParams params);
+    SearchEventParams params,
+  );
 }

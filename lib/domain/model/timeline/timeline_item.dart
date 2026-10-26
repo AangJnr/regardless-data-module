@@ -5,8 +5,11 @@ enum TimelineAction {
   collabAdded,
   providerMediaFirstUpload,
   providerMediaUpload,
-
   providerEventFirstPublished,
+  tournamentCreated,
+  tournamentSeasonStarted,
+  tournamentSeasonCompleted,
+  tournamentMatchResult,
   unknown,
 }
 
@@ -27,6 +30,14 @@ extension TimelineActionX on TimelineAction {
         return TimelineAction.providerMediaFirstUpload;
       case 'PROVIDER_EVENT_FIRST_PUBLISHED':
         return TimelineAction.providerEventFirstPublished;
+      case 'TOURNAMENT_CREATED':
+        return TimelineAction.tournamentCreated;
+      case 'TOURNAMENT_SEASON_STARTED':
+        return TimelineAction.tournamentSeasonStarted;
+      case 'TOURNAMENT_SEASON_COMPLETED':
+        return TimelineAction.tournamentSeasonCompleted;
+      case 'TOURNAMENT_MATCH_RESULT':
+        return TimelineAction.tournamentMatchResult;
       default:
         return TimelineAction.unknown;
     }
@@ -79,7 +90,15 @@ class TimelineItem {
       case TimelineAction.providerMediaUpload:
         return 'Uploaded ${meta['count']} media items';
       case TimelineAction.providerEventFirstPublished:
-        return 'Published first event';
+        return meta['summary'] ?? 'Published first event';
+      case TimelineAction.tournamentCreated:
+        return meta['summary'] ?? 'Created a tournament';
+      case TimelineAction.tournamentSeasonStarted:
+        return meta['summary'] ?? 'Started a tournament season';
+      case TimelineAction.tournamentSeasonCompleted:
+        return meta['summary'] ?? 'Completed a tournament season';
+      case TimelineAction.tournamentMatchResult:
+        return meta['summary'] ?? 'Recorded a tournament result';
       default:
         return 'Activity updated';
     }

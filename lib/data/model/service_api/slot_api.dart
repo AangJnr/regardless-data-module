@@ -13,14 +13,11 @@ class SlotApi implements DomainMapper<Slot> {
   String toString() => 'Slot(startTime: $startTime, endTime: $endTime)';
 
   factory SlotApi.fromMap(Map<String, dynamic> data) => SlotApi(
-        startTime: data['startTime'] as String?,
-        endTime: data['endTime'] as String?,
-      );
+    startTime: data['startTime'] as String?,
+    endTime: data['endTime'] as String?,
+  );
 
-  Map<String, dynamic> toMap() => {
-        'startTime': startTime,
-        'endTime': endTime,
-      };
+  Map<String, dynamic> toMap() => {'startTime': startTime, 'endTime': endTime};
 
   /// `dart:convert`
   ///
@@ -34,10 +31,7 @@ class SlotApi implements DomainMapper<Slot> {
   /// Converts [SlotApi] to a JSON string.
   String toJson() => json.encode(toMap());
 
-  SlotApi copyWith({
-    String? startTime,
-    String? endTime,
-  }) {
+  SlotApi copyWith({String? startTime, String? endTime}) {
     return SlotApi(
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,

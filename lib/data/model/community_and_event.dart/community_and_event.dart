@@ -14,7 +14,8 @@ class CommunityAndEventApi implements DomainMapper<CommunityAndEvent> {
 
   factory CommunityAndEventApi.fromMap(Map<String, dynamic> map) {
     return CommunityAndEventApi(
-        community: CommunityMapper.fromMap(map['community']),
-        event: map['event'] != null ? EventMapper.fromMap(map['event']) : null);
+      community: CommunityMapper.fromMap(map['community']),
+      event: map['event'] != null ? EventMapper.fromMap(map['event']) : null,
+    );
   }
 }

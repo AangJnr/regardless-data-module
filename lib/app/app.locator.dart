@@ -14,7 +14,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:regardless_data_module/app/app.logger.dart';
 import 'package:regardless_data_module/app/services/access_service.dart';
 import 'package:regardless_data_module/app/services/social_auth_service.dart';
+import 'package:regardless_data_module/data/remote/repository/tournament_repository_impl.dart';
+import 'package:regardless_data_module/data/remote/repository/team_group_repository_impl.dart';
 import 'package:regardless_data_module/domain/repositories/media_repository.dart';
+import 'package:regardless_data_module/domain/repositories/team_group_repository.dart';
+import 'package:regardless_data_module/domain/repositories/tournament_repository.dart';
 import 'package:regardless_data_module/firebase_options.dart';
 import 'package:stacked_shared/stacked_shared.dart';
 
@@ -49,54 +53,63 @@ final module = StackedLocator.instance;
 
 Future<void> initFirebase(bool useEmualator, {String url = 'localhost'}) async {
   getLogger('AppLocator').d('Initializing Firebase => $url');
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   if (useEmualator) {
     FirebaseAuth.instance.useAuthEmulator(url, 9191);
-    FirebaseFirestore.instance.useFirestoreEmulator(
-      url,
-      8081,
-    );
+    FirebaseFirestore.instance.useFirestoreEmulator(url, 8081);
     FirebaseFirestore.instance.settings = const Settings(
-        // persistenceEnabled: true,
-        );
+      // persistenceEnabled: true,
+    );
   }
-  getLogger('AppLocator')
-      .d("Firebase Project: ${Firebase.app().options.projectId}");
+  getLogger(
+    'AppLocator',
+  ).d("Firebase Project: ${Firebase.app().options.projectId}");
 }
 
-Future<void> initDataModule(
-    {String? environment,
-    EnvironmentFilter? environmentFilter,
-    required String boxName}) async {
-// Register environments
+Future<void> initDataModule({
+  String? environment,
+  EnvironmentFilter? environmentFilter,
+  required String boxName,
+}) async {
+  // Register environments
   module.registerEnvironment(
-      environment: environment, environmentFilter: environmentFilter);
+    environment: environment,
+    environmentFilter: environmentFilter,
+  );
   await Hive.initFlutter();
   await Hive.openBox(boxName);
 
-// Register dependencies
+  // Register dependencies
   module.registerLazySingleton(() => LocationService());
   module.registerLazySingleton(() => SocialAuthService());
 
   module.registerLazySingleton<ApiService>(() => ApiServiceImpl());
   module.registerLazySingleton(() => ToastService());
-  module
-      .registerLazySingleton<SessionManager>(() => SessionManagerImpl(boxName));
+  module.registerLazySingleton<SessionManager>(
+    () => SessionManagerImpl(boxName),
+  );
   module.registerLazySingleton(() => FirebaseMessageService());
   module.registerLazySingleton<PlacesService>(() => PlacesServiceImpl());
   module.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl());
   module.registerLazySingleton<UserRepository>(() => UserRepositoryImpl());
   module.registerLazySingleton<EventRepository>(() => EventRepositoryImpl());
   module.registerLazySingleton<CommunityRepository>(
-      () => CommunityRepositoryImpl());
+    () => CommunityRepositoryImpl(),
+  );
   module.registerLazySingleton<PostRepository>(() => PostRepositoryImpl());
   module.registerLazySingleton<MediaRepository>(() => MediaRepositoryImpl());
   module.registerLazySingleton<TeamRepository>(() => TeamRepositoryImpl());
+  module.registerLazySingleton<TournamentRepository>(
+    () => TournamentRepositoryImpl(),
+  );
 
-  module
-      .registerLazySingleton<ServiceRepository>(() => ServiceRepositoryImpl());
+  module.registerLazySingleton<ServiceRepository>(
+    () => ServiceRepositoryImpl(),
+  );
+
+  module.registerLazySingleton< TeamGroupRepository>(
+    () => TeamGroupRepositoryImpl(),
+  );
   module.registerLazySingleton<TGeocoder>(() => GeocoderImpl());
   module.registerLazySingleton<CacheService>(() => CacheServiceImpl());
   module.registerLazySingleton(() => AccessService());

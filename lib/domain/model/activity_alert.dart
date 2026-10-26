@@ -10,15 +10,16 @@ class ActivityAlert {
   final DateTime? createdAt;
   final String? summaryLine;
   final String? subText;
-  const ActivityAlert(
-      {this.uid = '',
-      this.profileUid = '',
-      this.venue,
-      this.subText,
-      this.maxDistanceMeters = 50000,
-      this.categoryUids = const [],
-      this.createdAt,
-      this.summaryLine});
+  const ActivityAlert({
+    this.uid = '',
+    this.profileUid = '',
+    this.venue,
+    this.subText,
+    this.maxDistanceMeters = 50000,
+    this.categoryUids = const [],
+    this.createdAt,
+    this.summaryLine,
+  });
 
   factory ActivityAlert.fromMap(Map<String, dynamic> map) {
     return ActivityAlert(
@@ -38,10 +39,10 @@ class ActivityAlert {
 
   /// Request body for POST /user/me/activity-alerts
   Map<String, dynamic> toCreateBody() => {
-        'venue': venue?.toMap(),
-        'maxDistance': maxDistanceMeters,
-        'categoryUids': categoryUids,
-      };
+    'venue': venue?.toMap(),
+    'maxDistance': maxDistanceMeters,
+    'categoryUids': categoryUids,
+  };
 
   String formatDistance() {
     return 'Within ${(maxDistanceMeters / 1000).toStringAsFixed(0)} km';

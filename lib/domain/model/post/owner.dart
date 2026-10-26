@@ -8,11 +8,12 @@ class Owner with OwnerMappable {
   final String userName;
   final String imageUrl;
   final bool isVerified;
-  const Owner(
-      {this.uid = "",
-      this.userName = "",
-      this.imageUrl = "",
-      this.isVerified = false});
+  const Owner({
+    this.uid = "",
+    this.userName = "",
+    this.imageUrl = "",
+    this.isVerified = false,
+  });
 
   @override
   String toString() {

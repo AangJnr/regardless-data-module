@@ -35,12 +35,12 @@ class PriceApi implements DomainMapper<Price> {
   }
 
   Map<String, dynamic> toMap() => {
-        'amount': amount,
-        'currency': currency,
-        'type': type,
-        'description': description,
-        'durationDays': durationDays
-      };
+    'amount': amount,
+    'currency': currency,
+    'type': type,
+    'description': description,
+    'durationDays': durationDays,
+  };
 
   /// `dart:convert`
   ///
@@ -56,10 +56,10 @@ class PriceApi implements DomainMapper<Price> {
 
   @override
   Price mapToDomain() => Price(
-        amount: double.tryParse(amount ?? '0.0') ?? 0.0,
-        currency: currency ?? '',
-        type: type ?? '',
-        description: description ?? '',
-        durationDays: durationDays,
-      );
+    amount: double.tryParse(amount ?? '0.0') ?? 0.0,
+    currency: currency ?? '',
+    type: type ?? '',
+    description: description ?? '',
+    durationDays: durationDays,
+  );
 }

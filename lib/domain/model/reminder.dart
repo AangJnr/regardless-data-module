@@ -12,14 +12,15 @@ class Reminder with ReminderMappable {
   final DateTime date;
   final Duration? duration;
   final Map<String, dynamic>? metaData;
-  Reminder(
-      {required this.uid,
-      required this.title,
-      required this.description,
-      required this.date,
-      this.recurrenceUid,
-      this.metaData,
-      this.duration});
+  Reminder({
+    required this.uid,
+    required this.title,
+    required this.description,
+    required this.date,
+    this.recurrenceUid,
+    this.metaData,
+    this.duration,
+  });
 
   String getParsedDate() {
     try {

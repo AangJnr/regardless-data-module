@@ -2,7 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:regardless_data_module/domain/model/team/team_invite.dart';
 import 'package:regardless_data_module/extensions/extensions.dart';
- 
+
 part 'team_member.mapper.dart';
 
 @MappableEnum()
@@ -18,6 +18,14 @@ class TeamMember with TeamMemberMappable {
   final List<String> permissions; // NEW: ["manage_schedule:view", ...]
   final DateTime? joinedAt;
   final TeamMemberStatus status; // active | removed
+  final String position;
+  final int jerseyNumber;
+  final int age;
+  final String height;
+  final String nameAbbreviation;
+  final String shortBio;
+  final Map<String, dynamic> stats;
+  final int activeTournamentCount;
   const TeamMember({
     this.uid = '',
     this.email,
@@ -27,6 +35,14 @@ class TeamMember with TeamMemberMappable {
     this.fullName = '',
     this.joinedAt,
     this.status = TeamMemberStatus.active,
+    this.position = '',
+    this.jerseyNumber = 0,
+    this.age = 0,
+    this.height = '',
+    this.nameAbbreviation = '',
+    this.shortBio = '',
+    this.stats = const {},
+    this.activeTournamentCount = 0,
   });
 
   String get profilePicture => uid.profileUidToProfileUrl;

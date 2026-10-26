@@ -10,7 +10,7 @@ class Url {
   }
 
   static String get firebaseEmulatorHost {
-    if(kIsWeb) return '127.0.0.1';
+    if (kIsWeb) return '127.0.0.1';
     return Platform.isAndroid
         ? '10.36.214.182' //'10.0.2.2'
         : "127.0.0.1";

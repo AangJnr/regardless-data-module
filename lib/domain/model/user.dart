@@ -38,7 +38,6 @@ class AUser with AUserMappable {
   final String userName;
   final List<TimeSlot> schedule;
   final Venue? businessLocation;
-
   const AUser({
     this.uid = '',
     this.email = '',

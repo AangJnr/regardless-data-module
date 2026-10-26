@@ -23,10 +23,11 @@ class ProviderDetails with ProviderDetailsMappable {
   final String? email;
   final String fullName;
 
-  const ProviderDetails(
-      {this.uid = '',
-      this.userName = '',
-      this.phone = '',
-      this.email = '',
-      this.fullName = ''});
+  const ProviderDetails({
+    this.uid = '',
+    this.userName = '',
+    this.phone = '',
+    this.email = '',
+    this.fullName = '',
+  });
 }

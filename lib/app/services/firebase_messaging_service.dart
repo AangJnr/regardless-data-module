@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io' show Directory, File, Platform;
 
+import 'package:collection/collection.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -24,6 +25,7 @@ const notificationGrantedKey = "notificationGrantedKey";
 
 class FirebaseMessageService {
   static bool shouldPauseNotifications = false;
+  static NotificationType? notificationType = NotificationType.NONE;
   String groupKey = 'com.regardless.app.GROUP_KEY';
   String groupChannelId = 'com.regardless.app.GROUP_CHANNEL_ID';
   String groupChannelName = 'Regardless Notifications';
@@ -133,7 +135,15 @@ class FirebaseMessageService {
 
   void showNotification(RNotification notification) async {
     getLogger('FirebaseMessageService').i(notification.toString());
-    if (notification.isTextInput && shouldPauseNotifications) {
+    getLogger('FirebaseMessageService').i(
+      'shouldPauseNotifications => $shouldPauseNotifications || type => $notificationType || isTextInput => ${notification.isTextInput}',
+    );
+
+    if (notificationType == notification.type &&
+        notification.isTextInput &&
+        shouldPauseNotifications) {
+      getLogger('FirebaseMessageService').i('Skipping Notifications...');
+
       return;
     }
 
@@ -187,8 +197,12 @@ class FirebaseMessageService {
     );
   }
 
-  void setPauseNotifications(bool pause) {
+  void setPauseNotifications(bool pause, {NotificationType? type}) {
     shouldPauseNotifications = pause;
+    notificationType = type;
+    getLogger('FirebaseMessageService').i(
+      'shouldPauseNotifications => $shouldPauseNotifications || type => $notificationType  ',
+    );
   }
 
   Future<void> scheduleNotificationMessage(RNotification notification) async {
@@ -251,7 +265,7 @@ class FirebaseMessageService {
   }
 
   void cancelNotification(int id) {
-    flutterLocalNotificationsPlugin.cancel(id:id);
+    flutterLocalNotificationsPlugin.cancel(id: id);
   }
 
   Future<NotificationDetails> getNotificationDetails(
@@ -434,7 +448,7 @@ class FirebaseMessageService {
         );
 
     await flutterLocalNotificationsPlugin.initialize(
-    settings:  initializationSettings,
+      settings: initializationSettings,
       onDidReceiveNotificationResponse: onForegroundNotificationReceived,
       onDidReceiveBackgroundNotificationResponse:
           onBackgroundNotificationReceived,
@@ -505,7 +519,7 @@ class FirebaseMessageService {
   }
 
   void cancel(int hashCode) {
-    flutterLocalNotificationsPlugin.cancel(id:hashCode);
+    flutterLocalNotificationsPlugin.cancel(id: hashCode);
   }
 }
 
@@ -517,6 +531,7 @@ class RNotification {
   final DateTime? scheduledTime;
   final Map<String, dynamic>? data;
   final bool isTextInput;
+  final NotificationType type;
   RNotification({
     required this.title,
     required this.body,
@@ -524,6 +539,7 @@ class RNotification {
     this.channelKey,
     this.scheduledTime,
     this.data,
+    this.type = NotificationType.NEW_MESSAGE,
     this.isTextInput = false,
   });
   factory RNotification.fromMessage(RemoteMessage message) {
@@ -538,6 +554,11 @@ class RNotification {
       body: message.notification?.body ?? '',
       id: message.hashCode,
       data: metaData,
+      type:
+          NotificationType.values.firstWhereOrNull(
+            (element) => element.name == type,
+          ) ??
+          NotificationType.NEW_MESSAGE,
       isTextInput: type == NotificationType.NEW_MESSAGE.name,
     );
   }

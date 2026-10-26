@@ -11,6 +11,7 @@ class SportsCategory with SportsCategoryMappable {
   final bool isActive;
   final String? iconUrl;
   final String? hexColor;
+  final Map<String, dynamic>? playerProfile;
 
   const SportsCategory({
     this.uid = '',
@@ -18,6 +19,7 @@ class SportsCategory with SportsCategoryMappable {
     this.isActive = true,
     this.iconUrl,
     this.hexColor,
+    this.playerProfile,
   });
 
   Color getColor() =>

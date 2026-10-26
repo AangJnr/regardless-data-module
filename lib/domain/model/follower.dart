@@ -21,9 +21,10 @@ class Follower {
   }
 
   FollowerResponse toApi() => FollowerResponse(
-      uid: uid,
-      profileUrl: profileUrl,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
-      userName: userName);
+    uid: uid,
+    profileUrl: profileUrl,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+    userName: userName,
+  );
 }

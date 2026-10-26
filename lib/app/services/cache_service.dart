@@ -11,8 +11,12 @@ class CacheServiceImpl implements CacheService {
   DateTime? _lastFetchTime;
 
   @override
-  Future<T> execute<T>(FutureOr<T> Function() apiCall, String key) async {
-    final memoizer = _getMemoizer<T>(key);
+  Future<T> execute<T>(
+    FutureOr<T> Function() apiCall,
+    String key, {
+    bool refresh = false,
+  }) async {
+    final memoizer = _getMemoizer<T>(key, refresh);
 
     clearCacheIfNeeded();
     final stopwatch = Stopwatch()..start();
@@ -21,29 +25,40 @@ class CacheServiceImpl implements CacheService {
     final callTime = stopwatch.elapsed;
 
     if (data == null) {
-      throw Exception('API call returned null, expected type: $T');
+      //failed due to a networ error or other reason
+      //for refresh == true, we do not immediately clear the cache until we are certain that
+      //data was returned from the server then we simply replace existing data
+      //If network failed, we return the old data rather than showing empty results
+      //to improve user UX
+      //But also note that app restarts cleans the cache completely
+      if (refresh && _memoizerMap.containsKey(key)) {
+        return await _getMemoizer<T>(key).runOnce(apiCall);
+      }
+      return throw Exception('API call returned null, expected type: $T');
     }
     getLogger("CacheServiceImpl").e(
-        "memoizer hasRun ${memoizer.hasRun} || time Elapsed was : ${callTime.inMilliseconds} ms");
+      "memoizer hasRun ${memoizer.hasRun} || time Elapsed was : ${callTime.inMilliseconds} ms",
+    );
     _lastFetchTime = DateTime.now(); // Update last fetch time
 
     _memoizerMap[key] = memoizer;
     return data;
   }
 
-  AsyncMemoizer<T> _getMemoizer<T>(String key) {
-    if (_memoizerMap.containsKey(key)) {
-      getLogger("CacheServiceImpl").e("getMemoizer has key.");
+  AsyncMemoizer<T> _getMemoizer<T>(String key, [bool refresh = false]) {
+    if (!refresh && _memoizerMap.containsKey(key)) {
+      getLogger("CacheServiceImpl").e("getMemoizer has key $key.");
       return _memoizerMap[key] as AsyncMemoizer<T>;
     }
-    getLogger("CacheServiceImpl")
-        .e("getMemoizer no key. New memoizer created.");
+    getLogger("CacheServiceImpl").e(
+      "getMemoizer has no key $key or isRefreshing? = $refresh. New memoizer created.",
+    );
     return AsyncMemoizer<T>();
   }
 
   void clearCacheIfNeeded() {
-    if (_lastFetchTime != null &&
-        DateTime.now().difference(_lastFetchTime!) > cacheExpirationDuration) {
+    if ((_lastFetchTime != null &&
+        DateTime.now().difference(_lastFetchTime!) > cacheExpirationDuration)) {
       _memoizerMap.clear(); // Clear the cache
       _lastFetchTime = null; // Reset last fetch time
       debugPrint("CacheServiceImpl - Cache cleared");
@@ -65,7 +80,11 @@ class CacheServiceImpl implements CacheService {
 }
 
 abstract class CacheService {
-  Future<T> execute<T>(FutureOr<T> Function() apiCall, String key);
+  Future<T> execute<T>(
+    FutureOr<T> Function() apiCall,
+    String key, {
+    bool refresh = false,
+  });
 
   void clear(String s);
   void invalidate();

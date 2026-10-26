@@ -42,11 +42,12 @@ class ScaleOnSelected extends StatefulWidget {
   final Widget child;
   final bool isSelected;
   // You can also pass the translation in here if you want to
-  const ScaleOnSelected(
-      {super.key,
-      required this.child,
-      this.isSelected = false,
-      this.scale = 1.1});
+  const ScaleOnSelected({
+    super.key,
+    required this.child,
+    this.isSelected = false,
+    this.scale = 1.1,
+  });
 
   @override
   State<ScaleOnSelected> createState() => _ScaleOnSelectedState();

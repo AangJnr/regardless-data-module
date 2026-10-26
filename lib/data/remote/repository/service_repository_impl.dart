@@ -1,6 +1,6 @@
 import 'package:multiple_result/multiple_result.dart';
 import 'package:regardless_data_module/domain/model/appointment/appointment_details.dart';
- import 'package:regardless_data_module/domain/model/price.dart';
+import 'package:regardless_data_module/domain/model/price.dart';
 import '../../../app/app.logger.dart';
 import '../../../domain/model/appointment/appointment.dart';
 import '../../../domain/model/pagination.dart';
@@ -36,8 +36,9 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
       status: AppointmentStatus.pending,
       price: selectedPrice,
     );
-    final data =
-        await processRequest(() => apiService.addAppointment(appointment));
+    final data = await processRequest(
+      () => apiService.addAppointment(appointment),
+    );
     if (data.isSuccess()) {
       return Success(AppointmentMapper.fromMap(data.tryGetSuccess()!));
     }
@@ -76,10 +77,13 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
   }
 
   @override
-  Future<Result<bool, Exception>> setActive(String uid,
-      {bool isActive = false}) async {
+  Future<Result<bool, Exception>> setActive(
+    String uid, {
+    bool isActive = false,
+  }) async {
     var data = await processRequest(
-        () => apiService.setServiceAsActive(uid, isActive: isActive));
+      () => apiService.setServiceAsActive(uid, isActive: isActive),
+    );
     if (data.isSuccess()) {
       return Success(data.tryGetSuccess());
     }
@@ -97,9 +101,11 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
 
   @override
   Future<Result<Appointment, Exception>> getAppointmentRequest(
-      String uid) async {
-    var data =
-        await processRequest(() => apiService.getAppointmentRequest(uid));
+    String uid,
+  ) async {
+    var data = await processRequest(
+      () => apiService.getAppointmentRequest(uid),
+    );
     if (data.isSuccess()) {
       return Success(AppointmentMapper.fromMap(data.tryGetSuccess()!));
     }
@@ -107,21 +113,27 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
   }
 
   @override
-  Future<Result<Pagination<Appointment>, Exception>> getAppointmentRequests(
-      {PaginationRequest? request}) async {
+  Future<Result<Pagination<Appointment>, Exception>> getAppointmentRequests({
+    PaginationRequest? request,
+  }) async {
     var response = await processRequest(
-        () => apiService.getAppointmentRequests(request: request));
+      () => apiService.getAppointmentRequests(request: request),
+    );
     if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        response.tryGetSuccess()!,
+      );
       try {
         final data = paginationResponse.data
             ?.map((e) => AppointmentMapper.fromMap(e))
             .toList();
-        return Success(Pagination<Appointment>(
+        return Success(
+          Pagination<Appointment>(
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {
         getLogger('ServiceRepositoryImpl').e(e);
       }
@@ -130,21 +142,27 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
   }
 
   @override
-  Future<Result<Pagination<Appointment>, Exception>> getAppointments(
-      {PaginationRequest? request}) async {
+  Future<Result<Pagination<Appointment>, Exception>> getAppointments({
+    PaginationRequest? request,
+  }) async {
     var response = await processRequest(
-        () => apiService.getAppointments(request: request));
+      () => apiService.getAppointments(request: request),
+    );
     if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        response.tryGetSuccess()!,
+      );
       try {
         final data = paginationResponse.data
             ?.map((e) => AppointmentMapper.fromMap(e))
             .toList();
-        return Success(Pagination<Appointment>(
+        return Success(
+          Pagination<Appointment>(
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {
         getLogger('ServiceRepositoryImpl').e(e);
       }
@@ -154,20 +172,26 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
 
   @override
   Future<Result<Pagination<Service>, Exception>> getProviderServices(
-      String providerUid) async {
-    var response =
-        await processRequest(() => apiService.getProviderServices(providerUid));
+    String providerUid,
+  ) async {
+    var response = await processRequest(
+      () => apiService.getProviderServices(providerUid),
+    );
     if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        response.tryGetSuccess()!,
+      );
       try {
         final data = paginationResponse.data
             ?.map((e) => ServiceMapper.fromMap(e))
             .toList();
-        return Success(Pagination<Service>(
+        return Success(
+          Pagination<Service>(
             data: data ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } catch (e) {
         getLogger('ServiceRepositoryImpl').e(e);
       }
@@ -177,9 +201,12 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
 
   @override
   Future<Result<Service, Exception>> getService(
-      String providerUid, String uid) async {
-    var data =
-        await processRequest(() => apiService.getService(providerUid, uid));
+    String providerUid,
+    String uid,
+  ) async {
+    var data = await processRequest(
+      () => apiService.getService(providerUid, uid),
+    );
     if (data.isSuccess()) {
       return Success(ServiceMapper.fromMap(data.tryGetSuccess()!));
     }
@@ -188,25 +215,15 @@ class ServiceRepositoryImpl with BaseRepository implements ServiceRepository {
 
   @override
   Future<Result<bool, Exception>> updateAppointmentStatus(
-      AppointmentStatus status, Appointment appointment) async {
+    AppointmentStatus status,
+    Appointment appointment,
+  ) async {
     var data = await processRequest(
-        () => apiService.updateAppointmentStatus(status, appointment));
+      () => apiService.updateAppointmentStatus(status, appointment),
+    );
     if (data.isSuccess()) {
       return const Success(true);
     }
     return Error(data.tryGetError()!);
-  }
-
-  @override
-  Future<Result<List<AUser>, Exception>> searchPersonalTrainers(
-      SearchEventParams params) async {
-    var data = await processRequest(() => apiService.searchProvider(params));
-    if (data.isSuccess()) {
-      final results = (data.tryGetSuccess()! as List<dynamic>)
-          .map((data) => AUserMapper.fromMap(data))
-          .toList();
-      return Success(results);
-    }
-    return Success([]);
   }
 }

@@ -14,8 +14,12 @@ class TimeSlot with TimeSlotMappable {
 
   final List<Slot> slots;
 
-  const TimeSlot(
-      {this.day = '', this.slots = const [], this.date = '', this.order = 0});
+  const TimeSlot({
+    this.day = '',
+    this.slots = const [],
+    this.date = '',
+    this.order = 0,
+  });
 
   @override
   String toString() => 'TimeSlot(day: $day, slots: $slots)';
@@ -30,9 +34,12 @@ class TimeSlot with TimeSlotMappable {
     return TimeSlotApi(
       day: day,
       slots: slots
-          .map((e) => SlotApi(
+          .map(
+            (e) => SlotApi(
               startTime: e.startTime?.toIso8601String(),
-              endTime: e.endTime?.toIso8601String()))
+              endTime: e.endTime?.toIso8601String(),
+            ),
+          )
           .toList(),
     );
   }

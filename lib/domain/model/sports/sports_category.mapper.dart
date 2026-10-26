@@ -55,6 +55,10 @@ class SportsCategoryMapper extends ClassMapperBase<SportsCategory> {
     _$hexColor,
     opt: true,
   );
+  static Map<String, dynamic>? _$playerProfile(SportsCategory v) =>
+      v.playerProfile;
+  static const Field<SportsCategory, Map<String, dynamic>> _f$playerProfile =
+      Field('playerProfile', _$playerProfile, opt: true);
 
   @override
   final MappableFields<SportsCategory> fields = const {
@@ -63,6 +67,7 @@ class SportsCategoryMapper extends ClassMapperBase<SportsCategory> {
     #isActive: _f$isActive,
     #iconUrl: _f$iconUrl,
     #hexColor: _f$hexColor,
+    #playerProfile: _f$playerProfile,
   };
 
   static SportsCategory _instantiate(DecodingData data) {
@@ -72,6 +77,7 @@ class SportsCategoryMapper extends ClassMapperBase<SportsCategory> {
       isActive: data.dec(_f$isActive),
       iconUrl: data.dec(_f$iconUrl),
       hexColor: data.dec(_f$hexColor),
+      playerProfile: data.dec(_f$playerProfile),
     );
   }
 
@@ -137,12 +143,15 @@ extension SportsCategoryValueCopy<$R, $Out>
 
 abstract class SportsCategoryCopyWith<$R, $In extends SportsCategory, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
+  MapCopyWith<$R, String, dynamic, ObjectCopyWith<$R, dynamic, dynamic>?>?
+  get playerProfile;
   $R call({
     String? uid,
     String? name,
     bool? isActive,
     String? iconUrl,
     String? hexColor,
+    Map<String, dynamic>? playerProfile,
   });
   SportsCategoryCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -158,12 +167,22 @@ class _SportsCategoryCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SportsCategory> $mapper =
       SportsCategoryMapper.ensureInitialized();
   @override
+  MapCopyWith<$R, String, dynamic, ObjectCopyWith<$R, dynamic, dynamic>?>?
+  get playerProfile => $value.playerProfile != null
+      ? MapCopyWith(
+          $value.playerProfile!,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(playerProfile: v),
+        )
+      : null;
+  @override
   $R call({
     String? uid,
     String? name,
     bool? isActive,
     Object? iconUrl = $none,
     Object? hexColor = $none,
+    Object? playerProfile = $none,
   }) => $apply(
     FieldCopyWithData({
       if (uid != null) #uid: uid,
@@ -171,6 +190,7 @@ class _SportsCategoryCopyWithImpl<$R, $Out>
       if (isActive != null) #isActive: isActive,
       if (iconUrl != $none) #iconUrl: iconUrl,
       if (hexColor != $none) #hexColor: hexColor,
+      if (playerProfile != $none) #playerProfile: playerProfile,
     }),
   );
   @override
@@ -180,6 +200,7 @@ class _SportsCategoryCopyWithImpl<$R, $Out>
     isActive: data.get(#isActive, or: $value.isActive),
     iconUrl: data.get(#iconUrl, or: $value.iconUrl),
     hexColor: data.get(#hexColor, or: $value.hexColor),
+    playerProfile: data.get(#playerProfile, or: $value.playerProfile),
   );
 
   @override

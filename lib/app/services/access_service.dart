@@ -16,7 +16,8 @@ class AccessService {
 
   void setCollaborator(StaffMember member) {
     getLogger('AccessService').i(
-        'setCollaborator => ${member.userName} with role ${member.role} and permissions ${member.permissions}');
+      'setCollaborator => ${member.userName} with role ${member.role} and permissions ${member.permissions}',
+    );
     _manager = AccessManager.collaborator(member);
   }
 }

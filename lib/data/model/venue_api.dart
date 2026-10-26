@@ -15,17 +15,18 @@ class VenueApi implements DomainMapper<Venue> {
   final String? countryIso;
   final String? placeId;
 
-  const VenueApi(
-      {this.country,
-      this.address,
-      this.lng,
-      this.city,
-      this.name,
-      this.state,
-      this.lat,
-      this.placeId,
-      this.countryIso,
-      this.otherAddress});
+  const VenueApi({
+    this.country,
+    this.address,
+    this.lng,
+    this.city,
+    this.name,
+    this.state,
+    this.lat,
+    this.placeId,
+    this.countryIso,
+    this.otherAddress,
+  });
 
   @override
   String toString() {
@@ -33,29 +34,30 @@ class VenueApi implements DomainMapper<Venue> {
   }
 
   factory VenueApi.fromMap(Map<String, dynamic> data) => VenueApi(
-      country: data['country'] as String?,
-      address: data['address'] as String?,
-      lng: data['lng'] as num?,
-      city: data['city'] as String?,
-      name: data['name'] as String?,
-      state: data['state'] as String?,
-      lat: data['lat'] as num?,
-      countryIso: data['countryIso'] as String?,
-      placeId: data['placeId'] as String?,
-      otherAddress: data['otherAddress'] as String?);
+    country: data['country'] as String?,
+    address: data['address'] as String?,
+    lng: data['lng'] as num?,
+    city: data['city'] as String?,
+    name: data['name'] as String?,
+    state: data['state'] as String?,
+    lat: data['lat'] as num?,
+    countryIso: data['countryIso'] as String?,
+    placeId: data['placeId'] as String?,
+    otherAddress: data['otherAddress'] as String?,
+  );
 
   Map<String, dynamic> toMap() => {
-        'country': country,
-        'address': address,
-        'lng': lng,
-        'city': city,
-        'name': name,
-        'state': state,
-        'lat': lat,
-        'placeId': placeId,
-        'countryIso': countryIso,
-        'otherAddress': otherAddress
-      };
+    'country': country,
+    'address': address,
+    'lng': lng,
+    'city': city,
+    'name': name,
+    'state': state,
+    'lat': lat,
+    'placeId': placeId,
+    'countryIso': countryIso,
+    'otherAddress': otherAddress,
+  };
 
   /// `dart:convert`
   ///
@@ -69,36 +71,39 @@ class VenueApi implements DomainMapper<Venue> {
   /// Converts [VenueApi] to a JSON string.
   String toJson() => json.encode(toMap());
 
-  VenueApi copyWith(
-      {String? country,
-      String? address,
-      dynamic lng,
-      String? city,
-      String? name,
-      String? state,
-      dynamic lat,
-      String? otherAddress,
-      String? countryIso}) {
+  VenueApi copyWith({
+    String? country,
+    String? address,
+    dynamic lng,
+    String? city,
+    String? name,
+    String? state,
+    dynamic lat,
+    String? otherAddress,
+    String? countryIso,
+  }) {
     return VenueApi(
-        country: country ?? this.country,
-        address: address ?? this.address,
-        lng: lng,
-        city: city ?? this.city,
-        name: name ?? this.name,
-        state: state ?? this.state,
-        lat: lat,
-        countryIso: countryIso,
-        otherAddress: otherAddress ?? this.otherAddress);
+      country: country ?? this.country,
+      address: address ?? this.address,
+      lng: lng,
+      city: city ?? this.city,
+      name: name ?? this.name,
+      state: state ?? this.state,
+      lat: lat,
+      countryIso: countryIso,
+      otherAddress: otherAddress ?? this.otherAddress,
+    );
   }
 
   @override
   Venue mapToDomain() => Venue(
-      country: country ?? '',
-      address: address ?? '',
-      lng: lng?.toDouble() ?? -0.0,
-      city: city ?? '',
-      name: name ?? '',
-      state: state ?? '',
-      lat: lat?.toDouble() ?? 0.0,
-      otherAddress: otherAddress ?? '');
+    country: country ?? '',
+    address: address ?? '',
+    lng: lng?.toDouble() ?? -0.0,
+    city: city ?? '',
+    name: name ?? '',
+    state: state ?? '',
+    lat: lat?.toDouble() ?? 0.0,
+    otherAddress: otherAddress ?? '',
+  );
 }

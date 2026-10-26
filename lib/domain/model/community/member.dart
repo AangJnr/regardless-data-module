@@ -14,13 +14,14 @@ class Member with MemberMappable {
   final DateTime? requestedAt;
   final DateTime? confirmedAt;
 
-  const Member(
-      {this.uid = '',
-      this.userName = '',
-      this.profile = const AUser(),
-      this.joinedAt,
-      this.requestedAt,
-      this.confirmedAt});
+  const Member({
+    this.uid = '',
+    this.userName = '',
+    this.profile = const AUser(),
+    this.joinedAt,
+    this.requestedAt,
+    this.confirmedAt,
+  });
 
   @override
   String toString() {

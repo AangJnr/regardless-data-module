@@ -18,66 +18,100 @@ enum EventActionType { one, all }
 abstract class EventRepository {
   Future<Result<Pagination<Feed>, Exception>> searchEvent(SearchFilter filter);
   Future<Result<SearchEventResults, Exception>> searchEventsV2(
-      SearchEventParams params);
+    SearchEventParams params,
+  );
   Future<Result<List<Feed>, Exception>> getPopularEvents(
-      SearchEventParams params);
+    SearchEventParams params,
+  );
   Future<Result<List<CommunityAndEvent>, Exception>>
-      searchNearByCommunityAndEvents(SearchEventParams params);
+  searchNearByCommunityAndEvents(SearchEventParams params);
 
-//recurring
-  Future<Result<Pagination<Feed>, Exception>> getRecurringEvents(String uid,
-      {PaginationRequest? request});
+  //recurring
+  Future<Result<Pagination<Feed>, Exception>> getRecurringEvents(
+    String uid, {
+    PaginationRequest? request,
+  });
   Future<Result<Event, Exception>> getRecurringEvent(
-      String uid, String recurrenceUid);
+    String uid,
+    String recurrenceUid,
+  );
   Future<Result<Event, Exception>> updateRecurringEvent(
-      NewEventRequest e, EventActionType actionType);
+    NewEventRequest e,
+    EventActionType actionType,
+  );
 
   Future<Result<bool, Exception>> deleteRecurringEvent(
-      String eventUid, String recurrenceUid, EventActionType actionType);
+    String eventUid,
+    String recurrenceUid,
+    EventActionType actionType,
+  );
 
   Future<Result<Pagination<Member>, Exception>> getRecurringEventAttendees(
-      String uid, String recurrenceUid,
-      {PaginationRequest? request});
+    String uid,
+    String recurrenceUid, {
+    PaginationRequest? request,
+  });
   //
   Future<Result<Event, Exception>> getEvent(String uid);
   Future<Result<Event, Exception>> addEvent(NewEventRequest e);
   Future<Result<Event, Exception>> updateEvent(
-      NewEventRequest e, EventActionType actionType);
-  Future<Result<Pagination<Event>, Exception>> getEvents(
-      {PaginationRequest? request});
+    NewEventRequest e,
+    EventActionType actionType,
+  );
+  Future<Result<Pagination<Event>, Exception>> getEvents({
+    PaginationRequest? request,
+  });
   Future<Result<bool, Exception>> deleteEvent(
-      String eventUid, EventActionType actionType);
-  Future<Result<bool, Exception>> attend(
-      {required String eventUid, String? recurrenceUid});
-  Future<Result<bool, Exception>> unAttend(
-      {required String eventUid, String? recurrenceUid});
-  Future<Result<Pagination<Member>, Exception>> getEventAttendees(
-      {required String eventUid,
-      required String recurrenceUid,
-      PaginationRequest? request});
+    String eventUid,
+    EventActionType actionType,
+  );
+  Future<Result<bool, Exception>> attend({
+    required String eventUid,
+    String? recurrenceUid,
+  });
+  Future<Result<bool, Exception>> unAttend({
+    required String eventUid,
+    String? recurrenceUid,
+  });
+  Future<Result<Pagination<Member>, Exception>> getEventAttendees({
+    required String eventUid,
+    required String recurrenceUid,
+    PaginationRequest? request,
+  });
 
-  Future<Result<Pagination<Feed>, Exception>> getFeedData(
-      {PaginationRequest? request});
+  Future<Result<Pagination<Feed>, Exception>> getFeedData({
+    PaginationRequest? request,
+  });
   Future<Result<Pagination<Category>, Exception>> getCategories();
   Future<Result<Pagination<Category>, Exception>> getSubCategories(
-      String categoryUid);
+    String categoryUid,
+  );
   Future<Venue> geocode(double lat, double lng);
-  Future<Result<Pagination<Feed>, Exception>> getFavorateEvents(
-      {PaginationRequest? request});
+  Future<Result<Pagination<Feed>, Exception>> getFavorateEvents({
+    PaginationRequest? request,
+  });
   Future<Result<bool, Exception>> favorateEvent(String eventUid);
   Future<Result<bool, Exception>> removeFromFavorates(String eventUid);
 
   Future<Result<Pagination<Feed>, Exception>> getProviderEvents(
-      String providerUid,
-      {PaginationRequest? request});
-  Future<Result<Pagination<Feed>, Exception>> getCommunityEvents(
-      {required String uid,
-      required String ownerUid,
-      PaginationRequest? request});
+    String providerUid, {
+    PaginationRequest? request,
+  });
+  Future<Result<Pagination<Feed>, Exception>> getCommunityEvents({
+    required String uid,
+    required String ownerUid,
+    PaginationRequest? request,
+  });
   Future<Result<bool, Exception>> linkToCommunity(
-      String eventUid, Community community);
+    String eventUid,
+    Community community,
+  );
   Future<Result<bool, Exception>> unlinkFromCommunity(
-      String eventUid, Community community);
-  Future<Result<bool, Exception>> joinCommunitites(
-      {List<String> private, List<String> public});
+    String eventUid,
+    Community community,
+  );
+  Future<Result<bool, Exception>> joinCommunitites({
+    List<String> private,
+    List<String> public,
+  });
 }

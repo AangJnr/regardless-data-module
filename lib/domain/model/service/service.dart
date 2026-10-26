@@ -18,6 +18,7 @@ class Service with ServiceMappable {
   final List<TimeSlot> timeSlots;
   final Venue? location;
   final String ownerUid;
+  final String ownerName;
   final DateTime? updatedAt;
   final String categoryUid;
   final bool isActive;
@@ -36,6 +37,7 @@ class Service with ServiceMappable {
     this.timeSlots = const [],
     this.location = const Venue(),
     this.ownerUid = '',
+    this.ownerName = '',
     this.updatedAt,
     this.isActive = false,
     this.categoryUid = '',
@@ -57,18 +59,20 @@ class Service with ServiceMappable {
 
   Service request(TimeSlot timeSlot, Price? price) {
     return Service(
-        timeSlots: [timeSlot],
-        prices: price == null ? [] : [price],
-        createdAt: createdAt,
-        uid: uid,
-        keywords: keywords,
-        name: name,
-        description: description,
-        location: location,
-        ownerUid: ownerUid,
-        updatedAt: updatedAt,
-        isActive: isActive,
-        provider: provider);
+      timeSlots: [timeSlot],
+      prices: price == null ? [] : [price],
+      createdAt: createdAt,
+      uid: uid,
+      keywords: keywords,
+      name: name,
+      description: description,
+      location: location,
+      ownerUid: ownerUid,
+      ownerName: ownerName,
+      updatedAt: updatedAt,
+      isActive: isActive,
+      provider: provider,
+    );
   }
 
   List<Price> pricesSorted() {
@@ -93,19 +97,17 @@ class Service with ServiceMappable {
       return '${getShortDay(timeSlots.first.day)} Slots(${timeSlots.first.slots.length})';
     }
 
-    return '${getShortDay(timeSlots.first.day)} - ${getShortDay(timeSlots.last.day)} Slots(${timeSlots.fold([], (previousValue, element) => [
-          ...previousValue,
-          ...element.slots
-        ]).length})';
+    return '${getShortDay(timeSlots.first.day)} - ${getShortDay(timeSlots.last.day)} Slots(${timeSlots.fold([], (previousValue, element) => [...previousValue, ...element.slots]).length})';
   }
 
   String foldTimeSlots() {
     if (timeSlots.isEmpty) return '';
 
     final value = timeSlots.fold(
-        '',
-        (previousValue, element) =>
-            '$previousValue${element.slots.fold('', (previousValue, element) => '$previousValue${element.toString()} | ')}');
+      '',
+      (previousValue, element) =>
+          '$previousValue${element.slots.fold('', (previousValue, element) => '$previousValue${element.toString()} | ')}',
+    );
     return '${getShortDay(timeSlots.first.day)} - Slots($value)';
   }
 

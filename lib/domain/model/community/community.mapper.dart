@@ -48,6 +48,13 @@ class CommunityMapper extends ClassMapperBase<Community> {
     opt: true,
     def: '',
   );
+  static String _$ownerName(Community v) => v.ownerName;
+  static const Field<Community, String> _f$ownerName = Field(
+    'ownerName',
+    _$ownerName,
+    opt: true,
+    def: '',
+  );
   static CommunitySettings _$communitySettings(Community v) =>
       v.communitySettings;
   static const Field<Community, CommunitySettings> _f$communitySettings = Field(
@@ -162,6 +169,7 @@ class CommunityMapper extends ClassMapperBase<Community> {
     #name: _f$name,
     #description: _f$description,
     #ownerUid: _f$ownerUid,
+    #ownerName: _f$ownerName,
     #communitySettings: _f$communitySettings,
     #membersCount: _f$membersCount,
     #createdAt: _f$createdAt,
@@ -185,6 +193,7 @@ class CommunityMapper extends ClassMapperBase<Community> {
       name: data.dec(_f$name),
       description: data.dec(_f$description),
       ownerUid: data.dec(_f$ownerUid),
+      ownerName: data.dec(_f$ownerName),
       communitySettings: data.dec(_f$communitySettings),
       membersCount: data.dec(_f$membersCount),
       createdAt: data.dec(_f$createdAt),
@@ -277,6 +286,7 @@ abstract class CommunityCopyWith<$R, $In extends Community, $Out>
     String? name,
     String? description,
     String? ownerUid,
+    String? ownerName,
     CommunitySettings? communitySettings,
     int? membersCount,
     DateTime? createdAt,
@@ -351,6 +361,7 @@ class _CommunityCopyWithImpl<$R, $Out>
     String? name,
     String? description,
     String? ownerUid,
+    String? ownerName,
     CommunitySettings? communitySettings,
     int? membersCount,
     Object? createdAt = $none,
@@ -372,6 +383,7 @@ class _CommunityCopyWithImpl<$R, $Out>
       if (name != null) #name: name,
       if (description != null) #description: description,
       if (ownerUid != null) #ownerUid: ownerUid,
+      if (ownerName != null) #ownerName: ownerName,
       if (communitySettings != null) #communitySettings: communitySettings,
       if (membersCount != null) #membersCount: membersCount,
       if (createdAt != $none) #createdAt: createdAt,
@@ -395,6 +407,7 @@ class _CommunityCopyWithImpl<$R, $Out>
     name: data.get(#name, or: $value.name),
     description: data.get(#description, or: $value.description),
     ownerUid: data.get(#ownerUid, or: $value.ownerUid),
+    ownerName: data.get(#ownerName, or: $value.ownerName),
     communitySettings: data.get(
       #communitySettings,
       or: $value.communitySettings,

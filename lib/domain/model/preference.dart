@@ -18,20 +18,21 @@ class Preference with PreferenceMappable {
   final bool smsNotifications;
   final bool emailNotifications;
 
-  Preference(
-      {this.id = '',
-      this.createdAt = '',
-      this.updatedAt = '',
-      this.isActive = true,
-      this.emailNewFeatureAnnouncement = false,
-      this.emailNewsletterWeekly = false,
-      this.emailRecommendations = false,
-      this.pushNewFeatureAnnouncement = false,
-      this.pushNewsletterWeekly = false,
-      this.pushRecommendations = false,
-      this.pushNotifications = true,
-      this.emailNotifications = true,
-      this.smsNotifications = true});
+  Preference({
+    this.id = '',
+    this.createdAt = '',
+    this.updatedAt = '',
+    this.isActive = true,
+    this.emailNewFeatureAnnouncement = false,
+    this.emailNewsletterWeekly = false,
+    this.emailRecommendations = false,
+    this.pushNewFeatureAnnouncement = false,
+    this.pushNewsletterWeekly = false,
+    this.pushRecommendations = false,
+    this.pushNotifications = true,
+    this.emailNotifications = true,
+    this.smsNotifications = true,
+  });
 
   @override
   String toString() {

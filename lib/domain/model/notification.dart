@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
- 
+
 // ignore_for_file: constant_identifier_names
 enum NotificationType {
   EVENT_REMINDER,
@@ -26,7 +26,11 @@ enum NotificationType {
   NEW_COLLABORATOR,
   USER_FOLLOWED,
   NEARBY_ACTIVITY_ALERT,
-  NONE
+  ANNOUNCEMENT,
+  TOURNAMENT_STARTED,
+  TOURNAMENT_MATCH_REMINDER,
+  TOURNAMENT_MATCH_STARTING_SOON,
+  NONE,
 }
 
 class Notification {

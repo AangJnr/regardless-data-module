@@ -17,7 +17,7 @@ import 'package:regardless_data_module/domain/model/timeline/timeline_item.dart'
 import '../../../domain/model/collaborator/collaborator_role.dart';
 
 import '../../../app/app.logger.dart';
- import '../../../domain/model/follower.dart';
+import '../../../domain/model/follower.dart';
 import '../../../domain/model/hash_image.dart';
 import '../../../domain/model/membership.dart';
 import '../../../domain/model/new_user.dart';
@@ -61,26 +61,28 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   }
 
   @override
-  Future<Result<Accounts, Exception>> getUserAccounts(
-      [bool refresh = false]) async {
+  Future<Result<Accounts, Exception>> getUserAccounts([
+    bool refresh = false,
+  ]) async {
     final cache = module<CacheService>();
 
-    if (refresh) {
-      cache.clear('user_accounts');
-    }
     try {
-      final accounts = await cache.execute<Accounts?>(() async {
-        var data = await processRequest(() => apiService.getUserAccounts());
-        if (data.isSuccess()) {
-          return AccountsMapper.fromMap(data.tryGetSuccess()!);
-        }
-        return null;
-      }, 'user_accounts');
+      final accounts = await cache.execute<Accounts?>(
+        refresh: refresh,
+        () async {
+          var data = await processRequest(() => apiService.getUserAccounts());
+          if (data.isSuccess()) {
+            return AccountsMapper.fromMap(data.tryGetSuccess()!);
+          }
+          return null;
+        },
+        'user_accounts',
+      );
       if (accounts != null) {
         return Success(accounts);
       } else {
         cache.clear('user_accounts');
-        return Future.value(Error(Exception("Unable to fetch accounts")));
+        return await Future.value(Error(Exception("Unable to fetch accounts")));
       }
     } catch (e) {
       cache.clear('user_accounts');
@@ -91,9 +93,11 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
 
   @override
   Future<Result<bool, Exception>> setDefaultUserAccount(
-      String profileUid) async {
+    String profileUid,
+  ) async {
     var data = await processRequest(
-        () => apiService.setDefaultUserAccount(profileUid));
+      () => apiService.setDefaultUserAccount(profileUid),
+    );
 
     if (data.isSuccess()) return Success(data.isSuccess());
     return Future.value(Error(data.tryGetError()!));
@@ -114,26 +118,35 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
     PaginationRequest? request,
   }) async {
     final response = await processRequest(
-        () => apiService.getProviderTimeline(uid, request: request));
+      () => apiService.getProviderTimeline(uid, request: request),
+    );
     if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
-      final parsed =
-          paginationResponse.data?.map((e) => TimelineItem.fromMap(e)).toList();
-      return Success(Pagination<TimelineItem>(
-        data: parsed ?? [],
-        hasNext: paginationResponse.hasNext,
-        last: paginationResponse.last,
-      ));
+      final paginationResponse = PaginatedResponse.fromMap(
+        response.tryGetSuccess()!,
+      );
+      final parsed = paginationResponse.data
+          ?.map((e) => TimelineItem.fromMap(e))
+          .toList();
+      return Success(
+        Pagination<TimelineItem>(
+          data: parsed ?? [],
+          hasNext: paginationResponse.hasNext,
+          last: paginationResponse.last,
+        ),
+      );
     }
     return Error(response.tryGetError()!);
   }
 
   @override
-  Future<Result<bool, Exception>> deleteAccount(String uid,
-      {String title = 'None', String reason = 'Not provided'}) async {
+  Future<Result<bool, Exception>> deleteAccount(
+    String uid, {
+    String title = 'None',
+    String reason = 'Not provided',
+  }) async {
     var data = await processRequest(
-        () => apiService.deleteAccount(uid, title: title, reason: reason));
+      () => apiService.deleteAccount(uid, title: title, reason: reason),
+    );
     if (data.isSuccess()) {
       return Future.value(const Success(true));
     }
@@ -155,28 +168,46 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   }
 
   @override
+  Future<Result<List<AUser>, Exception>> searchUsers(
+    SearchEventParams params,
+  ) async {
+    var data = await processRequest(() => apiService.searchUsers(params));
+    if (data.isSuccess()) {
+      final results = (data.tryGetSuccess()! as List<dynamic>)
+          .map((data) => AUserMapper.fromMap(data))
+          .toList();
+      return Success(results);
+    }
+    return Success([]);
+  }
+
+  @override
   Future<Result<bool, Exception>> updateDeviceToken(String token) async {
     if (!sessionManager.isLoggedIn()) {
       return Success(false);
     }
-    final mobileDeviceIdentifier = base64Encode(utf8.encode(
-        await MobileDeviceIdentifier().getDeviceId() ??
-            'regardless_mobile_app'));
+    final mobileDeviceIdentifier = base64Encode(
+      utf8.encode(
+        await MobileDeviceIdentifier().getDeviceId() ?? 'regardless_mobile_app',
+      ),
+    );
 
     final notificationRequest = (kIsWeb)
         ? NotificationRequest(
             deviceId: sessionManager.getUserProfile().uid,
             token: token,
             active: true,
-            type: 'web')
+            type: 'web',
+          )
         : NotificationRequest(
             deviceId: mobileDeviceIdentifier,
             token: token,
             active: true,
-            type: Platform.isIOS ? 'ios' : 'android');
-    var data = await processRequest(() => apiService.updateFCMTokekn(
-          notificationRequest,
-        ));
+            type: Platform.isIOS ? 'ios' : 'android',
+          );
+    var data = await processRequest(
+      () => apiService.updateFCMTokekn(notificationRequest),
+    );
     if (data.isSuccess()) {
       sessionManager.set(NotificationKey, token);
       return Future.value(const Success(true));
@@ -190,7 +221,9 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
       var data = await processRequest(() => apiService.getFCMToken(token));
       if (data.isSuccess()) {
         sessionManager.set(NotificationKey, token);
-        return Future.value(NotificationRequest.fromMap(data.tryGetSuccess()));
+        return await Future.value(
+          NotificationRequest.fromMap(data.tryGetSuccess()),
+        );
       }
     } catch (e) {
       return Future.value(null);
@@ -200,8 +233,9 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
 
   @override
   Future<Result<AUser, Exception>> updateUserProfile(UpdateUser profile) async {
-    var data =
-        await processRequest(() => apiService.updateUserProfile(profile));
+    var data = await processRequest(
+      () => apiService.updateUserProfile(profile),
+    );
     if (data.isSuccess()) {
       final user = AUserMapper.fromMap(data.tryGetSuccess()!);
       sessionManager.setUser(user);
@@ -212,8 +246,12 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
 
   @override
   Future<Result<AUser, Exception>> updateUserName(String userName) async {
-    var data = await processRequest(() => apiService.updateUserName(
-        userName: userName, profileUid: sessionManager.getUserProfile().uid));
+    var data = await processRequest(
+      () => apiService.updateUserName(
+        userName: userName,
+        profileUid: sessionManager.getUserProfile().uid,
+      ),
+    );
     if (data.isSuccess()) {
       return await getUser();
     }
@@ -222,9 +260,12 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
 
   @override
   Future<Result<HashImage, Exception>> updateProfilePhoto(
-      String profileUid, XFile file) async {
+    String profileUid,
+    XFile file,
+  ) async {
     final data = await processMultiPartRequest(
-        () => apiService.uploadPhoto(profileUid, file));
+      () => apiService.uploadPhoto(profileUid, file),
+    );
     if (data.isSuccess()) {
       return Success(HashImageMapper.fromMap(data.tryGetSuccess()!));
     }
@@ -232,28 +273,35 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   }
 
   @override
-  Future<Result<Pagination<Notification>, Exception>> getNotifications(
-      {PaginationRequest? request}) async {
+  Future<Result<Pagination<Notification>, Exception>> getNotifications({
+    PaginationRequest? request,
+  }) async {
     try {
       bool hasNext = false;
       List<Notification> allData = [];
       var data = await processRequest(
-          () => apiService.getNotifications(request: request));
+        () => apiService.getNotifications(request: request),
+      );
       if (data.isSuccess()) {
-        final paginatedResults =
-            PaginatedResponse.fromMap(data.tryGetSuccess()!);
+        final paginatedResults = PaginatedResponse.fromMap(
+          data.tryGetSuccess()!,
+        );
         if (paginatedResults.data != null) {
           try {
-            allData.addAll(paginatedResults.data!
-                .map((e) => NotificationA.fromMap(e).mapToDomain()));
+            allData.addAll(
+              paginatedResults.data!.map(
+                (e) => NotificationA.fromMap(e).mapToDomain(),
+              ),
+            );
           } catch (e) {
             //
           }
           hasNext = paginatedResults.hasNext;
         }
       }
-      return Future.value(
-          Success(Pagination<Notification>(data: allData, hasNext: hasNext)));
+      return await Future.value(
+        Success(Pagination<Notification>(data: allData, hasNext: hasNext)),
+      );
     } catch (e) {
       return Future.value(Error(Exception(e)));
     }
@@ -262,65 +310,80 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   @override
   Future<Result<bool, Exception>> markNotificationAsread(String uid) async {
     try {
-      var data =
-          await processRequest(() => apiService.markNotificationAsRead(uid));
-      return Future.value(Success(data.isSuccess()));
+      var data = await processRequest(
+        () => apiService.markNotificationAsRead(uid),
+      );
+      return await Future.value(Success(data.isSuccess()));
     } catch (e) {
       return Future.value(Error(Exception(e)));
     }
   }
 
   @override
-  Future<Result<Pagination<Review>, Exception>> getReviews(
-      {PaginationRequest? request, String userUid = ''}) async {
+  Future<Result<Pagination<Review>, Exception>> getReviews({
+    PaginationRequest? request,
+    String userUid = '',
+  }) async {
     try {
       bool hasNext = false;
       List<Review> allData = [];
       var data = await processRequest(
-          () => apiService.getReviews(request: request, userUid: userUid));
+        () => apiService.getReviews(request: request, userUid: userUid),
+      );
       if (data.isSuccess()) {
-        final paginatedResults =
-            PaginatedResponse.fromMap(data.tryGetSuccess()!);
+        final paginatedResults = PaginatedResponse.fromMap(
+          data.tryGetSuccess()!,
+        );
 
         if (paginatedResults.data != null) {
           try {
             allData.addAll(
-                paginatedResults.data!.map((e) => ReviewMapper.fromMap(e)));
+              paginatedResults.data!.map((e) => ReviewMapper.fromMap(e)),
+            );
           } catch (e) {
             //
           }
           hasNext = paginatedResults.hasNext;
         }
       }
-      return Future.value(
-          Success(Pagination<Review>(data: allData, hasNext: hasNext)));
+      return await Future.value(
+        Success(Pagination<Review>(data: allData, hasNext: hasNext)),
+      );
     } catch (e) {
       return Future.value(Error(Exception(e)));
     }
   }
 
   @override
-  Future<Result<Pagination<Membership>, Exception>> getSubscriptions(
-      {PaginationRequest? request, String userUid = ''}) async {
+  Future<Result<Pagination<Membership>, Exception>> getSubscriptions({
+    PaginationRequest? request,
+    String userUid = '',
+  }) async {
     try {
       bool hasNext = false;
       List<Membership> allData = [];
-      var data = await processRequest(() =>
-          apiService.getSubscriptions(request: request, userUid: userUid));
+      var data = await processRequest(
+        () => apiService.getSubscriptions(request: request, userUid: userUid),
+      );
       if (data.isSuccess()) {
-        final paginatedResults =
-            PaginatedResponse.fromMap(data.tryGetSuccess()!);
+        final paginatedResults = PaginatedResponse.fromMap(
+          data.tryGetSuccess()!,
+        );
         if (paginatedResults.data != null) {
           try {
-            allData.addAll(paginatedResults.data!
-                .map((e) => MembershipA.fromMap(e).mapToDomain()));
+            allData.addAll(
+              paginatedResults.data!.map(
+                (e) => MembershipA.fromMap(e).mapToDomain(),
+              ),
+            );
             // ignore: empty_catches
           } catch (e) {}
           hasNext = paginatedResults.hasNext;
         }
       }
-      return Future.value(
-          Success(Pagination<Membership>(data: allData, hasNext: hasNext)));
+      return await Future.value(
+        Success(Pagination<Membership>(data: allData, hasNext: hasNext)),
+      );
     } catch (e) {
       return Future.value(Error(Exception(e)));
     }
@@ -330,8 +393,9 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   Future<Result<Follower, Exception>> followUser(String uid) async {
     final response = await processRequest(() => apiService.followUser(uid));
     if (response.isSuccess()) {
-      final data =
-          FollowerResponse.fromMap(response.tryGetSuccess()!).mapToDomain();
+      final data = FollowerResponse.fromMap(
+        response.tryGetSuccess()!,
+      ).mapToDomain();
       return Success(data);
     }
     return Error(response.tryGetError()!);
@@ -347,54 +411,77 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   }
 
   @override
-  Future<Result<Pagination<AUser>, Exception>> getFollowers(
-      {PaginationRequest? request, String userUid = ''}) async {
+  Future<Result<Pagination<AUser>, Exception>> getFollowers({
+    PaginationRequest? request,
+    String userUid = '',
+  }) async {
     List<AUser> allData = [];
     bool hasNext = false;
-    var data =
-        await processRequest(() => apiService.getFollowers(request: request));
+    var data = await processRequest(
+      () => apiService.getFollowers(request: request, userUid: userUid),
+    );
     if (data.isSuccess()) {
       final paginatedResults = PaginatedResponse.fromMap(data.tryGetSuccess()!);
       try {
         allData.addAll(
-            paginatedResults.data?.map((e) => AUserMapper.fromMap(e)) ?? []);
+          paginatedResults.data?.map((e) => AUserMapper.fromMap(e)) ?? [],
+        );
       } catch (e) {
         getLogger("UserRepo").e(e);
       }
       hasNext = paginatedResults.hasNext;
+      final last = paginatedResults.last;
+      return Success(Pagination(data: allData, hasNext: hasNext, last: last));
     }
     return Success(Pagination(data: allData, hasNext: hasNext));
   }
 
   @override
-  Future<Result<Pagination<Follower>, Exception>> getFollowing(
-      {PaginationRequest? request, String userUid = ''}) async {
+  Future<Result<Pagination<Follower>, Exception>> getFollowing({
+    PaginationRequest? request,
+    String userUid = '',
+  }) async {
     List<Follower> allData = [];
     bool hasNext = false;
-    var data =
-        await processRequest(() => apiService.getFollowing(request: request));
+    var data = await processRequest(
+      () => apiService.getFollowing(request: request, userUid: userUid),
+    );
     if (data.isSuccess()) {
       final paginatedResults = PaginatedResponse.fromMap(data.tryGetSuccess()!);
 
       if (paginatedResults.data != null) {
         try {
-          allData.addAll(paginatedResults.data!
-              .map((e) => FollowerResponse.fromMap(e).mapToDomain()));
+          allData.addAll(
+            paginatedResults.data!.map(
+              (e) => FollowerResponse.fromMap(e).mapToDomain(),
+            ),
+          );
         } catch (e) {
           //
         }
       }
       hasNext = paginatedResults.hasNext;
+      return Success(
+        Pagination(
+          data: allData,
+          hasNext: hasNext,
+          last: paginatedResults.last,
+        ),
+      );
     }
     return Future.value(
-        Success(Pagination<Follower>(data: allData, hasNext: hasNext)));
+      Success(Pagination<Follower>(data: allData, hasNext: hasNext)),
+    );
   }
 
   @override
   Future<Result<String, Exception>> sendNotificationMessage(
-      String userUid, String message) async {
-    var data =
-        await processRequest(() => apiService.sendMessage(userUid, message));
+    String userUid,
+    String message,
+  ) async {
+    var data = await processRequest(
+      () => apiService.sendMessage(userUid, message),
+    );
 
     if (data.isSuccess()) {
       return Success(data.tryGetSuccess());
@@ -404,7 +491,8 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
 
   @override
   Future<Result<DashboardMetrics, Exception>> getDashboardMetrics(
-      String date) async {
+    String date,
+  ) async {
     var data = await processRequest(() => apiService.getDashboardMetrics(date));
     if (data.isSuccess()) {
       return Success(DashboardMetricsMapper.fromMap(data.tryGetSuccess()));
@@ -425,9 +513,11 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
 
   @override
   Future<Result<bool, Exception>> updatePreference(
-      Preference preference) async {
-    var data =
-        await processRequest(() => apiService.updatePreferences(preference));
+    Preference preference,
+  ) async {
+    var data = await processRequest(
+      () => apiService.updatePreferences(preference),
+    );
     if (data.isSuccess()) {
       return Future.value(const Success(true));
     }
@@ -435,21 +525,28 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   }
 
   @override
-  Future<Result<Pagination<Review>, Exception>> getProviderReviews(
-      {PaginationRequest? request, String uid = ''}) async {
+  Future<Result<Pagination<Review>, Exception>> getProviderReviews({
+    PaginationRequest? request,
+    String uid = '',
+  }) async {
     try {
       var data = await processRequest(
-          () => apiService.getProviderReviews(request: request, uid: uid));
+        () => apiService.getProviderReviews(request: request, uid: uid),
+      );
       if (data.isSuccess()) {
-        final paginationResponse =
-            PaginatedResponse.fromMap(data.tryGetSuccess()!);
+        final paginationResponse = PaginatedResponse.fromMap(
+          data.tryGetSuccess()!,
+        );
         final parsed = paginationResponse.data
             ?.map((e) => ReviewMapper.fromMap(e))
             .toList();
-        return Success(Pagination<Review>(
+        return Success(
+          Pagination<Review>(
             data: parsed ?? [],
             hasNext: paginationResponse.hasNext,
-            last: paginationResponse.last));
+            last: paginationResponse.last,
+          ),
+        );
       } else {
         return Error(data.tryGetError()!);
       }
@@ -459,10 +556,13 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   }
 
   @override
-  Future<Result<Review, Exception>> addProviderReview(
-      {required Review review, String uid = ''}) async {
+  Future<Result<Review, Exception>> addProviderReview({
+    required Review review,
+    String uid = '',
+  }) async {
     var response = await processRequest(
-        () => apiService.addProviderReview(review: review, uid: uid));
+      () => apiService.addProviderReview(review: review, uid: uid),
+    );
     if (response.isSuccess()) {
       return Success(ReviewMapper.fromMap(response.tryGetSuccess()!));
     }
@@ -470,26 +570,20 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
   }
 
   @override
-  Future<Result<List<AUser>, Exception>> searchUsers(
-      SearchEventParams params) async {
-    var data = await processRequest(() => apiService.searchProvider(params));
-    if (data.isSuccess()) {
-      final results = (data.tryGetSuccess()! as List<dynamic>)
-          .map((data) => AUserMapper.fromMap(data))
-          .toList();
-      return Success(results);
-    }
-    return Success([]);
-  }
-
-  @override
-  Future<Result<bool, Exception>> inviteCollaborators(List<AUser> users,
-      String uid, CollaboratorRole role, List<String> permissions) async {
-    final response = await processRequest(() => apiService.inviteCollaborators(
+  Future<Result<bool, Exception>> inviteCollaborators(
+    List<AUser> users,
+    String uid,
+    CollaboratorRole role,
+    List<String> permissions,
+  ) async {
+    final response = await processRequest(
+      () => apiService.inviteCollaborators(
         users,
         uid,
         role.name[0].toUpperCase() + role.name.substring(1),
-        permissions));
+        permissions,
+      ),
+    );
     return response.isSuccess()
         ? Success(true)
         : Error(response.tryGetError()!);
@@ -497,13 +591,19 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
 
   @override
   Future<Result<bool, Exception>> updateCollaboratorPermissions(
-      String uid,
-      String collaboratorUid,
-      CollaboratorRole role,
-      List<String> permissions) async {
-    final response = await processRequest(() =>
-        apiService.updateCollaboratorPermissions(uid, collaboratorUid,
-            role.name[0].toUpperCase() + role.name.substring(1), permissions));
+    String uid,
+    String collaboratorUid,
+    CollaboratorRole role,
+    List<String> permissions,
+  ) async {
+    final response = await processRequest(
+      () => apiService.updateCollaboratorPermissions(
+        uid,
+        collaboratorUid,
+        role.name[0].toUpperCase() + role.name.substring(1),
+        permissions,
+      ),
+    );
     return response.isSuccess()
         ? Success(true)
         : Error(response.tryGetError()!);
@@ -511,50 +611,65 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
 
   @override
   Future<Result<Pagination<CollaboratorInvite>, Exception>>
-      getInvitedCollaborators(String uid, {PaginationRequest? request}) async {
+  getInvitedCollaborators(String uid, {PaginationRequest? request}) async {
     final response = await processRequest(
-        () => apiService.getInvitedCollaborators(uid, request: request));
+      () => apiService.getInvitedCollaborators(uid, request: request),
+    );
     if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        response.tryGetSuccess()!,
+      );
       final parsed = paginationResponse.data
           ?.map((e) => CollaboratorInviteMapper.fromMap(e))
           .toList();
-      return Success(Pagination<CollaboratorInvite>(
+      return Success(
+        Pagination<CollaboratorInvite>(
           data: parsed ?? [],
           hasNext: paginationResponse.hasNext,
-          last: paginationResponse.last));
+          last: paginationResponse.last,
+        ),
+      );
     }
     return Error(response.tryGetError()!);
   }
 
   @override
   Future<Result<bool, Exception>> deleteCollaboratorInvite(
-      String uid, String inviteId) async {
+    String uid,
+    String inviteId,
+  ) async {
     final response = await processRequest(
-        () => apiService.deleteCollaboratorInvite(uid, inviteId));
+      () => apiService.deleteCollaboratorInvite(uid, inviteId),
+    );
     return response.isSuccess()
         ? Success(true)
         : Error(response.tryGetError()!);
   }
 
   @override
-  Future<Result<CollaboratorInvite, Exception>> acceptCollaboratorInvite(
-      {required String token, required String providerUid}) async {
+  Future<Result<CollaboratorInvite, Exception>> acceptCollaboratorInvite({
+    required String token,
+    required String providerUid,
+  }) async {
     final response = await processRequest(
-        () => apiService.acceptCollaboratorInvite(token, providerUid));
+      () => apiService.acceptCollaboratorInvite(token, providerUid),
+    );
     if (response.isSuccess()) {
       return Success(
-          CollaboratorInviteMapper.fromMap(response.tryGetSuccess()!));
+        CollaboratorInviteMapper.fromMap(response.tryGetSuccess()!),
+      );
     }
     return Error(response.tryGetError()!);
   }
 
   @override
-  Future<Result<bool, Exception>> finalizeCollaboratorInvite(
-      {required String token, required String providerUid}) async {
+  Future<Result<bool, Exception>> finalizeCollaboratorInvite({
+    required String token,
+    required String providerUid,
+  }) async {
     final response = await processRequest(
-        () => apiService.finalizeCollaboratorInvite(token, providerUid));
+      () => apiService.finalizeCollaboratorInvite(token, providerUid),
+    );
     if (response.isSuccess()) {
       await getUserAccounts(true);
       return Success(true);
@@ -564,28 +679,35 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
 
   @override
   Future<Result<Pagination<StaffMember>, Exception>> getCollaborators(
-      String uid,
-      {PaginationRequest? request}) async {
+    String uid, {
+    PaginationRequest? request,
+  }) async {
     final response = await processRequest(
-        () => apiService.getCollaborators(uid, request: request));
+      () => apiService.getCollaborators(uid, request: request),
+    );
     if (response.isSuccess()) {
-      final paginationResponse =
-          PaginatedResponse.fromMap(response.tryGetSuccess()!);
+      final paginationResponse = PaginatedResponse.fromMap(
+        response.tryGetSuccess()!,
+      );
       final parsed = paginationResponse.data
           ?.map((e) => StaffMemberMapper.fromMap(e))
           .toList();
-      return Success(Pagination<StaffMember>(
+      return Success(
+        Pagination<StaffMember>(
           data: parsed ?? [],
           hasNext: paginationResponse.hasNext,
-          last: paginationResponse.last));
+          last: paginationResponse.last,
+        ),
+      );
     }
     return Error(response.tryGetError()!);
   }
 
   @override
   Future<Result<StaffMember, Exception>> getCollaborator(String uid) async {
-    final response =
-        await processRequest(() => apiService.getCollaborator(uid));
+    final response = await processRequest(
+      () => apiService.getCollaborator(uid),
+    );
     if (response.isSuccess()) {
       return Success(StaffMemberMapper.fromMap(response.tryGetSuccess()!));
     }
@@ -594,9 +716,22 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
 
   @override
   Future<Result<bool, Exception>> removeCollaborator(
-      String uid, String collaboratorUid) async {
+    String uid,
+    String collaboratorUid,
+  ) async {
     final response = await processRequest(
-        () => apiService.removeCollaborator(uid, collaboratorUid));
+      () => apiService.removeCollaborator(uid, collaboratorUid),
+    );
+    return response.isSuccess()
+        ? Success(true)
+        : Error(response.tryGetError()!);
+  }
+
+  @override
+  Future<Result<bool, Exception>> revokeCollaboratorAccess(String uid) async {
+    final response = await processRequest(
+      () => apiService.revokeCollaboratorAccountAccess(uid),
+    );
     return response.isSuccess()
         ? Success(true)
         : Error(response.tryGetError()!);
@@ -604,9 +739,15 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
 
   @override
   Future<Result<bool, Exception>> updateUserSchedule(
-      String uid, List<TimeSlot> schedule) async {
-    final response = await processRequest(() => apiService.updateUserSchedule(
-        uid, schedule.map((e) => e.toApi()).toList()));
+    String uid,
+    List<TimeSlot> schedule,
+  ) async {
+    final response = await processRequest(
+      () => apiService.updateUserSchedule(
+        uid,
+        schedule.map((e) => e.toApi()).toList(),
+      ),
+    );
     if (response.isSuccess()) {
       // Refresh user to update local session
       await getUser();
@@ -614,5 +755,4 @@ class UserRepositoryImpl with BaseRepository implements UserRepository {
     }
     return Error(response.tryGetError()!);
   }
-
 }

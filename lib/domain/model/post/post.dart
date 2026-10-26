@@ -2,6 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:intl/intl.dart';
 import 'package:regardless_data_module/app/config/extensions.dart';
 import 'package:regardless_data_module/domain/model/hash_image.dart';
+import 'package:regardless_data_module/domain/model/post/announcement.dart';
 
 import '../community/community.dart';
 import '../price.dart';
@@ -9,6 +10,9 @@ import '../venue.dart';
 import 'owner.dart';
 
 part 'post.mapper.dart';
+
+@MappableEnum()
+enum PostType { announcement, post }
 
 @MappableClass()
 class Post with PostMappable {
@@ -31,26 +35,43 @@ class Post with PostMappable {
   final Community? community;
   final int likesCount;
   final int commentsCount;
-  const Post(
-      {this.uid = '',
-      this.eventUid = '',
-      this.recurrenceUid = '',
-      this.description = '',
-      this.venue = const Venue(),
-      this.imageUrls = const [],
-      this.createdAt,
-      this.likesCount = 0,
-      this.commentsCount = 0,
-      this.updatedAt,
-      this.isVerified = false,
-      this.prices = const [],
-      this.availableTickets = 0,
-      this.owner = const Owner(),
-      this.localTimestamp = '',
-      this.name = '',
-      this.timestamp = 0,
-      this.communityUid = '',
-      this.community});
+  final PostType type;
+  const Post({
+    this.uid = '',
+    this.eventUid = '',
+    this.recurrenceUid = '',
+    this.description = '',
+    this.venue = const Venue(),
+    this.imageUrls = const [],
+    this.createdAt,
+    this.likesCount = 0,
+    this.commentsCount = 0,
+    this.updatedAt,
+    this.isVerified = false,
+    this.prices = const [],
+    this.availableTickets = 0,
+    this.owner = const Owner(),
+    this.localTimestamp = '',
+    this.name = '',
+    this.timestamp = 0,
+    this.communityUid = '',
+    this.type = PostType.post,
+    this.community,
+  });
+
+  Announcement get toAnnouncement => Announcement(
+    uid: uid,
+    description: description,
+    imageUrls: imageUrls,
+    createdAt: createdAt,
+    likesCount: likesCount,
+    commentsCount: commentsCount,
+    updatedAt: updatedAt,
+    owner: owner,
+    timestamp: timestamp,
+  );
+
+  bool get isAnnouncement => type == PostType.announcement;
   @override
   String toString() {
     return 'Post(uid: $uid, eventUid: $eventUid, recurrenceUid: $recurrenceUid, description: $description, venue: $venue, imageUrls: $imageUrls, createdAt: $createdAt, updatedAt: $updatedAt, isVerified: $isVerified, prices: $prices, availableTickets: $availableTickets, owner: $owner, localTimestamp: $localTimestamp, name: $name, timestamp: $timestamp, communityUid: $communityUid)';
@@ -90,12 +111,12 @@ class Post with PostMappable {
   }
 
   String getLikes() {
-    if (likesCount == 0) return '';
+    if (likesCount <= 0) return '';
     return likesCount.toString();
   }
 
   String getComments() {
-    if (commentsCount == 0) return '';
+    if (commentsCount <= 0) return '';
     return commentsCount.toString();
   }
 }

@@ -7,7 +7,14 @@ import 'package:intl/intl.dart';
 part 'appointment.mapper.dart';
 
 @MappableEnum()
-enum AppointmentStatus { pending, active, rejected, cancelled, expired, scheduled }
+enum AppointmentStatus {
+  pending,
+  active,
+  rejected,
+  cancelled,
+  expired,
+  scheduled,
+}
 
 @MappableClass()
 class Appointment with AppointmentMappable {

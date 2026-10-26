@@ -13,6 +13,8 @@ class Community with CommunityMappable {
   final String name;
   final String description;
   final String ownerUid;
+  final String ownerName;
+
   final CommunitySettings communitySettings;
   final int membersCount;
   final int commentsCount;
@@ -30,26 +32,28 @@ class Community with CommunityMappable {
   final List<String>? imageBase64Data;
   final DateTime? joinedAt;
 
-  const Community(
-      {this.name = '',
-      this.description = '',
-      this.ownerUid = '',
-      this.communitySettings = const CommunitySettings(),
-      this.membersCount = 0,
-      this.createdAt,
-      this.updatedAt,
-      this.joinedAt,
-      this.tags = const [],
-      this.imageUrls = const [],
-      this.isArchived = false,
-      this.commentsCount = 0,
-      this.eventsCount = 0,
-      this.uid = '',
-      this.distance = 0.0,
-      this.members = const [],
-      this.organizer = const AUser(),
-      this.venue,
-      this.imageBase64Data});
+  const Community({
+    this.name = '',
+    this.description = '',
+    this.ownerUid = '',
+    this.ownerName = '',
+    this.communitySettings = const CommunitySettings(),
+    this.membersCount = 0,
+    this.createdAt,
+    this.updatedAt,
+    this.joinedAt,
+    this.tags = const [],
+    this.imageUrls = const [],
+    this.isArchived = false,
+    this.commentsCount = 0,
+    this.eventsCount = 0,
+    this.uid = '',
+    this.distance = 0.0,
+    this.members = const [],
+    this.organizer = const AUser(),
+    this.venue,
+    this.imageBase64Data,
+  });
 
   @override
   String toString() {
@@ -60,16 +64,16 @@ class Community with CommunityMappable {
     return membersCount == 0
         ? 'No members'
         : membersCount > 1
-            ? "$membersCount members"
-            : "$membersCount member";
+        ? "$membersCount members"
+        : "$membersCount member";
   }
 
   String eventsCountText() {
     return eventsCount == 0
         ? ''
         : eventsCount > 9
-            ? "• $eventsCount events"
-            : "• $eventsCount event";
+        ? "• $eventsCount events"
+        : "• $eventsCount event";
   }
 
   String getName() {

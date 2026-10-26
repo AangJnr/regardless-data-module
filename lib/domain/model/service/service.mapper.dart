@@ -88,6 +88,13 @@ class ServiceMapper extends ClassMapperBase<Service> {
     opt: true,
     def: '',
   );
+  static String _$ownerName(Service v) => v.ownerName;
+  static const Field<Service, String> _f$ownerName = Field(
+    'ownerName',
+    _$ownerName,
+    opt: true,
+    def: '',
+  );
   static DateTime? _$updatedAt(Service v) => v.updatedAt;
   static const Field<Service, DateTime> _f$updatedAt = Field(
     'updatedAt',
@@ -133,6 +140,7 @@ class ServiceMapper extends ClassMapperBase<Service> {
     #timeSlots: _f$timeSlots,
     #location: _f$location,
     #ownerUid: _f$ownerUid,
+    #ownerName: _f$ownerName,
     #updatedAt: _f$updatedAt,
     #isActive: _f$isActive,
     #categoryUid: _f$categoryUid,
@@ -151,6 +159,7 @@ class ServiceMapper extends ClassMapperBase<Service> {
       timeSlots: data.dec(_f$timeSlots),
       location: data.dec(_f$location),
       ownerUid: data.dec(_f$ownerUid),
+      ownerName: data.dec(_f$ownerName),
       updatedAt: data.dec(_f$updatedAt),
       isActive: data.dec(_f$isActive),
       categoryUid: data.dec(_f$categoryUid),
@@ -232,6 +241,7 @@ abstract class ServiceCopyWith<$R, $In extends Service, $Out>
     List<TimeSlot>? timeSlots,
     Venue? location,
     String? ownerUid,
+    String? ownerName,
     DateTime? updatedAt,
     bool? isActive,
     String? categoryUid,
@@ -287,6 +297,7 @@ class _ServiceCopyWithImpl<$R, $Out>
     List<TimeSlot>? timeSlots,
     Object? location = $none,
     String? ownerUid,
+    String? ownerName,
     Object? updatedAt = $none,
     bool? isActive,
     String? categoryUid,
@@ -303,6 +314,7 @@ class _ServiceCopyWithImpl<$R, $Out>
       if (timeSlots != null) #timeSlots: timeSlots,
       if (location != $none) #location: location,
       if (ownerUid != null) #ownerUid: ownerUid,
+      if (ownerName != null) #ownerName: ownerName,
       if (updatedAt != $none) #updatedAt: updatedAt,
       if (isActive != null) #isActive: isActive,
       if (categoryUid != null) #categoryUid: categoryUid,
@@ -322,6 +334,7 @@ class _ServiceCopyWithImpl<$R, $Out>
     timeSlots: data.get(#timeSlots, or: $value.timeSlots),
     location: data.get(#location, or: $value.location),
     ownerUid: data.get(#ownerUid, or: $value.ownerUid),
+    ownerName: data.get(#ownerName, or: $value.ownerName),
     updatedAt: data.get(#updatedAt, or: $value.updatedAt),
     isActive: data.get(#isActive, or: $value.isActive),
     categoryUid: data.get(#categoryUid, or: $value.categoryUid),

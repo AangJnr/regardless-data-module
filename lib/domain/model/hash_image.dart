@@ -12,8 +12,5 @@ class HashImage with HashImageMappable implements DataMapper<HashImageApi> {
   const HashImage({this.url = '', this.hash = ''});
 
   @override
-  HashImageApi mapToApi() => HashImageApi(
-        url: url,
-        hash: hash,
-      );
+  HashImageApi mapToApi() => HashImageApi(url: url, hash: hash);
 }
