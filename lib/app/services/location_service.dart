@@ -1,11 +1,12 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:stacked_services/stacked_services.dart';
-
 import 'toast_service.dart';
+
+import 'reverse_geocoder.mobile.dart'
+    if (dart.library.js_interop) 'reverse_geocoder.web.dart';
 
 class LocationService {
   int _intervalInSeconds = 20;
@@ -58,17 +59,15 @@ class LocationService {
   }
 
   Future<String> getAddressName(double lat, double lng) async {
-    List<Placemark> placemark = await Geocoding().placemarkFromCoordinates(
-      lat,
-      lng,
-    );
-    return Future.value(placemark[0].name ?? "");
+    final address = await createGeocoder().addressFromCoordinates(lat, lng);
+    return address;
   }
 
   LocationSettings _getSettings() {
     if (kIsWeb) {
       return LocationSettings(accuracy: LocationAccuracy.high);
     }
+
     if (Platform.isAndroid) {
       return AndroidSettings(
         accuracy: LocationAccuracy.high,
